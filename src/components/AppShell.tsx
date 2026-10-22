@@ -5,12 +5,13 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useTheme } from '../lib/theme';
 import { Icon } from './Icon';
-import { LinenMark, Logo, PortalDot } from './Logo';
+import { LinenMark, Logo } from './Logo';
 import '../styles/shell.css';
 
 export function AppShell({ children }: { children: ReactNode }) {
   const { theme, toggle } = useTheme();
   const pathname = usePathname();
+  const exploring = pathname === '/' || pathname.startsWith('/mcp/') || pathname.startsWith('/web/');
 
   useEffect(() => {
     window.scrollTo({ top: 0 });
@@ -21,13 +22,20 @@ export function AppShell({ children }: { children: ReactNode }) {
       <header className="nav">
         <div className="container nav__inner">
           <Link href="/" className="nav__brand" aria-label="MCPortal, inicio">
-            <Logo />
+            <Logo height={16} />
           </Link>
+
+          <nav className="nav__links" aria-label="Principal">
+            <Link href="/" className={exploring ? 'nav__link is-active' : 'nav__link'}>
+              Explorar
+            </Link>
+          </nav>
+
           <div className="nav__actions">
             {pathname !== '/crear' && (
               <Link href="/crear" className="btn btn--primary btn--sm">
-                <Icon name="plus" size={16} />
-                Crear MCP
+                <Icon name="plus" size={15} />
+                Crear
               </Link>
             )}
             <button
@@ -36,27 +44,31 @@ export function AppShell({ children }: { children: ReactNode }) {
               aria-label={theme === 'dark' ? 'Cambiar a tema claro' : 'Cambiar a tema oscuro'}
               title={theme === 'dark' ? 'Tema claro' : 'Tema oscuro'}
             >
-              <Icon name={theme === 'dark' ? 'sun' : 'moon'} size={17} />
+              <Icon name={theme === 'dark' ? 'sun' : 'moon'} size={16} />
             </button>
           </div>
         </div>
       </header>
 
-      <main className="shell__main">
-        {children}
-      </main>
+      <main className="shell__main">{children}</main>
 
       <footer className="footer">
         <div className="container footer__inner">
           <span className="footer__brand">
-            Webs sin API, convertidas en herramientas. Un proyecto de <LinenMark />
+            <Logo height={12} />
+            <span className="footer__sep" aria-hidden>
+              /
+            </span>
+            <span className="footer__muted">registro de servidores MCP</span>
+            <span className="footer__by">
+              por <LinenMark height={9} />
+            </span>
           </span>
           <div className="footer__meta mono">
             <span className="footer__status">
-              <PortalDot size={7} className="footer__ok" /> Explorador operativo
+              <span className="dot footer__ok" /> operativo
             </span>
             <span>runtime 0.4.2</span>
-            <span>MCP 2025-06-18</span>
           </div>
         </div>
       </footer>

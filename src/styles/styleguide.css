@@ -1,0 +1,148 @@
+.sg {
+  padding-top: 56px;
+  display: grid;
+  gap: 8px;
+}
+
+.sg__head {
+  padding-bottom: 32px;
+  border-bottom: 1px solid var(--ink);
+}
+
+.sg__head h1 {
+  margin-top: 8px;
+  font-size: 36px;
+}
+
+.sg__lede {
+  margin-top: 8px;
+  color: var(--muted);
+  font-size: 14px;
+}
+
+.sg__section {
+  display: grid;
+  gap: 16px;
+  padding: 32px 0;
+  border-bottom: 1px solid var(--line);
+}
+
+.sg__section h2 {
+  font-size: 17px;
+}
+
+.sg__label {
+  font-size: 10.5px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.sg__swatches {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  gap: 12px;
+}
+
+.sg__swatch {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.sg__swatch > span {
+  width: 34px;
+  height: 34px;
+  flex-shrink: 0;
+  border: 1px solid var(--line-strong);
+  border-radius: var(--r);
+}
+
+.sg__swatch div {
+  display: grid;
+  gap: 1px;
+  font-size: 12px;
+}
+
+.sg__swatch .mono {
+  font-size: 10.5px;
+  color: var(--muted);
+}
+
+.sg__type {
+  display: grid;
+  gap: 20px;
+}
+
+.sg__type > div {
+  display: grid;
+  gap: 4px;
+}
+
+.sg__type p {
+  color: var(--ink-2);
+}
+
+.sg__h1 {
+  font-size: 40px;
+  font-weight: 600;
+  letter-spacing: -0.05em;
+  line-height: 1;
+  color: var(--ink) !important;
+}
+
+.sg__h2 {
+  font-size: 20px;
+  font-weight: 600;
+  letter-spacing: -0.03em;
+  color: var(--ink) !important;
+}
+
+.sg__row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px;
+}
+
+.sg__row--top {
+  align-items: flex-start;
+}
+
+.sg__switch {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.sg__grid2 {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 16px 24px;
+}
+
+.sg__signature {
+  display: grid;
+  gap: 10px;
+  justify-items: start;
+}
+
+.sg__stack {
+  display: grid;
+  gap: 12px;
+  max-width: 640px;
+}
+
+.sg .empty {
+  margin-top: 4px;
+}
+
+@media (max-width: 720px) {
+  .sg {
+    padding-top: 36px;
+  }
+
+  .sg__grid2 {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}

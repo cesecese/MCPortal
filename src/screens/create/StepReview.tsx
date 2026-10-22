@@ -73,14 +73,8 @@ export function StepReview({
     <div className="step-review">
       <div className="step-review__form">
         <div>
-          <p className="eyebrow eyebrow--index" data-index="03">
-            Revisión
-          </p>
-          <h1 className="step-title">Revisa lo que ha encontrado el agente</h1>
-          <p className="step-lede">
-            Los nombres y descripciones son lo que leerá el cliente MCP para decidir qué herramienta usar. Ajústalos si
-            hace falta.
-          </p>
+          <h1 className="step-title">Revisa el MCP</h1>
+          <p className="step-lede">Ajusta nombre, descripción y herramientas antes de publicar.</p>
         </div>
 
         <section className="form-section">
@@ -146,7 +140,7 @@ export function StepReview({
           </div>
           <div className="field">
             <label className="field__label" htmlFor="tags">
-              Etiquetas <span className="field__hint">hasta 6 · Intro para añadir</span>
+              Etiquetas <span className="field__hint">máx. 6 · Intro para añadir</span>
             </label>
             <div className="tags-input">
               {draft.tags.map((t) => (
@@ -280,7 +274,6 @@ export function StepReview({
         ) : (
           <CodeBlock code={toManifest(preview)} title="manifest.json" maxHeight={520} lineNumbers />
         )}
-        <p className="field__hint">Así lo verán otros en el catálogo y así lo leerá el runtime.</p>
       </aside>
     </div>
   );

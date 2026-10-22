@@ -1,6 +1,6 @@
 'use client';
 
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import Link from 'next/link';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { CommandLine } from '../components/Code';
@@ -38,6 +38,10 @@ export function Create() {
   const [excluded, setExcluded] = useState<Set<number>>(new Set());
   const [showErrors, setShowErrors] = useState(false);
   const [busy, setBusy] = useState<'draft' | 'publish' | null>(null);
+
+  useEffect(() => {
+    window.scrollTo({ top: 0 });
+  }, [step]);
 
   const included = useMemo(
     () => (draft ? draft.tools.filter((t, i) => t.validated && !excluded.has(i)) : []),
@@ -100,13 +104,9 @@ export function Create() {
           <span className="done__mark">
             <Icon name="check" size={26} />
           </span>
-          <p className="eyebrow">Publicado en MCPortal</p>
-          <h1>
-            <span className="mono">{draft.slug}</span> ya está disponible
-          </h1>
+          <h1>MCP publicado</h1>
           <p className="step-lede">
-            {included.length} herramientas para {draft.site}.{' '}
-            {draft.visibility === 'unlisted' ? 'Solo quien tenga el enlace podrá verlo.' : 'Ya aparece en el catálogo.'}
+            <span className="mono">{draft.slug}</span> · {included.length} herramientas para {draft.site}.
           </p>
           <div className="done__cmd">
             <CommandLine command={installCommand(draft)} />

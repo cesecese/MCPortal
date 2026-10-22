@@ -98,57 +98,55 @@
 }
 
 .create__body {
-  padding-top: var(--s-8);
-  padding-bottom: var(--s-10);
+  padding-top: 56px;
+  padding-bottom: 96px;
 }
 
 .step-title {
-  margin-top: 14px;
-  font-size: clamp(26px, 3vw, 34px);
+  font-size: clamp(26px, 3vw, 30px);
   letter-spacing: -0.035em;
 }
 
 .step-lede {
   margin-top: 10px;
-  max-width: 60ch;
+  max-width: 56ch;
   color: var(--ink-2);
-  font-size: 15.5px;
+  font-size: 14.5px;
 }
 
 /* ── Paso 1 · URL ─────────────────────────────────────── */
 .step-url {
-  max-width: 820px;
+  max-width: 760px;
   display: grid;
-  gap: 36px;
+  gap: 28px;
 }
 
 .step-url__intro h1 {
-  margin-top: 14px;
-  font-size: clamp(30px, 4.2vw, 46px);
+  font-size: clamp(28px, 3.6vw, 38px);
   letter-spacing: -0.04em;
   line-height: 1.05;
 }
 
 .step-url__intro > p:last-child {
-  margin-top: 14px;
-  max-width: 62ch;
-  font-size: 16px;
+  margin-top: 10px;
+  max-width: 56ch;
+  font-size: 15px;
   color: var(--ink-2);
 }
 
 .url-input {
   display: flex;
   align-items: center;
-  height: 64px;
-  padding: 0 8px 0 0;
-  border: 1.5px solid var(--ink);
-  border-radius: var(--r-l);
+  height: 56px;
+  padding: 0 6px 0 0;
+  border: 1px solid var(--ink);
+  border-radius: var(--r);
   background: var(--surface);
   transition: box-shadow 0.15s var(--ease), border-color 0.15s;
 }
 
 .url-input:focus-within {
-  box-shadow: 0 0 0 4px color-mix(in srgb, var(--ink) 12%, transparent);
+  box-shadow: 0 0 0 1px var(--ink);
 }
 
 .url-input.is-invalid {
@@ -156,8 +154,8 @@
 }
 
 .url-input__scheme {
-  padding: 0 2px 0 20px;
-  font-size: 17px;
+  padding: 0 2px 0 16px;
+  font-size: 15px;
   color: var(--faint);
   user-select: none;
 }
@@ -168,7 +166,7 @@
   height: 100%;
   border: 0;
   background: transparent;
-  font-size: 17px;
+  font-size: 16px;
 }
 
 .url-input__field:focus {
@@ -181,7 +179,7 @@
 
 .url-input__go {
   flex-shrink: 0;
-  height: 48px;
+  height: 42px;
 }
 
 .step-url__examples {
@@ -202,43 +200,11 @@
   margin-right: 4px;
 }
 
-.step-url__options {
-  display: grid;
-  grid-template-columns: 1.2fr 1fr;
-  gap: 32px;
-  padding-top: 28px;
-  border-top: 1px solid var(--line);
-}
-
-.range {
-  width: 100%;
-  accent-color: var(--ink);
-  margin: 10px 0 6px;
-}
-
-.step-url__limits {
-  display: grid;
-  gap: 6px;
-  margin-top: 6px;
-  font-size: 13px;
-  color: var(--muted);
-}
-
-.step-url__limits span {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-}
-
-.step-url__limits svg {
-  color: var(--ok);
-}
-
 .step-url__consent {
-  padding: 16px 18px;
+  padding: 12px 14px;
   border-radius: var(--r);
   background: var(--surface-2);
-  font-size: 13.5px;
+  font-size: 12.5px;
   color: var(--ink-2);
   line-height: 1.5;
 }
@@ -906,16 +872,16 @@
 }
 
 .preview-frame {
-  padding: 24px;
+  padding: 12px;
   border: 1px dashed var(--line-strong);
   border-radius: var(--r-l);
   background: var(--bg);
   pointer-events: none;
 }
 
-.preview-frame .mcp-card {
-  max-width: 380px;
-  margin: 0 auto;
+.preview-frame .mcp-row--static {
+  border: 0;
+  background: transparent;
 }
 
 /* ── Paso 4 · Publicación ─────────────────────────────── */
@@ -1180,7 +1146,6 @@
     width: 100%;
   }
 
-  .step-url__options,
   .form-grid,
   .radio-cards,
   .phases {

@@ -85,9 +85,6 @@ export function StepExplore({
     <div className="step-explore">
       <div className="step-explore__top">
         <div>
-          <p className="eyebrow eyebrow--index" data-index="02">
-            Generación en curso
-          </p>
           <h1 className="step-explore__title">
             {done ? (
               <>

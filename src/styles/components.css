@@ -38,7 +38,7 @@
 }
 
 .btn:active:not(:disabled) {
-  transform: scale(0.96);
+  transform: translateY(1px);
 }
 
 .btn:disabled {
@@ -317,6 +317,56 @@ kbd {
   color: var(--muted);
 }
 
+.mcp-badges {
+  display: inline-flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 4px;
+}
+
+.tag--badge {
+  height: 19px;
+  padding: 0 5px;
+  font-size: 9.5px;
+  letter-spacing: 0.03em;
+}
+
+/* ── Estrellas ────────────────────────────────────────── */
+.stars {
+  display: inline-flex;
+  align-items: center;
+  gap: 2px;
+}
+
+.stars__button {
+  display: grid;
+  place-items: center;
+  width: 24px;
+  height: 24px;
+  color: var(--line-strong);
+  transition:
+    color 0.12s var(--ease),
+    transform 0.12s var(--ease);
+}
+
+.stars__button:hover,
+.stars__button.is-on,
+.stars .is-on {
+  color: var(--signal);
+}
+
+.stars__button:hover {
+  transform: translateY(-1px);
+}
+
+.stars--static .is-on {
+  color: var(--signal);
+}
+
+.stars--static svg:not(.is-on) {
+  color: var(--line-strong);
+}
+
 .dot {
   width: 6px;
   height: 6px;
@@ -347,9 +397,9 @@ kbd {
   gap: 7px;
   height: 32px;
   padding: 0 12px;
-  border-radius: 999px;
+  border-radius: var(--r);
   border: 1px solid var(--line-strong);
-  font-size: 13.5px;
+  font-size: 13px;
   color: var(--ink-2);
   white-space: nowrap;
   transition: all 0.15s var(--ease);
@@ -404,7 +454,7 @@ kbd {
 .segmented button.is-active {
   background: var(--surface);
   color: var(--ink);
-  box-shadow: 0 1px 2px rgb(0 0 0 / 0.08), 0 0 0 1px var(--line);
+  box-shadow: 0 0 0 1px var(--line-strong);
 }
 
 /* ── Pestañas ─────────────────────────────────────────── */
@@ -712,7 +762,7 @@ kbd {
 }
 
 .section-head h2 {
-  font-size: 24px;
+  font-size: 20px;
   letter-spacing: -0.03em;
 }
 
@@ -764,4 +814,105 @@ kbd {
 .url-input__field:focus-visible,
 .tags-input input:focus-visible {
   box-shadow: none;
+}
+
+
+/* ── Avatar ───────────────────────────────────────────── */
+.avatar {
+  display: inline-grid;
+  place-items: center;
+  flex-shrink: 0;
+  border: 1px solid var(--line-strong);
+  border-radius: 50%;
+  background: var(--surface-2);
+  color: var(--ink-2);
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  line-height: 1;
+}
+
+/* ── Diálogo ──────────────────────────────────────────── */
+.dialog {
+  width: min(520px, calc(100vw - 32px));
+  max-width: none;
+  padding: 0;
+  border: 0;
+  background: transparent;
+}
+
+.dialog::backdrop {
+  background: rgb(20 20 22 / 0.4);
+}
+
+.dialog__panel {
+  overflow: hidden;
+  border: 1px solid var(--ink);
+  border-radius: var(--r-l);
+  background: var(--surface);
+  box-shadow: var(--shadow-pop);
+}
+
+.dialog__head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--s-4);
+  padding: var(--s-3) var(--s-4);
+  border-bottom: 1px solid var(--line);
+}
+
+.dialog__head h2 {
+  font-size: 15px;
+}
+
+.dialog__body {
+  padding: var(--s-4);
+  font-size: 13.5px;
+  color: var(--ink-2);
+}
+
+.dialog__foot {
+  display: flex;
+  justify-content: flex-end;
+  gap: var(--s-2);
+  padding: var(--s-3) var(--s-4);
+  border-top: 1px solid var(--line);
+  background: var(--surface-2);
+}
+
+/* ── Paginación ───────────────────────────────────────── */
+.pagination {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--s-3);
+  padding-top: var(--s-4);
+  border-top: 1px solid var(--line);
+}
+
+.pagination__pos {
+  font-size: 11px;
+  color: var(--muted);
+  font-variant-numeric: tabular-nums;
+}
+
+/* ── Firma de herramienta ─────────────────────────────── */
+.tool-signature {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--s-2);
+  min-width: 0;
+}
+
+.tool-signature code {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-size: 12.5px;
+}
+
+.tool-signature__ret {
+  color: var(--faint);
+  font-size: 11px;
 }

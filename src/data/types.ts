@@ -47,6 +47,47 @@ export interface Exploration {
   durationSec: number;
 }
 
+/** Distribución de votos de 5 a 1 estrellas. */
+export interface RatingSummary {
+  average: number;
+  count: number;
+  distribution: [number, number, number, number, number];
+}
+
+export interface McpVersion {
+  version: string;
+  publishedAt: string;
+  author: string;
+  changes: string[];
+  downloads: number;
+}
+
+export type ReportKind = 'broken' | 'tool' | 'outdated' | 'other';
+
+export interface McpReport {
+  id: string;
+  kind: ReportKind;
+  detail: string;
+  author: string;
+  createdAt: string;
+  status: 'open' | 'resolved';
+}
+
+export type CommentRole = 'owner' | 'author' | 'contributor';
+
+export interface DiscussionComment {
+  id: string;
+  author: string;
+  role?: CommentRole;
+  createdAt: string;
+  body: string;
+  replies?: DiscussionComment[];
+}
+
+export interface UserComment extends DiscussionComment {
+  parentId?: string;
+}
+
 export interface Mcp {
   id: string;
   slug: string;
@@ -70,4 +111,11 @@ export interface Mcp {
   visibility: Visibility;
   exploration: Exploration;
   official?: boolean;
+  /** Última modificación detectada en la web original. */
+  sourceUpdatedAt?: string;
+  rating?: RatingSummary;
+  versions?: McpVersion[];
+  reports?: McpReport[];
+  /** Voto del visitante en esta maqueta, si ya ha valorado. */
+  myRating?: number;
 }

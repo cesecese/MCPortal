@@ -36,9 +36,8 @@
 .nav__inner {
   display: flex;
   align-items: center;
-  justify-content: space-between;
   height: var(--nav-h);
-  gap: 24px;
+  gap: var(--s-5);
 }
 
 .nav__brand {
@@ -47,15 +46,39 @@
   border-radius: var(--r-s);
 }
 
+.nav__links {
+  display: flex;
+  align-items: center;
+  gap: var(--s-4);
+  margin-left: var(--s-2);
+}
+
+.nav__link {
+  font-size: 13px;
+  color: var(--muted);
+  padding: 4px 0;
+  border-bottom: 1px solid transparent;
+}
+
+.nav__link:hover {
+  color: var(--ink);
+}
+
+.nav__link.is-active {
+  color: var(--ink);
+  border-bottom-color: var(--ink);
+}
+
 .nav__actions {
   display: flex;
   align-items: center;
-  gap: 6px;
+  gap: 4px;
+  margin-left: auto;
 }
 
 /* ── Pie ──────────────────────────────────────────────── */
 .footer {
-  margin-top: 96px;
+  margin-top: 80px;
   border-top: 1px solid var(--line);
 }
 
@@ -63,9 +86,9 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 24px;
-  padding-block: 24px;
-  font-size: 13px;
+  gap: var(--s-5);
+  padding-block: var(--s-4);
+  font-size: 12px;
   color: var(--muted);
 }
 
@@ -79,33 +102,61 @@
 
 .footer__brand svg {
   color: var(--ink);
-  margin-top: 1px;
+}
+
+.footer__sep {
+  color: var(--line-strong);
+}
+
+.footer__muted {
+  color: var(--muted);
+}
+
+.footer__by {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  margin-left: 4px;
+  color: var(--faint);
+}
+
+.footer__by svg {
+  color: var(--faint);
 }
 
 .footer__meta {
   display: flex;
-  gap: 20px;
-  font-size: 12px;
+  gap: var(--s-4);
+  font-size: 11px;
 }
 
 .footer__status {
   display: inline-flex;
   align-items: center;
-  gap: 7px;
+  gap: 6px;
 }
 
 .footer__ok {
   color: var(--ok);
 }
 
-@media (max-width: 900px) {
+@media (max-width: 720px) {
+  .nav__links {
+    display: none;
+  }
+
+  .footer {
+    margin-top: 56px;
+  }
+
   .footer__inner {
     flex-direction: column;
     align-items: flex-start;
+    gap: var(--s-2);
   }
 
-  .footer__meta {
-    flex-wrap: wrap;
-    gap: 8px 16px;
+  .footer__by {
+    width: 100%;
+    margin-left: 0;
   }
 }

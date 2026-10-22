@@ -1,8 +1,8 @@
 'use client';
 
 import { useEffect, useRef, useState, type ReactNode } from 'react';
-import type { ImplKind, Mcp } from '../data/types';
-import { cx } from '../lib/format';
+import type { ImplKind, Mcp, Tool } from '../data/types';
+import { cx, signature } from '../lib/format';
 import { Icon, type IconName } from './Icon';
 
 /** Inicial del sitio dentro del círculo de la «o» de MCPortal. */
@@ -189,5 +189,134 @@ export function Switch({
       className={cx('switch', on && 'is-on')}
       onClick={() => onChange(!on)}
     />
+  );
+}
+
+/** Pestañas de navegación interna, con contador opcional. */
+export function Tabs({
+  items,
+  value,
+  onChange,
+}: {
+  items: { id: string; label: string; count?: number }[];
+  value: string;
+  onChange: (id: string) => void;
+}) {
+  return (
+    <div className="tabs" role="tablist">
+      {items.map((item) => (
+        <button
+          key={item.id}
+          role="tab"
+          aria-selected={value === item.id}
+          className={cx('tab', value === item.id && 'is-active')}
+          onClick={() => onChange(item.id)}
+        >
+          {item.label}
+          {item.count !== undefined && <span className="tab__count mono">{item.count}</span>}
+        </button>
+      ))}
+    </div>
+  );
+}
+
+/** Diálogo modal nativo. Se cierra con Escape o pulsando el fondo. */
+export function Dialog({
+  open,
+  onClose,
+  title,
+  children,
+  footer,
+}: {
+  open: boolean;
+  onClose: () => void;
+  title: string;
+  children: ReactNode;
+  footer?: ReactNode;
+}) {
+  const ref = useRef<HTMLDialogElement>(null);
+
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+    if (open && !el.open) el.showModal();
+    if (!open && el.open) el.close();
+  }, [open]);
+
+  return (
+    <dialog
+      ref={ref}
+      className="dialog"
+      aria-label={title}
+      onCancel={(e) => {
+        e.preventDefault();
+        onClose();
+      }}
+      onClick={(e) => {
+        if (e.target === ref.current) onClose();
+      }}
+    >
+      <div className="dialog__panel">
+        <div className="dialog__head">
+          <h2>{title}</h2>
+          <button className="btn btn--ghost btn--sm btn--icon" onClick={onClose} aria-label="Cerrar">
+            <Icon name="x" size={16} />
+          </button>
+        </div>
+        <div className="dialog__body">{children}</div>
+        {footer && <div className="dialog__foot">{footer}</div>}
+      </div>
+    </dialog>
+  );
+}
+
+/** Inicial de una persona o autor. */
+export function Avatar({ name, size = 28 }: { name: string; size?: number }) {
+  return (
+    <span
+      className="avatar"
+      style={{ width: size, height: size, fontSize: Math.round(size * 0.38) }}
+      role="img"
+      aria-label={name}
+      title={name}
+    >
+      {name.trim().charAt(0).toUpperCase()}
+    </span>
+  );
+}
+
+/** Paginación mínima: anterior, posición y siguiente. */
+export function Pagination({
+  page,
+  pages,
+  onChange,
+}: {
+  page: number;
+  pages: number;
+  onChange: (page: number) => void;
+}) {
+  return (
+    <nav className="pagination" aria-label="Paginación">
+      <button className="btn btn--ghost btn--sm" disabled={page <= 1} onClick={() => onChange(page - 1)}>
+        <Icon name="arrowLeft" size={14} /> Anterior
+      </button>
+      <span className="pagination__pos mono">
+        {String(page).padStart(2, '0')} / {String(pages).padStart(2, '0')}
+      </span>
+      <button className="btn btn--ghost btn--sm" disabled={page >= pages} onClick={() => onChange(page + 1)}>
+        Siguiente <Icon name="arrowRight" size={14} />
+      </button>
+    </nav>
+  );
+}
+
+/** Firma de una herramienta: tipo + nombre y parámetros en mono. */
+export function ToolSignature({ tool }: { tool: Tool }) {
+  return (
+    <span className="tool-signature">
+      <KindTag kind={tool.kind} />
+      <code>{signature(tool)}</code>
+      <span className="tool-signature__ret mono">→ JSON</span>
+    </span>
   );
 }

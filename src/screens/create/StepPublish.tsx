@@ -28,11 +28,8 @@ export function StepPublish({
   return (
     <div className="step-publish">
       <div>
-        <p className="eyebrow eyebrow--index" data-index="04">
-          Publicación
-        </p>
-        <h1 className="step-title">¿Cómo quieres compartirlo?</h1>
-        <p className="step-lede">Si aún no está listo, guárdalo como borrador: se queda en este navegador y podrás retomarlo desde su página.</p>
+        <h1 className="step-title">Publica el MCP</h1>
+        <p className="step-lede">Puedes guardarlo como borrador y retomarlo después.</p>
       </div>
 
       <div className="step-publish__grid">
@@ -78,7 +75,7 @@ export function StepPublish({
                 onChange={(e) => onChange({ author: e.target.value })}
                 placeholder="Tu nombre o el de tu equipo"
               />
-              <span className="field__hint">MCPortal es anónimo: se muestra tal cual, sin cuenta ni perfil.</span>
+              <span className="field__hint">Sin cuenta; se muestra tal cual.</span>
             </div>
           </div>
 
@@ -95,7 +92,7 @@ export function StepPublish({
                   value={draft.version}
                   onChange={(e) => onChange({ version: e.target.value.trim() })}
                 />
-                <span className="field__hint">Semver. Súbela cada vez que regeneres.</span>
+                <span className="field__hint">x.y.z</span>
               </div>
               <div className="field">
                 <label className="field__label" htmlFor="license">
@@ -114,8 +111,7 @@ export function StepPublish({
             <div className="notice">
               <Icon name="window" size={16} />
               <p>
-                Incluye herramientas de navegador: quien lo instale necesitará Chromium (el runtime lo descarga la
-                primera vez).
+                Incluye herramientas de navegador: el runtime descarga Chromium la primera vez.
               </p>
             </div>
           )}
@@ -131,10 +127,6 @@ export function StepPublish({
               </li>
             ))}
           </ul>
-          <p className="field__hint">
-            Al publicar aceptas que el MCP lo usen otras personas. Si la web cambia, el validador lo marcará y te
-            avisaremos.
-          </p>
         </aside>
       </div>
     </div>
