@@ -1,0 +1,11 @@
+#!/usr/bin/env bash
+# CLI mínima de MCPortal: ./mcportal install <slug>
+set -euo pipefail
+cd "$(dirname "$0")"
+if [ "${1:-}" = "install" ]; then
+  shift
+fi
+if [ -x .venv/bin/python ]; then
+  exec .venv/bin/python -m registry.install "$@"
+fi
+exec python3 -m registry.install "$@"

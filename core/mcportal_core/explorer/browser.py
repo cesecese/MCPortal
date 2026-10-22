@@ -48,6 +48,8 @@ class Session:
         if read_only is None:
             host = self.base.split(":")[0]
             read_only = host not in WRITABLE and os.environ.get("MCPORTAL_ALLOW_WRITES") != "1"
+        if os.environ.get("MCPORTAL_FORCE_READ_ONLY") == "1":
+            read_only = True
         self.read_only = read_only
         self.blocked: list[dict] = []
         self.events = events
