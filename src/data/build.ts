@@ -21,9 +21,11 @@ import type {
   Mcp,
   McpMode,
   McpStatus,
+  McpReport,
   McpVersion,
   Param,
   ParamType,
+  RatingSummary,
   Tool,
   ValidationResult,
   Visibility,
@@ -95,6 +97,10 @@ export interface McpSpec {
   status?: McpStatus;
   visibility?: Visibility;
   exploration?: { steps: number; requests: number; proposed: number; durationSec: number };
+  /** Comunidad: valoración, incidencias y última novedad de la web original. */
+  rating?: RatingSummary;
+  reports?: McpReport[];
+  sourceUpdatedAt?: string;
   tools: ToolSpec[];
   versions?: McpVersion[];
 }
@@ -173,10 +179,29 @@ function isoToValidatedAt(iso: string): string {
   return iso.replace('T', ' ').replace(/\.\d+Z$/, '').replace('Z', '');
 }
 
-function defaultVersions(version: string, updatedAt: string, tools: number, validated: number): McpVersion[] {
+function defaultVersions(
+  version: string,
+  updatedAt: string,
+  tools: number,
+  validated: number,
+  author: string,
+  installs: number,
+): McpVersion[] {
   const [major, minor = 0] = version.split('.').map(Number);
   const versions: McpVersion[] = [
-    { version, publishedAt: updatedAt, notes: 'Exploración y validación completas. Herramientas estables.', tools, validated },
+    {
+      version,
+      publishedAt: updatedAt,
+      author,
+      changes: [
+        `Revalidación contra la web y ajuste de los esquemas de entrada.`,
+        `Se revisan las descripciones de las ${tools} herramientas publicadas.`,
+      ],
+      downloads: Math.max(18, Math.round(installs * 0.14)),
+      notes: 'Exploración y validación completas. Herramientas estables.',
+      tools,
+      validated,
+    },
   ];
   if (minor > 0) {
     const prev = `${major}.${minor - 1}.0`;
@@ -184,6 +209,9 @@ function defaultVersions(version: string, updatedAt: string, tools: number, vali
     versions.push({
       version: prev,
       publishedAt: date,
+      author,
+      changes: ['Primera publicación del MCP y validación de las herramientas principales.'],
+      downloads: Math.max(10, Math.round(installs * 0.09)),
       notes: 'Versión anterior. Algunas herramientas cambiaron de nombre.',
       tools: Math.max(1, tools - 1),
       validated: Math.max(1, validated - 1),
@@ -360,13 +388,16 @@ export function defineMcp(spec: McpSpec): Mcp {
     status: spec.status ?? 'published',
     visibility: spec.visibility ?? 'public',
     exploration,
-    versions: spec.versions ?? defaultVersions(version, spec.updatedAt, viewTools.length, validatedCount),
+    versions: spec.versions ?? defaultVersions(version, spec.updatedAt, viewTools.length, validatedCount, author.name, spec.installs ?? 0),
     validation: {
       validatedAt: spec.updatedAt,
       proposed,
       validated: validatedCount,
       results,
     },
+    ...(spec.rating ? { rating: spec.rating } : {}),
+    ...(spec.reports ? { reports: spec.reports } : {}),
+    ...(spec.sourceUpdatedAt ? { sourceUpdatedAt: spec.sourceUpdatedAt } : {}),
   };
 }
 

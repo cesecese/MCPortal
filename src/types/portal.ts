@@ -85,9 +85,47 @@ export interface Exploration {
 export interface McpVersion {
   version: string;
   publishedAt: string;
-  notes: string;
-  tools: number;
-  validated: number;
+  author: string;
+  /** Qué cambió en esta versión (lo pinta el historial). */
+  changes: string[];
+  downloads: number;
+  /** Campos de la ficha del portal. */
+  notes?: string;
+  tools?: number;
+  validated?: number;
+}
+
+/** Distribución de votos de 5 a 1 estrellas. */
+export interface RatingSummary {
+  average: number;
+  count: number;
+  distribution: [number, number, number, number, number];
+}
+
+export type ReportKind = 'broken' | 'tool' | 'outdated' | 'other';
+
+export interface McpReport {
+  id: string;
+  kind: ReportKind;
+  detail: string;
+  author: string;
+  createdAt: string;
+  status: 'open' | 'resolved';
+}
+
+export type CommentRole = 'owner' | 'author' | 'contributor';
+
+export interface DiscussionComment {
+  id: string;
+  author: string;
+  role?: CommentRole;
+  createdAt: string;
+  body: string;
+  replies?: DiscussionComment[];
+}
+
+export interface UserComment extends DiscussionComment {
+  parentId?: string;
 }
 
 export interface ValidationResult {
@@ -140,6 +178,13 @@ export interface Mcp {
   exploration: Exploration;
   versions: McpVersion[];
   validation: ValidationReport;
+  /** Comunidad (la usa la ficha de la persona 3). */
+  rating?: RatingSummary;
+  reports?: McpReport[];
+  /** Última modificación detectada en la web original. */
+  sourceUpdatedAt?: string;
+  /** Voto del visitante en esta maqueta, si ya ha valorado. */
+  myRating?: number;
 }
 
 /* ------------------------------------------------------------------ autor */

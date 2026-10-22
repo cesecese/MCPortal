@@ -44,6 +44,7 @@ _Pendiente_
 ## 9. Diseño visual
 
 Ya decidido en el código: tipografía Geist y Geist Mono, color de fondo `#F4F3EE`, interfaz en español.
+Dirección y sistema de diseño en `DESIGN.md`; componentes y estados en `/_styleguide`.
 
 _Pendiente el resto._
 

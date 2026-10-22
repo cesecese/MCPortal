@@ -4,6 +4,7 @@ import { createContext, useCallback, useContext, useEffect, useMemo, useRef, use
 import { AUTHORS } from '../data/authors';
 import { SEED_MCPS } from '../data/mcps';
 import { CURRENT_USER_HANDLE } from '../data/people';
+import { ratingOf } from '../lib/catalog';
 import { toManifest } from '../lib/format';
 import { buildGeneration } from '../services/generation';
 import { emptyState, loadState, persistState, type StoredState } from '../state/storage';
@@ -13,12 +14,22 @@ import type {
   GenerationJob,
   GenerationOptions,
   Mcp,
+  McpReport,
   McpStatus,
+  McpVersion,
   PublishOptions,
+  RatingSummary,
+  ReportKind,
+  UserComment,
 } from '../types/portal';
 import { useToast } from './toast';
 
 const isoNow = () => new Date().toISOString();
+
+function bumpPatch(version: string): string {
+  const [major = 0, minor = 0, patch = 0] = version.split('.').map((part) => Number.parseInt(part, 10) || 0);
+  return `${major}.${minor}.${patch + 1}`;
+}
 
 /** El manifiesto se regenera tras editar nombres, descripciones o herramientas. */
 function syncManifest(mcp: Mcp): Mcp {
@@ -58,6 +69,14 @@ interface Store {
   isSaved: (slug: string) => boolean;
   updateProfile: (patch: Partial<Author>) => void;
 
+  /* Comunidad (pantallas de la persona 3) */
+  rate: (id: string, score: number) => void;
+  report: (id: string, kind: ReportKind, detail: string) => void;
+  publishPatch: (id: string, changes: string[]) => void;
+  commentsFor: (mcpId: string) => UserComment[];
+  addComment: (mcpId: string, body: string, parentId?: string) => void;
+
+  /* Generación */
   startGeneration: (url: URL, options: GenerationOptions) => GenerationJob;
   cancelGeneration: (id: string) => void;
   finalizeGeneration: (id: string) => void;
@@ -84,6 +103,12 @@ export function StoreProvider({ children }: { children: ReactNode }) {
     persistState(state);
   }, [state, hydrated]);
 
+  const baseUser = AUTHORS[CURRENT_USER_HANDLE];
+  const profile = useMemo<Author>(() => {
+    const patch = state.profile ?? {};
+    return { ...baseUser, ...patch, stats: patch.stats ?? baseUser.stats, activity: patch.activity ?? baseUser.activity };
+  }, [baseUser, state.profile]);
+
   const mcps = useMemo(() => {
     const map = new Map<string, Mcp>();
     for (const mcp of SEED_MCPS) map.set(mcp.id, mcp);
@@ -104,16 +129,14 @@ export function StoreProvider({ children }: { children: ReactNode }) {
 
   const save = useCallback(
     (mcp: Mcp) => {
-      const next = syncManifest({ ...mcp, updatedAt: isoNow() });
-      upsert(next);
+      upsert(syncManifest({ ...mcp, updatedAt: isoNow() }));
     },
     [upsert],
   );
 
   const saveDraft = useCallback(
     (mcp: Mcp) => {
-      const next = syncManifest({ ...mcp, status: 'draft', updatedAt: isoNow() });
-      upsert(next);
+      upsert(syncManifest({ ...mcp, status: 'draft', updatedAt: isoNow() }));
     },
     [upsert],
   );
@@ -173,14 +196,13 @@ export function StoreProvider({ children }: { children: ReactNode }) {
       let copySlug = `${mcp.slug}-copia`.slice(0, 36);
       let n = 2;
       while (taken.has(copySlug)) copySlug = `${mcp.slug}-copia-${n++}`.slice(0, 40);
-      const me = AUTHORS[CURRENT_USER_HANDLE];
       const copy = syncManifest({
         ...structuredClone(mcp),
         id: `m-${Date.now().toString(36)}`,
         slug: copySlug,
         name: `${mcp.name} (copia)`,
-        author: me.name,
-        authorHandle: me.handle,
+        author: profile.name,
+        authorHandle: profile.handle,
         official: false,
         verified: false,
         status: 'draft',
@@ -191,13 +213,21 @@ export function StoreProvider({ children }: { children: ReactNode }) {
         createdAt: now,
         updatedAt: now,
         versions: [
-          { version: mcp.version, publishedAt: now, notes: 'Copia de un MCP existente.', tools: mcp.tools.length, validated: mcp.tools.filter((t) => t.validated).length },
+          {
+            version: mcp.version,
+            publishedAt: now,
+            author: profile.name,
+            changes: ['Copia de un MCP existente.'],
+            downloads: 0,
+            tools: mcp.tools.length,
+            validated: mcp.tools.filter((t) => t.validated).length,
+          },
         ],
       });
       upsert(copy);
       return copy;
     },
-    [mcps, upsert],
+    [mcps, profile, upsert],
   );
 
   const remove = useCallback((slug: string) => {
@@ -224,13 +254,94 @@ export function StoreProvider({ children }: { children: ReactNode }) {
     setState((s) => ({ ...s, profile: { ...(s.profile ?? {}), ...patch } }));
   }, []);
 
+  /* ------------------------------------------------------------ comunidad */
+
+  const rate = useCallback(
+    (id: string, score: number) => {
+      const mcp = stateRef.current.mine.find((m) => m.id === id) ?? mcps.find((m) => m.id === id);
+      if (!mcp) return;
+      const base = ratingOf(mcp);
+      const distribution = [...base.distribution] as RatingSummary['distribution'];
+      const bucket = 5 - Math.min(5, Math.max(1, Math.round(score)));
+      distribution[bucket] += 1;
+      const count = base.count + 1;
+      const weighted = distribution.reduce((sum, value, index) => sum + value * (5 - index), 0);
+      upsert({
+        ...mcp,
+        myRating: score,
+        rating: { average: Number((weighted / count).toFixed(1)), count, distribution },
+      });
+    },
+    [mcps, upsert],
+  );
+
+  const report = useCallback(
+    (id: string, kind: ReportKind, detail: string) => {
+      const mcp = stateRef.current.mine.find((m) => m.id === id) ?? mcps.find((m) => m.id === id);
+      if (!mcp) return;
+      const entry: McpReport = {
+        id: `rep-${Date.now().toString(36)}`,
+        kind,
+        detail,
+        author: profile.name,
+        createdAt: isoNow(),
+        status: 'open',
+      };
+      upsert({ ...mcp, reports: [entry, ...(mcp.reports ?? [])] });
+    },
+    [mcps, profile, upsert],
+  );
+
+  const publishPatch = useCallback(
+    (id: string, changes: string[]) => {
+      const mcp = stateRef.current.mine.find((m) => m.id === id) ?? mcps.find((m) => m.id === id);
+      if (!mcp) return;
+      const now = isoNow();
+      const version = bumpPatch(mcp.version);
+      const entry: McpVersion = {
+        version,
+        publishedAt: now,
+        author: profile.name,
+        changes,
+        downloads: 0,
+        tools: mcp.tools.length,
+        validated: mcp.tools.filter((t) => t.validated).length,
+      };
+      upsert(syncManifest({ ...mcp, version, updatedAt: now, versions: [entry, ...(mcp.versions ?? [])] }));
+    },
+    [mcps, profile, upsert],
+  );
+
+  const commentsFor = useCallback((mcpId: string): UserComment[] => state.comments[mcpId] ?? [], [state.comments]);
+
+  const addComment = useCallback(
+    (mcpId: string, body: string, parentId?: string) => {
+      const mcp = mcps.find((m) => m.id === mcpId);
+      const entry: UserComment = {
+        id: `c-${Date.now().toString(36)}`,
+        author: profile.name,
+        role: mcp?.authorHandle === CURRENT_USER_HANDLE ? 'owner' : 'contributor',
+        createdAt: isoNow(),
+        body,
+        ...(parentId ? { parentId } : {}),
+      };
+      setState((s) => ({ ...s, comments: { ...s.comments, [mcpId]: [...(s.comments[mcpId] ?? []), entry] } }));
+    },
+    [mcps, profile],
+  );
+
+  /* ----------------------------------------------------------- generación */
+
   const finalizeGeneration = useCallback(
     (id: string) => {
       const job = stateRef.current.jobs.find((j) => j.id === id);
       if (!job) return;
       upsert(syncManifest({ ...job.draft, status: 'draft', updatedAt: isoNow() }));
       setState((s) => ({ ...s, jobs: s.jobs.filter((j) => j.id !== id) }));
-      notify(`La generación de ${job.draft.name} ha terminado`, { detail: `${job.draft.tools.filter((t) => t.validated).length} herramientas · guardada como borrador`, icon: 'check' });
+      notify(`La generación de ${job.draft.name} ha terminado`, {
+        detail: `${job.draft.tools.filter((t) => t.validated).length} herramientas · guardada como borrador`,
+        icon: 'check',
+      });
     },
     [notify, upsert],
   );
@@ -270,12 +381,6 @@ export function StoreProvider({ children }: { children: ReactNode }) {
     setState((s) => ({ ...s, jobs: s.jobs.filter((j) => j.id !== id) }));
   }, []);
 
-  const baseUser = AUTHORS[CURRENT_USER_HANDLE];
-  const profile = useMemo<Author>(() => {
-    const patch = state.profile ?? {};
-    return { ...baseUser, ...patch, stats: patch.stats ?? baseUser.stats, activity: patch.activity ?? baseUser.activity };
-  }, [baseUser, state.profile]);
-
   const listMyMcps = useCallback(
     (status?: McpStatus): Mcp[] => {
       if (status === 'preparing') {
@@ -311,6 +416,11 @@ export function StoreProvider({ children }: { children: ReactNode }) {
       isStarred: (slug) => state.starred.includes(slug),
       isSaved: (slug) => state.saved.includes(slug),
       updateProfile,
+      rate,
+      report,
+      publishPatch,
+      commentsFor,
+      addComment,
       startGeneration,
       cancelGeneration,
       finalizeGeneration,
@@ -335,6 +445,11 @@ export function StoreProvider({ children }: { children: ReactNode }) {
       toggleStar,
       toggleSaved,
       updateProfile,
+      rate,
+      report,
+      publishPatch,
+      commentsFor,
+      addComment,
       startGeneration,
       cancelGeneration,
       finalizeGeneration,

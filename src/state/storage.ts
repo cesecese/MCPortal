@@ -1,4 +1,4 @@
-import type { Author, GenerationJob, Mcp } from '../types/portal';
+import type { Author, GenerationJob, Mcp, UserComment } from '../types/portal';
 
 const STORAGE_KEY = 'mcportal:state:v4';
 
@@ -8,11 +8,12 @@ export interface StoredState {
   saved: string[];
   starred: string[];
   jobs: GenerationJob[];
+  comments: Record<string, UserComment[]>;
   profile: Partial<Author> | null;
 }
 
 export function emptyState(): StoredState {
-  return { mine: [], removed: [], saved: [], starred: [], jobs: [], profile: null };
+  return { mine: [], removed: [], saved: [], starred: [], jobs: [], comments: {}, profile: null };
 }
 
 /** Solo se llama desde el cliente, después de montar. */
@@ -27,6 +28,7 @@ export function loadState(): StoredState {
       saved: Array.isArray(parsed.saved) ? parsed.saved : [],
       starred: Array.isArray(parsed.starred) ? parsed.starred : [],
       jobs: Array.isArray(parsed.jobs) ? parsed.jobs : [],
+      comments: parsed.comments && typeof parsed.comments === 'object' ? parsed.comments : {},
       profile: parsed.profile ?? null,
     };
   } catch {

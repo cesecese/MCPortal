@@ -38,10 +38,10 @@
   --danger: #c2361b;
   --danger-soft: #fbe1da;
 
-  --r-s: 4px;
-  --r: 8px;
-  --r-l: 12px;
-  --r-xl: 20px;
+  --r-s: 2px;
+  --r: 4px;
+  --r-l: 6px;
+  --r-xl: 8px;
 
   /* Escala de espaciado: base 4, siempre de aquí */
   --s-1: 4px;
@@ -55,16 +55,16 @@
   --s-9: 96px;
   --s-10: 128px;
 
-  /* Elevación: sombras en capas en vez de bordes */
-  --lift-1: 0 0 0 1px rgb(20 20 22 / 0.05), 0 1px 2px rgb(20 20 22 / 0.04), 0 4px 12px -6px rgb(20 20 22 / 0.06);
-  --lift-2: 0 0 0 1px rgb(20 20 22 / 0.06), 0 2px 4px rgb(20 20 22 / 0.04), 0 16px 32px -12px rgb(20 20 22 / 0.14);
+  /* Elevación: solo reglas. Las sombras se reservan a menús y avisos. */
+  --lift-1: 0 0 0 1px var(--line);
+  --lift-2: 0 0 0 1px var(--line-strong);
 
   --shadow-pop: 0 12px 32px -12px rgb(20 20 22 / 0.22), 0 0 0 1px var(--line-strong);
   --focus: 0 0 0 2px var(--bg), 0 0 0 4px var(--ink);
 
-  --container: 1160px;
-  --gutter: 32px;
-  --nav-h: 68px;
+  --container: 1120px;
+  --gutter: 24px;
+  --nav-h: 60px;
 
   --ease: cubic-bezier(0.2, 0.7, 0.2, 1);
 
@@ -99,8 +99,8 @@
     --danger: #ff7a5c;
     --danger-soft: #3a1710;
     --shadow-pop: 0 16px 40px -12px rgb(0 0 0 / 0.6), 0 0 0 1px var(--line-strong);
-    --lift-1: 0 0 0 1px rgb(255 255 255 / 0.06), 0 1px 2px rgb(0 0 0 / 0.3);
-    --lift-2: 0 0 0 1px rgb(255 255 255 / 0.1), 0 16px 32px -12px rgb(0 0 0 / 0.6);
+    --lift-1: 0 0 0 1px var(--line);
+    --lift-2: 0 0 0 1px var(--line-strong);
     color-scheme: dark;
   }
 }
@@ -132,14 +132,14 @@
   --danger: #ff7a5c;
   --danger-soft: #3a1710;
   --shadow-pop: 0 16px 40px -12px rgb(0 0 0 / 0.6), 0 0 0 1px var(--line-strong);
-  --lift-1: 0 0 0 1px rgb(255 255 255 / 0.06), 0 1px 2px rgb(0 0 0 / 0.3);
-  --lift-2: 0 0 0 1px rgb(255 255 255 / 0.1), 0 16px 32px -12px rgb(0 0 0 / 0.6);
+  --lift-1: 0 0 0 1px var(--line);
+  --lift-2: 0 0 0 1px var(--line-strong);
   color-scheme: dark;
 }
 
 @media (max-width: 720px) {
   :root {
-    --gutter: 20px;
+    --gutter: 16px;
     --nav-h: 56px;
   }
 }

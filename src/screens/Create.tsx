@@ -1,6 +1,6 @@
 'use client';
 
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import Link from 'next/link';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { CommandLine } from '../components/Code';
@@ -38,6 +38,10 @@ export function Create() {
   const [showErrors, setShowErrors] = useState(false);
   const [permission, setPermission] = useState(false);
   const [busy, setBusy] = useState<'draft' | 'publish' | null>(null);
+
+  useEffect(() => {
+    window.scrollTo({ top: 0 });
+  }, [step]);
 
   const included = useMemo(
     () => (draft ? draft.tools.filter((t, i) => t.validated && !excluded.has(i)) : []),
