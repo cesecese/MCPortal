@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import asyncio
 import datetime as dt
 import re
 from urllib.parse import urlsplit
@@ -242,6 +243,16 @@ async def _prefill_form(session: Session, click_id: int, touched: set[int], max_
             await session.act({"type": "fill", "id": field["id"], "value": str(value)})
 
 
+async def _intro(session: Session, max_steps: int, hint: str) -> str:
+    obs = await session.observe()
+    return (f"Web a explorar: {session.start_url}\nFecha de hoy: {dt.date.today().isoformat()}\n"
+            + (f"Pista del dominio: {hint}\n" if hint else "")
+            + ("MODO SOLO LECTURA: es una web real. Céntrate en buscar, filtrar y consultar; cualquier envío que "
+               "modifique datos (editar, publicar, comentar, comprar) se bloqueará.\n" if session.read_only else "")
+            + f"Tienes como máximo {max_steps} acciones.\n\nPeticiones de la carga inicial:\n"
+            + describe_requests(session, session.steps[0], set()) + "\n\n" + render_observation(obs))
+
+
 async def llm_agent(session: Session, max_steps: int, hint: str = "", effort: str = "low",
                     stale_limit: int = 6) -> None:
     """Bucle observar → decidir → actuar con `common.llm.agent_turn`.
@@ -258,13 +269,7 @@ async def llm_agent(session: Session, max_steps: int, hint: str = "", effort: st
         raise RuntimeError("la capa de LLM no está disponible")
 
     seen: set[str] = {endpoint_pattern(request) for request in session.requests if interesting(request)}
-    obs = await session.observe()
-    intro = (f"Web a explorar: {session.start_url}\nFecha de hoy: {dt.date.today().isoformat()}\n"
-             + (f"Pista del dominio: {hint}\n" if hint else "")
-             + ("MODO SOLO LECTURA: es una web real. Céntrate en buscar, filtrar y consultar; cualquier envío que "
-                "modifique datos (editar, publicar, comentar, comprar) se bloqueará.\n" if session.read_only else "")
-             + f"Tienes como máximo {max_steps} acciones.\n\nPeticiones de la carga inicial:\n"
-             + describe_requests(session, session.steps[0], set()) + "\n\n" + render_observation(obs))
+    intro = await _intro(session, max_steps, hint)
     messages: list[dict] = [{"role": "user", "content": [{"type": "text", "text": intro}]}]
     stale, nudges = 0, 0
     while session.step < max_steps:
@@ -330,6 +335,78 @@ async def llm_agent(session: Session, max_steps: int, hint: str = "", effort: st
         messages.append({"role": "user", "content": results})
 
 
+async def llm_conversation_agent(session: Session, max_steps: int, hint: str = "", effort: str = "low",
+                                 stale_limit: int = 6) -> None:
+    """Bucle del agente sobre `common.llm.Conversation` (la capa síncrona de P2).
+
+    La conversación y el historial nativo los mantiene P2; aquí solo se ejecutan
+    las herramientas de Playwright y se le devuelven los resultados. Las llamadas
+    al proveedor van en un hilo para no bloquear el bucle de Playwright.
+    """
+    conversation = llm.Conversation(system=SYSTEM, tools=TOOLS, effort=effort)
+    seen: set[str] = {endpoint_pattern(request) for request in session.requests if interesting(request)}
+    intro = await _intro(session, max_steps, hint)
+    turn = await asyncio.to_thread(conversation.send, intro)
+    stale, nudges = 0, 0
+    while session.step < max_steps:
+        if turn.reasoning:
+            session.events.emit("thought", text=turn.reasoning.strip()[:400])
+        calls = [{"id": call.id, "name": call.name, "input": call.arguments} for call in turn.calls]
+        if not calls:
+            nudges += 1
+            if nudges > 2:
+                break
+            turn = await asyncio.to_thread(
+                conversation.send, "Responde con una herramienta (o finish si has terminado).")
+            continue
+
+        results: list[tuple[str, str]] = []
+        finished = False
+        touched: set[int] = set()
+        for call in calls:
+            name, arguments = call["name"], call["input"]
+            if name == "finish" or session.step >= max_steps:
+                finished = finished or name == "finish"
+                if name == "finish":
+                    session.events.emit("finish", summary=arguments.get("summary", ""))
+                results.append((call["id"], "Hecho."))
+                continue
+            if name in ("fill", "select") and arguments.get("id") is not None:
+                touched.add(int(arguments["id"]))
+            if name == "click":
+                el = session.element(arguments.get("id", 0))
+                is_submit = (el.get("form") and (el.get("tag") == "button" or el.get("type") == "submit")
+                             and el.get("type") != "button")
+                if is_submit:
+                    await _prefill_form(session, int(arguments["id"]), touched, max_steps)
+            step = await session.act({"type": name, **arguments})
+            known = len(seen)
+            requests_text = describe_requests(session, step, seen)
+            stale = 0 if len(seen) > known else stale + 1
+            status = f"Error: {step['error']}" if step["error"] else "OK"
+            if step.get("note"):
+                status += f" ({step['note']})"
+            results.append((call["id"], f"{status}. Peticiones:\n{requests_text}"))
+
+        if finished:
+            conversation.add_tool_results(results)
+            break
+        if session.step >= max_steps:
+            conversation.add_tool_results(results)
+            break
+        obs = await session.observe()
+        tail = (f"\n\nEndpoints descubiertos ({len(seen)}): " + "; ".join(sorted(seen))
+                + f"\nAcciones usadas: {session.step}/{max_steps}\n\n" + render_observation(obs))
+        if results:
+            call_id, content = results[-1]
+            results[-1] = (call_id, content + tail)
+        conversation.add_tool_results(results)
+        if stale >= stale_limit:
+            session.events.emit("finish", summary=f"{stale_limit} acciones seguidas sin endpoints nuevos")
+            break
+        turn = await asyncio.to_thread(conversation.send, "Continúa con la siguiente acción.")
+
+
 POLICIES = {"heuristic": heuristic}
 if llm_available():
-    POLICIES["llm"] = llm_agent
+    POLICIES["llm"] = llm_conversation_agent if hasattr(llm, "Conversation") else llm_agent
