@@ -1,9 +1,10 @@
 'use client';
 
-import { useEffect, type ReactNode } from 'react';
+import { useEffect, type MouseEvent, type ReactNode } from 'react';
 import Link from 'next/link';
-import { usePathname } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
 import { useTheme } from '../lib/theme';
+import { normalizeUrl } from '../services/url';
 import { Icon } from './Icon';
 import { LinenMark, Logo } from './Logo';
 import '../styles/shell.css';
@@ -11,7 +12,17 @@ import '../styles/shell.css';
 export function AppShell({ children }: { children: ReactNode }) {
   const { theme, toggle } = useTheme();
   const pathname = usePathname();
+  const router = useRouter();
   const exploring = pathname === '/' || pathname.startsWith('/mcp/') || pathname.startsWith('/web/');
+
+  // Si el buscador principal tiene una URL, «Conectar» la lleva al paso 1.
+  const connectFromSearch = (event: MouseEvent<HTMLAnchorElement>) => {
+    if (pathname !== '/') return;
+    const term = new URLSearchParams(window.location.search).get('q')?.trim();
+    if (!term || !normalizeUrl(term).ok) return;
+    event.preventDefault();
+    router.push(`/crear?url=${encodeURIComponent(term)}`);
+  };
 
   useEffect(() => {
     window.scrollTo({ top: 0 });
@@ -47,7 +58,7 @@ export function AppShell({ children }: { children: ReactNode }) {
               <Icon name="route" size={16} />
             </Link>
             {pathname !== '/crear' && (
-              <Link href="/crear" className="btn btn--primary btn--sm">
+              <Link href="/crear" className="btn btn--primary btn--sm" onClick={connectFromSearch}>
                 <Icon name="plus" size={15} />
                 Conectar
               </Link>

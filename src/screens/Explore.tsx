@@ -11,6 +11,7 @@ import { categoryOf } from '../data/categories';
 import type { Mcp } from '../data/types';
 import { groupBySite, siteKey } from '../lib/catalog';
 import { formatNumber, validatedTools } from '../lib/format';
+import { normalizeUrl } from '../services/url';
 import { usePublicCatalog } from '../store/store';
 import '../styles/explore.css';
 
@@ -67,7 +68,8 @@ export function Explore() {
   const groups = useMemo(() => groupBySite(catalog), [catalog]);
   const toolCount = useMemo(() => catalog.reduce((n, m) => n + validatedTools(m).length, 0), [catalog]);
   const specimens = catalog.filter((m) => ['openlibrary', 'tienda-demo', 'la-tasca'].includes(m.slug));
-  const looksLikeUrl = /\.[a-z]{2,}/i.test(term) && !term.includes(' ');
+  const looksLikeUrl = normalizeUrl(term).ok;
+  const createHref = looksLikeUrl ? `/crear?url=${encodeURIComponent(term.trim())}` : '/crear';
 
   return (
     <>
@@ -90,6 +92,10 @@ export function Explore() {
               role="search"
               onSubmit={(e) => {
                 e.preventDefault();
+                if (looksLikeUrl) {
+                  router.push(createHref);
+                  return;
+                }
                 document.getElementById('catalog')?.scrollIntoView({ behavior: 'smooth' });
               }}
             >
@@ -100,8 +106,8 @@ export function Explore() {
                 type="search"
                 value={term}
                 onChange={(e) => setQuery(e.target.value)}
-                placeholder="Busca una web o una tarea"
-                aria-label="Buscar webs"
+                placeholder="Busca una web"
+                aria-label="Buscar una web"
               />
               {term ? (
                 <button type="button" className="search__clear" onClick={() => setQuery('')} aria-label="Borrar búsqueda">
@@ -113,9 +119,9 @@ export function Explore() {
             </form>
 
             <div className="hero__cta">
-              <Link href="/crear" className="btn btn--primary">
+              <Link href={createHref} className="btn btn--primary">
                 <Icon name="plus" size={15} />
-                Conectar una web
+                {looksLikeUrl ? 'Conectar esta web' : 'Conectar una web'}
               </Link>
               <a href="#catalog" className="hero__link">
                 Ver catálogo
@@ -157,7 +163,7 @@ export function Explore() {
                     Ver todo
                   </button>
                 )}
-                <Link href={looksLikeUrl ? `/crear?url=${encodeURIComponent(term)}` : '/crear'} className="btn btn--primary">
+                <Link href={createHref} className="btn btn--primary">
                   <Icon name="plus" size={15} /> {looksLikeUrl ? 'Conectar esta web' : 'Conectar una web'}
                 </Link>
               </>
