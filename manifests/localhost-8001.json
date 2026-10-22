@@ -1,233 +1,232 @@
 {
- "site": "localhost:8001",
- "start_url": "http://localhost:8001/",
- "synthesis": "llm",
- "validated_at": "2026-10-22 16:00:28",
- "slug": "localhost_8001",
- "display_name": "Librería Zeta",
- "version": "0.1.0",
- "category": "",
- "tags": [],
- "license": "MIT",
- "author": "",
- "mode": "read_write",
- "generated_with": "mcportal-core 0.1",
- "tools": [
-  {
-   "name": "libreria_zeta_list_categories",
-   "description": "Lista las categorías de libros disponibles en Librería Zeta. Devuelve una lista de objetos con id (p. ej. scifi, fantasy) y name (p. ej. «Ciencia ficción»). El id sirve como filtro en libreria_zeta_search_products.",
-   "input_schema": {
-    "type": "object",
-    "properties": {},
-    "required": []
-   },
-   "impl": {
-    "kind": "http",
-    "method": "GET",
-    "url": "http://localhost:8001/api/categories"
-   }
-  },
-  {
-   "name": "libreria_zeta_search_products",
-   "description": "Busca libros por título o autor, con filtro opcional por categoría. Devuelve count y results, una lista con id, title, author, category y price de cada libro. Si no se indica query se listan todos los libros. El id de resultado se usa en libreria_zeta_get_product y libreria_zeta_add_to_cart.",
-   "input_schema": {
-    "type": "object",
-    "properties": {
-     "query": {
-      "type": "string",
-      "description": "Texto a buscar en título o autor, p. ej. un nombre de autor."
-     },
-     "category": {
-      "type": "string",
-      "description": "Id de categoría para filtrar (p. ej. scifi, fantasy), obtenido con libreria_zeta_list_categories."
-     }
-    },
-    "required": []
-   },
-   "impl": {
-    "kind": "http",
-    "method": "GET",
-    "url": "http://localhost:8001/api/search?q={query}&category={category}"
-   },
-   "examples": {
-    "query": "Asimov",
-    "category": "scifi"
-   },
-   "depends_on": [
+  "site": "localhost:8001",
+  "start_url": "http://localhost:8001/",
+  "synthesis": "llm",
+  "validated_at": "2026-10-22 16:07:30",
+  "slug": "localhost_8001",
+  "display_name": "Librería Zeta",
+  "version": "0.1.0",
+  "category": "",
+  "tags": [],
+  "license": "MIT",
+  "author": "",
+  "mode": "read_write",
+  "generated_with": "mcportal-core 0.1",
+  "tools": [
     {
-     "param": "category",
-     "tool": "libreria_zeta_list_categories",
-     "path": "categories[0].id"
-    }
-   ]
-  },
-  {
-   "name": "libreria_zeta_get_product",
-   "description": "Obtiene el detalle de un libro: id, title, author, category, price, stock y description. Requiere un product_id obtenido con libreria_zeta_search_products.",
-   "input_schema": {
-    "type": "object",
-    "properties": {
-     "product_id": {
-      "type": "string",
-      "description": "Id del libro, p. ej. bk-1001."
-     }
-    },
-    "required": [
-     "product_id"
-    ]
-   },
-   "impl": {
-    "kind": "http",
-    "method": "GET",
-    "url": "http://localhost:8001/api/products/{product_id}"
-   },
-   "depends_on": [
-    {
-     "param": "product_id",
-     "tool": "libreria_zeta_search_products",
-     "path": "results[0].id"
-    }
-   ]
-  },
-  {
-   "name": "libreria_zeta_create_cart",
-   "description": "Crea un carrito de compra vacío. Devuelve cart_id, necesario para libreria_zeta_add_to_cart, libreria_zeta_get_cart y libreria_zeta_checkout.",
-   "input_schema": {
-    "type": "object",
-    "properties": {},
-    "required": []
-   },
-   "impl": {
-    "kind": "http",
-    "method": "POST",
-    "url": "http://localhost:8001/api/cart"
-   }
-  },
-  {
-   "name": "libreria_zeta_add_to_cart",
-   "description": "Añade un libro con una cantidad al carrito. Devuelve el carrito actualizado: cart_id, status, items (product_id, title, qty, subtotal) y total. Requiere un cart_id de libreria_zeta_create_cart y un product_id de libreria_zeta_get_product o libreria_zeta_search_products.",
-   "input_schema": {
-    "type": "object",
-    "properties": {
-     "cart_id": {
-      "type": "string",
-      "description": "Id del carrito obtenido con libreria_zeta_create_cart."
-     },
-     "product_id": {
-      "type": "string",
-      "description": "Id del libro a añadir, p. ej. bk-1001."
-     },
-     "qty": {
-      "type": "integer",
-      "description": "Cantidad de unidades a añadir (entero positivo)."
-     }
-    },
-    "required": [
-     "cart_id",
-     "product_id",
-     "qty"
-    ]
-   },
-   "impl": {
-    "kind": "http",
-    "method": "POST",
-    "url": "http://localhost:8001/api/cart/{cart_id}/items",
-    "body_type": "json",
-    "body": {
-     "product_id": "{product_id}",
-     "qty": "{qty}"
-    }
-   },
-   "examples": {
-    "qty": 2
-   },
-   "depends_on": [
-    {
-     "param": "cart_id",
-     "tool": "libreria_zeta_create_cart",
-     "path": "cart_id"
+      "name": "libreria_zeta_list_categories",
+      "description": "Lista las categorías de libros de Librería Zeta. Devuelve una lista de objetos con id (p. ej. 'scifi') y name (p. ej. 'Ciencia ficción'). El id sirve como filtro category en libreria_zeta_search_products.",
+      "input_schema": {
+        "type": "object",
+        "properties": {},
+        "required": []
+      },
+      "impl": {
+        "kind": "http",
+        "method": "GET",
+        "url": "http://localhost:8001/api/categories"
+      }
     },
     {
-     "param": "product_id",
-     "tool": "libreria_zeta_get_product",
-     "path": "id"
-    }
-   ]
-  },
-  {
-   "name": "libreria_zeta_get_cart",
-   "description": "Consulta el contenido de un carrito: cart_id, status, items (product_id, title, qty, subtotal) y total. Requiere un cart_id obtenido con libreria_zeta_create_cart.",
-   "input_schema": {
-    "type": "object",
-    "properties": {
-     "cart_id": {
-      "type": "string",
-      "description": "Id del carrito."
-     }
+      "name": "libreria_zeta_search_products",
+      "description": "Busca libros por título o autor, con filtro opcional por categoría. Devuelve count y results, una lista con id, title, author, category y price de cada libro. Sin parámetros devuelve todo el catálogo. El id de resultado se usa en libreria_zeta_get_product y libreria_zeta_add_to_cart.",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "query": {
+            "type": "string",
+            "description": "Texto a buscar en título o autor."
+          },
+          "category": {
+            "type": "string",
+            "description": "Id de categoría para filtrar (p. ej. scifi, fantasy), obtenido con libreria_zeta_list_categories."
+          }
+        },
+        "required": []
+      },
+      "impl": {
+        "kind": "http",
+        "method": "GET",
+        "url": "http://localhost:8001/api/search?q={query}&category={category}"
+      },
+      "examples": {
+        "query": "Asimov"
+      },
+      "depends_on": [
+        {
+          "param": "category",
+          "tool": "libreria_zeta_list_categories",
+          "path": "categories[0].id"
+        }
+      ]
     },
-    "required": [
-     "cart_id"
-    ]
-   },
-   "impl": {
-    "kind": "http",
-    "method": "GET",
-    "url": "http://localhost:8001/api/cart/{cart_id}"
-   },
-   "depends_on": [
     {
-     "param": "cart_id",
-     "tool": "libreria_zeta_create_cart",
-     "path": "cart_id"
-    }
-   ]
-  },
-  {
-   "name": "libreria_zeta_checkout",
-   "description": "Finaliza la compra de un carrito con pago simulado. Devuelve order_id, cart_id, total, customer (name, email) y un mensaje de confirmación. Requiere un cart_id con artículos añadidos mediante libreria_zeta_add_to_cart.",
-   "input_schema": {
-    "type": "object",
-    "properties": {
-     "cart_id": {
-      "type": "string",
-      "description": "Id del carrito a pagar."
-     },
-     "name": {
-      "type": "string",
-      "description": "Nombre completo del cliente."
-     },
-     "email": {
-      "type": "string",
-      "description": "Correo electrónico del cliente."
-     }
+      "name": "libreria_zeta_get_product",
+      "description": "Obtiene el detalle de un libro: id, title, author, category, price, stock y description. Requiere un product_id obtenido con libreria_zeta_search_products.",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "product_id": {
+            "type": "string",
+            "description": "Id del libro (p. ej. bk-1001)."
+          }
+        },
+        "required": [
+          "product_id"
+        ]
+      },
+      "impl": {
+        "kind": "http",
+        "method": "GET",
+        "url": "http://localhost:8001/api/products/{product_id}"
+      },
+      "depends_on": [
+        {
+          "param": "product_id",
+          "tool": "libreria_zeta_search_products",
+          "path": "results[0].id"
+        }
+      ]
     },
-    "required": [
-     "cart_id",
-     "name",
-     "email"
-    ]
-   },
-   "impl": {
-    "kind": "http",
-    "method": "POST",
-    "url": "http://localhost:8001/api/cart/{cart_id}/checkout",
-    "body_type": "json",
-    "body": {
-     "name": "{name}",
-     "email": "{email}"
-    }
-   },
-   "examples": {
-    "name": "María García",
-    "email": "maria.garcia@example.com"
-   },
-   "depends_on": [
     {
-     "param": "cart_id",
-     "tool": "libreria_zeta_create_cart",
-     "path": "cart_id"
+      "name": "libreria_zeta_create_cart",
+      "description": "Crea un carrito de compra vacío. Devuelve cart_id, necesario para añadir productos, consultar el carrito y pagar.",
+      "input_schema": {
+        "type": "object",
+        "properties": {},
+        "required": []
+      },
+      "impl": {
+        "kind": "http",
+        "method": "POST",
+        "url": "http://localhost:8001/api/cart"
+      }
+    },
+    {
+      "name": "libreria_zeta_add_to_cart",
+      "description": "Añade un libro con una cantidad al carrito. Devuelve el carrito actualizado: cart_id, status, items (product_id, title, qty, subtotal) y total. Requiere un cart_id obtenido con libreria_zeta_create_cart y un product_id de libreria_zeta_search_products.",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "cart_id": {
+            "type": "string",
+            "description": "Id del carrito."
+          },
+          "product_id": {
+            "type": "string",
+            "description": "Id del libro a añadir."
+          },
+          "qty": {
+            "type": "integer",
+            "description": "Cantidad de unidades a añadir."
+          }
+        },
+        "required": [
+          "cart_id",
+          "product_id",
+          "qty"
+        ]
+      },
+      "impl": {
+        "kind": "http",
+        "method": "POST",
+        "url": "http://localhost:8001/api/cart/{cart_id}/items",
+        "body_type": "json",
+        "body": {
+          "product_id": "{product_id}",
+          "qty": "{qty}"
+        }
+      },
+      "examples": {
+        "qty": 2
+      },
+      "depends_on": [
+        {
+          "param": "cart_id",
+          "tool": "libreria_zeta_create_cart",
+          "path": "cart_id"
+        },
+        {
+          "param": "product_id",
+          "tool": "libreria_zeta_get_product",
+          "path": "id"
+        }
+      ]
+    },
+    {
+      "name": "libreria_zeta_get_cart",
+      "description": "Consulta el contenido de un carrito: cart_id, status, items (product_id, title, qty, subtotal) y total. Requiere un cart_id obtenido con libreria_zeta_create_cart.",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "cart_id": {
+            "type": "string",
+            "description": "Id del carrito."
+          }
+        },
+        "required": [
+          "cart_id"
+        ]
+      },
+      "impl": {
+        "kind": "http",
+        "method": "GET",
+        "url": "http://localhost:8001/api/cart/{cart_id}"
+      },
+      "depends_on": [
+        {
+          "param": "cart_id",
+          "tool": "libreria_zeta_add_to_cart",
+          "path": "cart_id"
+        }
+      ]
+    },
+    {
+      "name": "libreria_zeta_checkout",
+      "description": "Finaliza la compra de un carrito (pago simulado). Devuelve order_id, cart_id, total, customer y un mensaje de confirmación. Requiere un cart_id de un carrito con productos (libreria_zeta_add_to_cart).",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "cart_id": {
+            "type": "string",
+            "description": "Id del carrito a pagar."
+          },
+          "name": {
+            "type": "string",
+            "description": "Nombre del cliente."
+          },
+          "email": {
+            "type": "string",
+            "description": "Email del cliente."
+          }
+        },
+        "required": [
+          "cart_id",
+          "name",
+          "email"
+        ]
+      },
+      "impl": {
+        "kind": "http",
+        "method": "POST",
+        "url": "http://localhost:8001/api/cart/{cart_id}/checkout",
+        "body_type": "json",
+        "body": {
+          "name": "{name}",
+          "email": "{email}"
+        }
+      },
+      "examples": {
+        "name": "María García",
+        "email": "maria@example.com"
+      },
+      "depends_on": [
+        {
+          "param": "cart_id",
+          "tool": "libreria_zeta_get_cart",
+          "path": "cart_id"
+        }
+      ]
     }
-   ]
-  }
- ]
+  ]
 }
