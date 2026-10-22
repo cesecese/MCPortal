@@ -5,9 +5,8 @@ import Link from 'next/link';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { CommandLine } from '../components/Code';
 import { Icon } from '../components/Icon';
-import type { Mcp } from '../data/types';
+import type { GenerationJob, Mcp, PublishOptions } from '../data/types';
 import { cx, installCommand } from '../lib/format';
-import { generate, type TraceEvent } from '../lib/simulate';
 import { useStore } from '../store/store';
 import { useToast } from '../store/toast';
 import { StepExplore } from './create/StepExplore';
@@ -27,16 +26,17 @@ const STEPS: { id: Exclude<Step, 'done'>; label: string }[] = [
 
 export function Create() {
   const params = useSearchParams();
-  const { byId, mcps, save } = useStore();
+  const { byId, mcps, saveDraft, publishDraft, startGeneration, cancelGeneration, finalizeGeneration, discardDraft } = useStore();
   const router = useRouter();
   const notify = useToast();
 
   const editing = params.get('editar') ? byId(params.get('editar')!) : undefined;
   const [step, setStep] = useState<Step>(editing ? 'review' : 'url');
   const [draft, setDraft] = useState<Mcp | null>(editing ? structuredClone(editing) : null);
-  const [trace, setTrace] = useState<TraceEvent[]>([]);
+  const [job, setJob] = useState<GenerationJob | null>(null);
   const [excluded, setExcluded] = useState<Set<number>>(new Set());
   const [showErrors, setShowErrors] = useState(false);
+  const [permission, setPermission] = useState(false);
   const [busy, setBusy] = useState<'draft' | 'publish' | null>(null);
 
   const included = useMemo(
@@ -56,7 +56,15 @@ export function Create() {
     status,
   });
 
-  const persist = (status: Mcp['status']) => {
+  const publishOptions = (): PublishOptions => ({
+    visibility: draft!.visibility,
+    category: draft!.category,
+    tags: draft!.tags,
+    license: draft!.license,
+    permissionConfirmed: permission,
+  });
+
+  const persist = (target: 'draft' | 'publish') => {
     if (!draft) return;
     if (!reviewOk) {
       setShowErrors(true);
@@ -64,17 +72,27 @@ export function Create() {
       notify('Revisa los campos marcados', { icon: 'alert' });
       return;
     }
-    setBusy(status === 'published' ? 'publish' : 'draft');
+    if (target === 'publish' && !permission) {
+      notify('Falta la confirmación de permiso', { detail: 'Márcala en el paso de publicación', icon: 'alert' });
+      setStep('publish');
+      return;
+    }
+    setBusy(target === 'publish' ? 'publish' : 'draft');
     window.setTimeout(() => {
-      save(finalMcp(status));
-      setBusy(null);
-      if (status === 'published') {
-        setStep('done');
+      if (target === 'publish') {
+        const published = publishDraft(finalMcp('published'), publishOptions());
+        setBusy(null);
+        if (published) {
+          setDraft(published);
+          setStep('done');
+        }
       } else {
+        saveDraft(finalMcp('draft'));
+        setBusy(null);
         notify('Borrador guardado en este navegador', { detail: draft.slug, icon: 'check' });
         router.push(`/mcp/${draft.slug}`);
       }
-    }, status === 'published' ? 1100 : 500);
+    }, target === 'publish' ? 1100 : 450);
   };
 
   const goReviewNext = () => {
@@ -88,7 +106,7 @@ export function Create() {
 
   const canVisit = (id: Step) => {
     if (!draft) return id === 'url';
-    if (id === 'explore') return trace.length > 0 && step !== 'explore';
+    if (id === 'explore') return Boolean(job) && step !== 'explore';
     if (id === 'publish') return reviewOk;
     return true;
   };
@@ -106,7 +124,11 @@ export function Create() {
           </h1>
           <p className="step-lede">
             {included.length} herramientas para {draft.site}.{' '}
-            {draft.visibility === 'unlisted' ? 'Solo quien tenga el enlace podrá verlo.' : 'Ya aparece en el catálogo.'}
+            {draft.visibility === 'unlisted'
+              ? 'Solo quien tenga el enlace podrá verlo.'
+              : draft.visibility === 'private'
+                ? 'Privado: solo tú puedes verlo.'
+                : 'Ya aparece en el catálogo.'}
           </p>
           <div className="done__cmd">
             <CommandLine command={installCommand(draft)} />
@@ -115,16 +137,17 @@ export function Create() {
             <Link href={`/mcp/${draft.slug}`} className="btn btn--primary btn--lg">
               Ver la página del MCP <Icon name="arrowRight" size={16} />
             </Link>
-            <Link href="/" className="btn btn--outline btn--lg">
-              Volver al catálogo
+            <Link href="/biblioteca" className="btn btn--outline btn--lg">
+              Ir a mi biblioteca
             </Link>
             <button
               className="btn btn--ghost btn--lg"
               onClick={() => {
                 setDraft(null);
-                setTrace([]);
+                setJob(null);
                 setExcluded(new Set());
                 setShowErrors(false);
+                setPermission(false);
                 router.replace('/crear');
                 setStep('url');
               }}
@@ -167,29 +190,37 @@ export function Create() {
         {step === 'url' && (
           <StepUrl
             initialUrl={params.get('url') ?? draft?.site ?? ''}
-            onStart={({ url, hint }) => {
-              const res = generate(url, hint);
+            onStart={({ url, hint, maxSteps, mode }) => {
+              const next = startGeneration(url, { hint, maxSteps, mode });
               // Al regenerar un borrador existente se conserva su identidad
-              const next = draft ? { ...res.draft, id: draft.id, slug: draft.slug, version: draft.version } : res.draft;
-              setDraft(next);
-              setTrace(res.trace);
+              const generated = draft
+                ? { ...next.draft, id: draft.id, slug: draft.slug, version: draft.version, createdAt: draft.createdAt }
+                : next.draft;
+              setDraft(generated);
+              setJob({ ...next, draft: generated });
               setExcluded(new Set());
               setShowErrors(false);
+              setPermission(false);
               setStep('explore');
             }}
           />
         )}
 
-        {step === 'explore' && draft && (
+        {step === 'explore' && job && draft && (
           <StepExplore
             host={draft.site}
             icon={draft.icon}
-            trace={trace}
-            onDone={() => setStep('review')}
+            job={job}
+            onDone={() => {
+              finalizeGeneration(job.id);
+              setStep('review');
+            }}
             onCancel={() => {
+              cancelGeneration(job.id);
+              if (!editing && draft) discardDraft(draft.slug);
+              setJob(null);
               setStep('url');
               if (!editing) setDraft(null);
-              setTrace([]);
             }}
           />
         )}
@@ -211,7 +242,15 @@ export function Create() {
           />
         )}
 
-        {step === 'publish' && draft && <StepPublish draft={draft} onChange={patch} includedCount={included.length} />}
+        {step === 'publish' && draft && (
+          <StepPublish
+            draft={draft}
+            onChange={patch}
+            includedCount={included.length}
+            permission={permission}
+            onPermissionChange={setPermission}
+          />
+        )}
       </div>
 
       {(step === 'review' || step === 'publish') && draft && (
@@ -233,8 +272,8 @@ export function Create() {
               ) : (
                 <button
                   className={cx('btn btn--primary', busy === 'publish' && 'is-loading')}
-                  onClick={() => persist('published')}
-                  disabled={!canPublish(draft) || busy !== null}
+                  onClick={() => persist('publish')}
+                  disabled={!canPublish(draft, permission) || busy !== null}
                 >
                   {busy === 'publish' ? <span className="spinner" /> : <Icon name="upload" size={16} />}
                   {busy === 'publish' ? 'Publicando…' : 'Publicar en MCPortal'}
