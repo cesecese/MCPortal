@@ -5,3 +5,8 @@ dist
 .next
 next-env.d.ts
 *.tsbuildinfo
+
+.venv/
+__pycache__/
+*.pyc
+runs/

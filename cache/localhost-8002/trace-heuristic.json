@@ -1,0 +1,1192 @@
+{
+ "site": "localhost:8002",
+ "title": "Inicio · Casa Zeta",
+ "start_url": "http://localhost:8002/",
+ "policy": "heuristic",
+ "started": 1792672089.7155058,
+ "finished": 1792672105.224662,
+ "steps": [
+  {
+   "i": 0,
+   "action": {
+    "type": "goto",
+    "url": "http://localhost:8002/",
+    "initial": true
+   },
+   "element": {},
+   "url_before": "about:blank",
+   "url_after": "http://localhost:8002/",
+   "request_ids": [
+    1
+   ],
+   "error": null,
+   "note": null,
+   "has_main": true,
+   "forms": []
+  },
+  {
+   "i": 1,
+   "action": {
+    "type": "fill",
+    "id": 7,
+    "value": "zxq_code"
+   },
+   "element": {
+    "id": 7,
+    "tag": "input",
+    "kind": "input",
+    "label": "Código de reserva",
+    "href": null,
+    "raw_href": null,
+    "type": "text",
+    "name": "code",
+    "value": "",
+    "required": false,
+    "min": null,
+    "max": null,
+    "options": null,
+    "form": 1,
+    "selector": "#code",
+    "similar": 0
+   },
+   "url_before": "http://localhost:8002/",
+   "url_after": "http://localhost:8002/",
+   "request_ids": [],
+   "error": null,
+   "note": null,
+   "has_main": true,
+   "forms": [
+    {
+     "index": 1,
+     "method": "GET",
+     "action": "/reserva",
+     "hidden": []
+    }
+   ]
+  },
+  {
+   "i": 2,
+   "action": {
+    "type": "click",
+    "id": 8
+   },
+   "element": {
+    "id": 8,
+    "tag": "button",
+    "kind": "button",
+    "label": "Consultar reserva",
+    "href": null,
+    "raw_href": null,
+    "type": "submit",
+    "name": null,
+    "value": null,
+    "required": false,
+    "min": null,
+    "max": null,
+    "options": null,
+    "form": 1,
+    "selector": "form[action=\"/reserva\"] button[type=\"submit\"]",
+    "similar": 0
+   },
+   "url_before": "http://localhost:8002/",
+   "url_after": "http://localhost:8002/reserva?code=zxq_code",
+   "request_ids": [
+    2
+   ],
+   "error": null,
+   "note": null,
+   "has_main": true,
+   "forms": [
+    {
+     "index": 1,
+     "method": "GET",
+     "action": "/reserva",
+     "hidden": []
+    }
+   ]
+  },
+  {
+   "i": 3,
+   "action": {
+    "type": "fill",
+    "id": 5,
+    "value": "zxq_code"
+   },
+   "element": {
+    "id": 5,
+    "tag": "input",
+    "kind": "input",
+    "label": "Código de reserva",
+    "href": null,
+    "raw_href": null,
+    "type": "text",
+    "name": "code",
+    "value": "zxq_code",
+    "required": false,
+    "min": null,
+    "max": null,
+    "options": null,
+    "form": 1,
+    "selector": "#code",
+    "similar": 0
+   },
+   "url_before": "http://localhost:8002/reserva?code=zxq_code",
+   "url_after": "http://localhost:8002/reserva?code=zxq_code",
+   "request_ids": [],
+   "error": null,
+   "note": null,
+   "has_main": true,
+   "forms": [
+    {
+     "index": 1,
+     "method": "GET",
+     "action": "/reserva",
+     "hidden": []
+    }
+   ]
+  },
+  {
+   "i": 4,
+   "action": {
+    "type": "click",
+    "id": 6
+   },
+   "element": {
+    "id": 6,
+    "tag": "button",
+    "kind": "button",
+    "label": "Consultar reserva",
+    "href": null,
+    "raw_href": null,
+    "type": "submit",
+    "name": null,
+    "value": null,
+    "required": false,
+    "min": null,
+    "max": null,
+    "options": null,
+    "form": 1,
+    "selector": "form[action=\"/reserva\"] button[type=\"submit\"]",
+    "similar": 0
+   },
+   "url_before": "http://localhost:8002/reserva?code=zxq_code",
+   "url_after": "http://localhost:8002/reserva?code=zxq_code",
+   "request_ids": [
+    3
+   ],
+   "error": null,
+   "note": null,
+   "has_main": true,
+   "forms": [
+    {
+     "index": 1,
+     "method": "GET",
+     "action": "/reserva",
+     "hidden": []
+    }
+   ]
+  },
+  {
+   "i": 5,
+   "action": {
+    "type": "goto",
+    "url": "http://localhost:8002/reserva"
+   },
+   "element": {},
+   "url_before": "http://localhost:8002/reserva?code=zxq_code",
+   "url_after": "http://localhost:8002/reserva",
+   "request_ids": [
+    4
+   ],
+   "error": null,
+   "note": null,
+   "has_main": true,
+   "forms": [
+    {
+     "index": 1,
+     "method": "GET",
+     "action": "/reserva",
+     "hidden": []
+    }
+   ]
+  },
+  {
+   "i": 6,
+   "action": {
+    "type": "goto",
+    "url": "http://localhost:8002/disponibilidad"
+   },
+   "element": {},
+   "url_before": "http://localhost:8002/reserva",
+   "url_after": "http://localhost:8002/disponibilidad",
+   "request_ids": [
+    5
+   ],
+   "error": null,
+   "note": null,
+   "has_main": true,
+   "forms": [
+    {
+     "index": 1,
+     "method": "GET",
+     "action": "/reserva",
+     "hidden": []
+    }
+   ]
+  },
+  {
+   "i": 7,
+   "action": {
+    "type": "fill",
+    "id": 5,
+    "value": "2026-10-24"
+   },
+   "element": {
+    "id": 5,
+    "tag": "input",
+    "kind": "input",
+    "label": "Fecha",
+    "href": null,
+    "raw_href": null,
+    "type": "date",
+    "name": "date",
+    "value": "",
+    "required": true,
+    "min": null,
+    "max": null,
+    "options": null,
+    "form": 1,
+    "selector": "#date",
+    "similar": 0
+   },
+   "url_before": "http://localhost:8002/disponibilidad",
+   "url_after": "http://localhost:8002/disponibilidad",
+   "request_ids": [],
+   "error": null,
+   "note": null,
+   "has_main": true,
+   "forms": [
+    {
+     "index": 1,
+     "method": "GET",
+     "action": "/disponibilidad",
+     "hidden": []
+    }
+   ]
+  },
+  {
+   "i": 8,
+   "action": {
+    "type": "fill",
+    "id": 6,
+    "value": "1"
+   },
+   "element": {
+    "id": 6,
+    "tag": "input",
+    "kind": "input",
+    "label": "Comensales",
+    "href": null,
+    "raw_href": null,
+    "type": "number",
+    "name": "people",
+    "value": "",
+    "required": true,
+    "min": "1",
+    "max": "12",
+    "options": null,
+    "form": 1,
+    "selector": "#people",
+    "similar": 0
+   },
+   "url_before": "http://localhost:8002/disponibilidad",
+   "url_after": "http://localhost:8002/disponibilidad",
+   "request_ids": [],
+   "error": null,
+   "note": null,
+   "has_main": true,
+   "forms": [
+    {
+     "index": 1,
+     "method": "GET",
+     "action": "/disponibilidad",
+     "hidden": []
+    }
+   ]
+  },
+  {
+   "i": 9,
+   "action": {
+    "type": "click",
+    "id": 7
+   },
+   "element": {
+    "id": 7,
+    "tag": "button",
+    "kind": "button",
+    "label": "Buscar mesa",
+    "href": null,
+    "raw_href": null,
+    "type": "submit",
+    "name": null,
+    "value": null,
+    "required": false,
+    "min": null,
+    "max": null,
+    "options": null,
+    "form": 1,
+    "selector": "form[action=\"/disponibilidad\"] button[type=\"submit\"]",
+    "similar": 0
+   },
+   "url_before": "http://localhost:8002/disponibilidad",
+   "url_after": "http://localhost:8002/disponibilidad?date=2026-10-24&people=1",
+   "request_ids": [
+    6
+   ],
+   "error": null,
+   "note": null,
+   "has_main": true,
+   "forms": [
+    {
+     "index": 1,
+     "method": "GET",
+     "action": "/disponibilidad",
+     "hidden": []
+    }
+   ]
+  },
+  {
+   "i": 10,
+   "action": {
+    "type": "goto",
+    "url": "http://localhost:8002/reservar?date=2026-10-24&time=13:00&people=1"
+   },
+   "element": {},
+   "url_before": "http://localhost:8002/disponibilidad?date=2026-10-24&people=1",
+   "url_after": "http://localhost:8002/reservar?date=2026-10-24&time=13:00&people=1",
+   "request_ids": [
+    7
+   ],
+   "error": null,
+   "note": null,
+   "has_main": true,
+   "forms": [
+    {
+     "index": 1,
+     "method": "GET",
+     "action": "/disponibilidad",
+     "hidden": []
+    }
+   ]
+  },
+  {
+   "i": 11,
+   "action": {
+    "type": "fill",
+    "id": 5,
+    "value": "zxq_name"
+   },
+   "element": {
+    "id": 5,
+    "tag": "input",
+    "kind": "input",
+    "label": "Nombre",
+    "href": null,
+    "raw_href": null,
+    "type": "text",
+    "name": "name",
+    "value": "",
+    "required": true,
+    "min": null,
+    "max": null,
+    "options": null,
+    "form": 1,
+    "selector": "#name",
+    "similar": 0
+   },
+   "url_before": "http://localhost:8002/reservar?date=2026-10-24&time=13:00&people=1",
+   "url_after": "http://localhost:8002/reservar?date=2026-10-24&time=13:00&people=1",
+   "request_ids": [],
+   "error": null,
+   "note": null,
+   "has_main": true,
+   "forms": [
+    {
+     "index": 1,
+     "method": "POST",
+     "action": "/reservar",
+     "hidden": [
+      {
+       "name": "csrf_token",
+       "value": "2bd89d0ffd95e0d95d1443e514217c9d"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "i": 12,
+   "action": {
+    "type": "fill",
+    "id": 6,
+    "value": "600123456"
+   },
+   "element": {
+    "id": 6,
+    "tag": "input",
+    "kind": "input",
+    "label": "Teléfono",
+    "href": null,
+    "raw_href": null,
+    "type": "tel",
+    "name": "phone",
+    "value": "",
+    "required": true,
+    "min": null,
+    "max": null,
+    "options": null,
+    "form": 1,
+    "selector": "#phone",
+    "similar": 0
+   },
+   "url_before": "http://localhost:8002/reservar?date=2026-10-24&time=13:00&people=1",
+   "url_after": "http://localhost:8002/reservar?date=2026-10-24&time=13:00&people=1",
+   "request_ids": [],
+   "error": null,
+   "note": null,
+   "has_main": true,
+   "forms": [
+    {
+     "index": 1,
+     "method": "POST",
+     "action": "/reservar",
+     "hidden": [
+      {
+       "name": "csrf_token",
+       "value": "2bd89d0ffd95e0d95d1443e514217c9d"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "i": 13,
+   "action": {
+    "type": "fill",
+    "id": 7,
+    "value": "2026-10-24"
+   },
+   "element": {
+    "id": 7,
+    "tag": "input",
+    "kind": "input",
+    "label": "Fecha",
+    "href": null,
+    "raw_href": null,
+    "type": "date",
+    "name": "date",
+    "value": "2026-10-24",
+    "required": true,
+    "min": null,
+    "max": null,
+    "options": null,
+    "form": 1,
+    "selector": "#date",
+    "similar": 0
+   },
+   "url_before": "http://localhost:8002/reservar?date=2026-10-24&time=13:00&people=1",
+   "url_after": "http://localhost:8002/reservar?date=2026-10-24&time=13:00&people=1",
+   "request_ids": [],
+   "error": null,
+   "note": null,
+   "has_main": true,
+   "forms": [
+    {
+     "index": 1,
+     "method": "POST",
+     "action": "/reservar",
+     "hidden": [
+      {
+       "name": "csrf_token",
+       "value": "2bd89d0ffd95e0d95d1443e514217c9d"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "i": 14,
+   "action": {
+    "type": "select",
+    "id": 8,
+    "option": "13:00"
+   },
+   "element": {
+    "id": 8,
+    "tag": "select",
+    "kind": "select",
+    "label": "Hora",
+    "href": null,
+    "raw_href": null,
+    "type": "select-one",
+    "name": "time",
+    "value": "13:00",
+    "required": false,
+    "min": null,
+    "max": null,
+    "options": [
+     {
+      "value": "13:00",
+      "label": "13:00"
+     },
+     {
+      "value": "13:30",
+      "label": "13:30"
+     },
+     {
+      "value": "14:00",
+      "label": "14:00"
+     },
+     {
+      "value": "14:30",
+      "label": "14:30"
+     },
+     {
+      "value": "20:00",
+      "label": "20:00"
+     },
+     {
+      "value": "20:30",
+      "label": "20:30"
+     },
+     {
+      "value": "21:00",
+      "label": "21:00"
+     },
+     {
+      "value": "21:30",
+      "label": "21:30"
+     },
+     {
+      "value": "22:00",
+      "label": "22:00"
+     }
+    ],
+    "form": 1,
+    "selector": "#time",
+    "similar": 0
+   },
+   "url_before": "http://localhost:8002/reservar?date=2026-10-24&time=13:00&people=1",
+   "url_after": "http://localhost:8002/reservar?date=2026-10-24&time=13:00&people=1",
+   "request_ids": [],
+   "error": null,
+   "note": null,
+   "has_main": true,
+   "forms": [
+    {
+     "index": 1,
+     "method": "POST",
+     "action": "/reservar",
+     "hidden": [
+      {
+       "name": "csrf_token",
+       "value": "2bd89d0ffd95e0d95d1443e514217c9d"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "i": 15,
+   "action": {
+    "type": "fill",
+    "id": 9,
+    "value": "1"
+   },
+   "element": {
+    "id": 9,
+    "tag": "input",
+    "kind": "input",
+    "label": "Comensales",
+    "href": null,
+    "raw_href": null,
+    "type": "number",
+    "name": "people",
+    "value": "1",
+    "required": true,
+    "min": "1",
+    "max": "12",
+    "options": null,
+    "form": 1,
+    "selector": "#people",
+    "similar": 0
+   },
+   "url_before": "http://localhost:8002/reservar?date=2026-10-24&time=13:00&people=1",
+   "url_after": "http://localhost:8002/reservar?date=2026-10-24&time=13:00&people=1",
+   "request_ids": [],
+   "error": null,
+   "note": null,
+   "has_main": true,
+   "forms": [
+    {
+     "index": 1,
+     "method": "POST",
+     "action": "/reservar",
+     "hidden": [
+      {
+       "name": "csrf_token",
+       "value": "2bd89d0ffd95e0d95d1443e514217c9d"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "i": 16,
+   "action": {
+    "type": "click",
+    "id": 10
+   },
+   "element": {
+    "id": 10,
+    "tag": "button",
+    "kind": "button",
+    "label": "Confirmar reserva",
+    "href": null,
+    "raw_href": null,
+    "type": "submit",
+    "name": null,
+    "value": null,
+    "required": false,
+    "min": null,
+    "max": null,
+    "options": null,
+    "form": 1,
+    "selector": "form[action=\"/reservar\"] button[type=\"submit\"]",
+    "similar": 0
+   },
+   "url_before": "http://localhost:8002/reservar?date=2026-10-24&time=13:00&people=1",
+   "url_after": "http://localhost:8002/reservar",
+   "request_ids": [
+    8
+   ],
+   "error": null,
+   "note": null,
+   "has_main": true,
+   "forms": [
+    {
+     "index": 1,
+     "method": "POST",
+     "action": "/reservar",
+     "hidden": [
+      {
+       "name": "csrf_token",
+       "value": "2bd89d0ffd95e0d95d1443e514217c9d"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "i": 17,
+   "action": {
+    "type": "goto",
+    "url": "http://localhost:8002/menu"
+   },
+   "element": {},
+   "url_before": "http://localhost:8002/reservar",
+   "url_after": "http://localhost:8002/menu",
+   "request_ids": [
+    9
+   ],
+   "error": null,
+   "note": null,
+   "has_main": true,
+   "forms": []
+  }
+ ],
+ "requests": [
+  {
+   "id": 1,
+   "step": 0,
+   "kind": "document",
+   "method": "GET",
+   "url": "http://localhost:8002/",
+   "status": 200,
+   "request_content_type": "",
+   "post_data": null,
+   "content_type": "text/html; charset=utf-8",
+   "body": "<!doctype html>\n<html lang=\"es\">\n<head>\n<meta charset=\"utf-8\">\n<meta name=\"viewport\" content=\"width=device-width, initial-scale=1\">\n<title>Inicio · Casa Zeta</title>\n<style>\n:root { --paper:#faf7f0; --ink:#211d17; --muted:#6f675c; --line:#e0d8c8; --wine:#7d2430; --green:#2f6b4f; }\n* { box-sizing:border-box; }\nbody { margin:0; background:var(--paper); color:var(--ink);\n       font:16px/1.6 Georgia,\"Times New Roman\",serif; }\nheader.site { border-bottom:1px solid var(--line); padding:16px 28px; display:flex;\n              align-items:baseline; justify-content:space-between; gap:18px; flex-wrap:wrap; }\nheader.site .brand { font-size:22px; letter-spacing:.02em; }\nheader.site .brand span { color:var(--wine); }\nheader.site nav { display:flex; gap:16px; flex-wrap:wrap; font:14px/1.4 -apple-system,BlinkMacSystemFont,\"Segoe UI\",sans-serif; }\nheader.site nav a { color:var(--muted); text-decoration:none; }\nheader.site nav a:hover { color:var(--wine); }\nmain { max-width:860px; margin:0 auto; padding:32px 28px 70px; }\nh1 { font-size:30px; margin:0 0 8px; letter-spacing:-.01em; }\nh2 { font-size:21px; margin:28px 0 10px; }\np.lead { color:var(--muted); margin-top:0; }\na { color:var(--wine); }\nform.card { border:1px solid var(--line); background:#fffdf8; border-radius:6px; padding:18px; margin:18px 0; }\nform.card .row { display:flex; gap:12px; flex-wrap:wrap; align-items:flex-end; }\nform.card label { display:block; font:13px/1.4 -apple-system,BlinkMacSystemFont,\"Segoe UI\",sans-serif;\n                  color:var(--muted); margin-bottom:4px; }\nform.card input, form.card select { font:inherit; padding:8px 10px; border:1px solid var(--line);\n                  border-radius:4px; background:#fff; min-width:150px; }\nform.card button { font:15px/1 Georgia,serif; padding:10px 18px; border:1px solid var(--wine);\n                  background:var(--wine); color:#fff8ee; border-radius:4px; cursor:pointer; }\nform.card button:hover { background:#651d26; }\ntable.slots { width:100%; border-collapse:collapse; margin:14px 0; }\ntable.slots th, table.slots td { text-align:left; padding:10px 8px; border-bottom:1px solid var(--line); }\ntable.slots a { display:inline-block; padding:5px 12px; border:1px solid var(--line);\n                border-radius:4px; text-decoration:none; font:14px/1.4 -apple-system,sans-serif; }\ntable.slots a:hover { border-color:var(--wine); }\n.notice { padding:14px 16px; border-left:3px solid var(--wine); background:#fffdf8; margin:18px 0; }\n.notice.ok { border-color:var(--green); }\n.notice.error { border-color:var(--wine); }\n.big-code { font:26px/1.3 ui-monospace,SFMono-Regular,Menlo,monospace; letter-spacing:.08em; }\nul.menu { list-style:none; padding:0; }\nul.menu li { padding:10px 0; border-bottom:1px solid var(--line); display:flex; justify-content:space-between; gap:20px; }\nul.menu li span { color:var(--muted); }\nfooter { border-top:1px solid var(--line); padding:16px 28px; color:var(--muted);\n         font:13px/1.4 -apple-system,sans-serif; }\n</style>\n</head>\n<body>\n<header class=\"site\">\n  <div class=\"brand\">Casa <span>Zeta</span></div>\n  <nav>\n    <a href=\"/\">Inicio</a>\n    <a href=\"/menu\">Menú</a>\n    <a href=\"/disponibilidad\">Disponibilidad</a>\n    <a href=\"/reserva\">Consultar reserva</a>\n  </nav>\n</header>\n<main>\n\n<h1>Cocina de mercado, sin prisa</h1>\n<p class=\"lead\">Producto de temporada, brasa y una carta corta que cambia cada semana.</p>\n<p><a href=\"/disponibilidad\">Reservar mesa</a> · <a href=\"/menu\">Ver el menú</a></p>\n<h2>Consultar una reserva</h2>\n<form class=\"card\" method=\"get\" action=\"/reserva\">\n  <div class=\"row\">\n    <div><label for=\"code\">Código de reserva</label>\n      <input id=\"code\" name=\"code\" type=\"text\" placeholder=\"R-XXXXXX\"></div>\n    <button type=\"submit\">Consultar reserva</button>\n  </div>\n</form>\n\n</main>\n<footer>Casa Zeta · Cocina de mercado · Calle del Puerto 14 · 28001 Madrid</footer>\n</body>\n</html>",
+   "json": null
+  },
+  {
+   "id": 2,
+   "step": 2,
+   "kind": "document",
+   "method": "GET",
+   "url": "http://localhost:8002/reserva?code=zxq_code",
+   "status": 200,
+   "request_content_type": "",
+   "post_data": null,
+   "content_type": "text/html; charset=utf-8",
+   "body": "<!doctype html>\n<html lang=\"es\">\n<head>\n<meta charset=\"utf-8\">\n<meta name=\"viewport\" content=\"width=device-width, initial-scale=1\">\n<title>Reserva · Casa Zeta</title>\n<style>\n:root { --paper:#faf7f0; --ink:#211d17; --muted:#6f675c; --line:#e0d8c8; --wine:#7d2430; --green:#2f6b4f; }\n* { box-sizing:border-box; }\nbody { margin:0; background:var(--paper); color:var(--ink);\n       font:16px/1.6 Georgia,\"Times New Roman\",serif; }\nheader.site { border-bottom:1px solid var(--line); padding:16px 28px; display:flex;\n              align-items:baseline; justify-content:space-between; gap:18px; flex-wrap:wrap; }\nheader.site .brand { font-size:22px; letter-spacing:.02em; }\nheader.site .brand span { color:var(--wine); }\nheader.site nav { display:flex; gap:16px; flex-wrap:wrap; font:14px/1.4 -apple-system,BlinkMacSystemFont,\"Segoe UI\",sans-serif; }\nheader.site nav a { color:var(--muted); text-decoration:none; }\nheader.site nav a:hover { color:var(--wine); }\nmain { max-width:860px; margin:0 auto; padding:32px 28px 70px; }\nh1 { font-size:30px; margin:0 0 8px; letter-spacing:-.01em; }\nh2 { font-size:21px; margin:28px 0 10px; }\np.lead { color:var(--muted); margin-top:0; }\na { color:var(--wine); }\nform.card { border:1px solid var(--line); background:#fffdf8; border-radius:6px; padding:18px; margin:18px 0; }\nform.card .row { display:flex; gap:12px; flex-wrap:wrap; align-items:flex-end; }\nform.card label { display:block; font:13px/1.4 -apple-system,BlinkMacSystemFont,\"Segoe UI\",sans-serif;\n                  color:var(--muted); margin-bottom:4px; }\nform.card input, form.card select { font:inherit; padding:8px 10px; border:1px solid var(--line);\n                  border-radius:4px; background:#fff; min-width:150px; }\nform.card button { font:15px/1 Georgia,serif; padding:10px 18px; border:1px solid var(--wine);\n                  background:var(--wine); color:#fff8ee; border-radius:4px; cursor:pointer; }\nform.card button:hover { background:#651d26; }\ntable.slots { width:100%; border-collapse:collapse; margin:14px 0; }\ntable.slots th, table.slots td { text-align:left; padding:10px 8px; border-bottom:1px solid var(--line); }\ntable.slots a { display:inline-block; padding:5px 12px; border:1px solid var(--line);\n                border-radius:4px; text-decoration:none; font:14px/1.4 -apple-system,sans-serif; }\ntable.slots a:hover { border-color:var(--wine); }\n.notice { padding:14px 16px; border-left:3px solid var(--wine); background:#fffdf8; margin:18px 0; }\n.notice.ok { border-color:var(--green); }\n.notice.error { border-color:var(--wine); }\n.big-code { font:26px/1.3 ui-monospace,SFMono-Regular,Menlo,monospace; letter-spacing:.08em; }\nul.menu { list-style:none; padding:0; }\nul.menu li { padding:10px 0; border-bottom:1px solid var(--line); display:flex; justify-content:space-between; gap:20px; }\nul.menu li span { color:var(--muted); }\nfooter { border-top:1px solid var(--line); padding:16px 28px; color:var(--muted);\n         font:13px/1.4 -apple-system,sans-serif; }\n</style>\n</head>\n<body>\n<header class=\"site\">\n  <div class=\"brand\">Casa <span>Zeta</span></div>\n  <nav>\n    <a href=\"/\">Inicio</a>\n    <a href=\"/menu\">Menú</a>\n    <a href=\"/disponibilidad\">Disponibilidad</a>\n    <a href=\"/reserva\">Consultar reserva</a>\n  </nav>\n</header>\n<main>\n\n<h1>Consultar reserva</h1>\n<div class=\"notice\">No existe ninguna reserva con el código «zxq_code».</div>\n<form class=\"card\" method=\"get\" action=\"/reserva\">\n  <div class=\"row\">\n    <div><label for=\"code\">Código de reserva</label>\n      <input id=\"code\" name=\"code\" type=\"text\" value=\"zxq_code\" placeholder=\"R-XXXXXX\"></div>\n    <button type=\"submit\">Consultar reserva</button>\n  </div>\n</form>\n\n</main>\n<footer>Casa Zeta · Cocina de mercado · Calle del Puerto 14 · 28001 Madrid</footer>\n</body>\n</html>",
+   "json": null
+  },
+  {
+   "id": 3,
+   "step": 4,
+   "kind": "document",
+   "method": "GET",
+   "url": "http://localhost:8002/reserva?code=zxq_code",
+   "status": 200,
+   "request_content_type": "",
+   "post_data": null,
+   "content_type": "text/html; charset=utf-8",
+   "body": "<!doctype html>\n<html lang=\"es\">\n<head>\n<meta charset=\"utf-8\">\n<meta name=\"viewport\" content=\"width=device-width, initial-scale=1\">\n<title>Reserva · Casa Zeta</title>\n<style>\n:root { --paper:#faf7f0; --ink:#211d17; --muted:#6f675c; --line:#e0d8c8; --wine:#7d2430; --green:#2f6b4f; }\n* { box-sizing:border-box; }\nbody { margin:0; background:var(--paper); color:var(--ink);\n       font:16px/1.6 Georgia,\"Times New Roman\",serif; }\nheader.site { border-bottom:1px solid var(--line); padding:16px 28px; display:flex;\n              align-items:baseline; justify-content:space-between; gap:18px; flex-wrap:wrap; }\nheader.site .brand { font-size:22px; letter-spacing:.02em; }\nheader.site .brand span { color:var(--wine); }\nheader.site nav { display:flex; gap:16px; flex-wrap:wrap; font:14px/1.4 -apple-system,BlinkMacSystemFont,\"Segoe UI\",sans-serif; }\nheader.site nav a { color:var(--muted); text-decoration:none; }\nheader.site nav a:hover { color:var(--wine); }\nmain { max-width:860px; margin:0 auto; padding:32px 28px 70px; }\nh1 { font-size:30px; margin:0 0 8px; letter-spacing:-.01em; }\nh2 { font-size:21px; margin:28px 0 10px; }\np.lead { color:var(--muted); margin-top:0; }\na { color:var(--wine); }\nform.card { border:1px solid var(--line); background:#fffdf8; border-radius:6px; padding:18px; margin:18px 0; }\nform.card .row { display:flex; gap:12px; flex-wrap:wrap; align-items:flex-end; }\nform.card label { display:block; font:13px/1.4 -apple-system,BlinkMacSystemFont,\"Segoe UI\",sans-serif;\n                  color:var(--muted); margin-bottom:4px; }\nform.card input, form.card select { font:inherit; padding:8px 10px; border:1px solid var(--line);\n                  border-radius:4px; background:#fff; min-width:150px; }\nform.card button { font:15px/1 Georgia,serif; padding:10px 18px; border:1px solid var(--wine);\n                  background:var(--wine); color:#fff8ee; border-radius:4px; cursor:pointer; }\nform.card button:hover { background:#651d26; }\ntable.slots { width:100%; border-collapse:collapse; margin:14px 0; }\ntable.slots th, table.slots td { text-align:left; padding:10px 8px; border-bottom:1px solid var(--line); }\ntable.slots a { display:inline-block; padding:5px 12px; border:1px solid var(--line);\n                border-radius:4px; text-decoration:none; font:14px/1.4 -apple-system,sans-serif; }\ntable.slots a:hover { border-color:var(--wine); }\n.notice { padding:14px 16px; border-left:3px solid var(--wine); background:#fffdf8; margin:18px 0; }\n.notice.ok { border-color:var(--green); }\n.notice.error { border-color:var(--wine); }\n.big-code { font:26px/1.3 ui-monospace,SFMono-Regular,Menlo,monospace; letter-spacing:.08em; }\nul.menu { list-style:none; padding:0; }\nul.menu li { padding:10px 0; border-bottom:1px solid var(--line); display:flex; justify-content:space-between; gap:20px; }\nul.menu li span { color:var(--muted); }\nfooter { border-top:1px solid var(--line); padding:16px 28px; color:var(--muted);\n         font:13px/1.4 -apple-system,sans-serif; }\n</style>\n</head>\n<body>\n<header class=\"site\">\n  <div class=\"brand\">Casa <span>Zeta</span></div>\n  <nav>\n    <a href=\"/\">Inicio</a>\n    <a href=\"/menu\">Menú</a>\n    <a href=\"/disponibilidad\">Disponibilidad</a>\n    <a href=\"/reserva\">Consultar reserva</a>\n  </nav>\n</header>\n<main>\n\n<h1>Consultar reserva</h1>\n<div class=\"notice\">No existe ninguna reserva con el código «zxq_code».</div>\n<form class=\"card\" method=\"get\" action=\"/reserva\">\n  <div class=\"row\">\n    <div><label for=\"code\">Código de reserva</label>\n      <input id=\"code\" name=\"code\" type=\"text\" value=\"zxq_code\" placeholder=\"R-XXXXXX\"></div>\n    <button type=\"submit\">Consultar reserva</button>\n  </div>\n</form>\n\n</main>\n<footer>Casa Zeta · Cocina de mercado · Calle del Puerto 14 · 28001 Madrid</footer>\n</body>\n</html>",
+   "json": null
+  },
+  {
+   "id": 4,
+   "step": 5,
+   "kind": "document",
+   "method": "GET",
+   "url": "http://localhost:8002/reserva",
+   "status": 200,
+   "request_content_type": "",
+   "post_data": null,
+   "content_type": "text/html; charset=utf-8",
+   "body": "<!doctype html>\n<html lang=\"es\">\n<head>\n<meta charset=\"utf-8\">\n<meta name=\"viewport\" content=\"width=device-width, initial-scale=1\">\n<title>Reserva · Casa Zeta</title>\n<style>\n:root { --paper:#faf7f0; --ink:#211d17; --muted:#6f675c; --line:#e0d8c8; --wine:#7d2430; --green:#2f6b4f; }\n* { box-sizing:border-box; }\nbody { margin:0; background:var(--paper); color:var(--ink);\n       font:16px/1.6 Georgia,\"Times New Roman\",serif; }\nheader.site { border-bottom:1px solid var(--line); padding:16px 28px; display:flex;\n              align-items:baseline; justify-content:space-between; gap:18px; flex-wrap:wrap; }\nheader.site .brand { font-size:22px; letter-spacing:.02em; }\nheader.site .brand span { color:var(--wine); }\nheader.site nav { display:flex; gap:16px; flex-wrap:wrap; font:14px/1.4 -apple-system,BlinkMacSystemFont,\"Segoe UI\",sans-serif; }\nheader.site nav a { color:var(--muted); text-decoration:none; }\nheader.site nav a:hover { color:var(--wine); }\nmain { max-width:860px; margin:0 auto; padding:32px 28px 70px; }\nh1 { font-size:30px; margin:0 0 8px; letter-spacing:-.01em; }\nh2 { font-size:21px; margin:28px 0 10px; }\np.lead { color:var(--muted); margin-top:0; }\na { color:var(--wine); }\nform.card { border:1px solid var(--line); background:#fffdf8; border-radius:6px; padding:18px; margin:18px 0; }\nform.card .row { display:flex; gap:12px; flex-wrap:wrap; align-items:flex-end; }\nform.card label { display:block; font:13px/1.4 -apple-system,BlinkMacSystemFont,\"Segoe UI\",sans-serif;\n                  color:var(--muted); margin-bottom:4px; }\nform.card input, form.card select { font:inherit; padding:8px 10px; border:1px solid var(--line);\n                  border-radius:4px; background:#fff; min-width:150px; }\nform.card button { font:15px/1 Georgia,serif; padding:10px 18px; border:1px solid var(--wine);\n                  background:var(--wine); color:#fff8ee; border-radius:4px; cursor:pointer; }\nform.card button:hover { background:#651d26; }\ntable.slots { width:100%; border-collapse:collapse; margin:14px 0; }\ntable.slots th, table.slots td { text-align:left; padding:10px 8px; border-bottom:1px solid var(--line); }\ntable.slots a { display:inline-block; padding:5px 12px; border:1px solid var(--line);\n                border-radius:4px; text-decoration:none; font:14px/1.4 -apple-system,sans-serif; }\ntable.slots a:hover { border-color:var(--wine); }\n.notice { padding:14px 16px; border-left:3px solid var(--wine); background:#fffdf8; margin:18px 0; }\n.notice.ok { border-color:var(--green); }\n.notice.error { border-color:var(--wine); }\n.big-code { font:26px/1.3 ui-monospace,SFMono-Regular,Menlo,monospace; letter-spacing:.08em; }\nul.menu { list-style:none; padding:0; }\nul.menu li { padding:10px 0; border-bottom:1px solid var(--line); display:flex; justify-content:space-between; gap:20px; }\nul.menu li span { color:var(--muted); }\nfooter { border-top:1px solid var(--line); padding:16px 28px; color:var(--muted);\n         font:13px/1.4 -apple-system,sans-serif; }\n</style>\n</head>\n<body>\n<header class=\"site\">\n  <div class=\"brand\">Casa <span>Zeta</span></div>\n  <nav>\n    <a href=\"/\">Inicio</a>\n    <a href=\"/menu\">Menú</a>\n    <a href=\"/disponibilidad\">Disponibilidad</a>\n    <a href=\"/reserva\">Consultar reserva</a>\n  </nav>\n</header>\n<main>\n\n<h1>Consultar reserva</h1>\n<div class=\"notice\">No existe ninguna reserva con el código «».</div>\n<form class=\"card\" method=\"get\" action=\"/reserva\">\n  <div class=\"row\">\n    <div><label for=\"code\">Código de reserva</label>\n      <input id=\"code\" name=\"code\" type=\"text\" value=\"\" placeholder=\"R-XXXXXX\"></div>\n    <button type=\"submit\">Consultar reserva</button>\n  </div>\n</form>\n\n</main>\n<footer>Casa Zeta · Cocina de mercado · Calle del Puerto 14 · 28001 Madrid</footer>\n</body>\n</html>",
+   "json": null
+  },
+  {
+   "id": 5,
+   "step": 6,
+   "kind": "document",
+   "method": "GET",
+   "url": "http://localhost:8002/disponibilidad",
+   "status": 200,
+   "request_content_type": "",
+   "post_data": null,
+   "content_type": "text/html; charset=utf-8",
+   "body": "<!doctype html>\n<html lang=\"es\">\n<head>\n<meta charset=\"utf-8\">\n<meta name=\"viewport\" content=\"width=device-width, initial-scale=1\">\n<title>Disponibilidad · Casa Zeta</title>\n<style>\n:root { --paper:#faf7f0; --ink:#211d17; --muted:#6f675c; --line:#e0d8c8; --wine:#7d2430; --green:#2f6b4f; }\n* { box-sizing:border-box; }\nbody { margin:0; background:var(--paper); color:var(--ink);\n       font:16px/1.6 Georgia,\"Times New Roman\",serif; }\nheader.site { border-bottom:1px solid var(--line); padding:16px 28px; display:flex;\n              align-items:baseline; justify-content:space-between; gap:18px; flex-wrap:wrap; }\nheader.site .brand { font-size:22px; letter-spacing:.02em; }\nheader.site .brand span { color:var(--wine); }\nheader.site nav { display:flex; gap:16px; flex-wrap:wrap; font:14px/1.4 -apple-system,BlinkMacSystemFont,\"Segoe UI\",sans-serif; }\nheader.site nav a { color:var(--muted); text-decoration:none; }\nheader.site nav a:hover { color:var(--wine); }\nmain { max-width:860px; margin:0 auto; padding:32px 28px 70px; }\nh1 { font-size:30px; margin:0 0 8px; letter-spacing:-.01em; }\nh2 { font-size:21px; margin:28px 0 10px; }\np.lead { color:var(--muted); margin-top:0; }\na { color:var(--wine); }\nform.card { border:1px solid var(--line); background:#fffdf8; border-radius:6px; padding:18px; margin:18px 0; }\nform.card .row { display:flex; gap:12px; flex-wrap:wrap; align-items:flex-end; }\nform.card label { display:block; font:13px/1.4 -apple-system,BlinkMacSystemFont,\"Segoe UI\",sans-serif;\n                  color:var(--muted); margin-bottom:4px; }\nform.card input, form.card select { font:inherit; padding:8px 10px; border:1px solid var(--line);\n                  border-radius:4px; background:#fff; min-width:150px; }\nform.card button { font:15px/1 Georgia,serif; padding:10px 18px; border:1px solid var(--wine);\n                  background:var(--wine); color:#fff8ee; border-radius:4px; cursor:pointer; }\nform.card button:hover { background:#651d26; }\ntable.slots { width:100%; border-collapse:collapse; margin:14px 0; }\ntable.slots th, table.slots td { text-align:left; padding:10px 8px; border-bottom:1px solid var(--line); }\ntable.slots a { display:inline-block; padding:5px 12px; border:1px solid var(--line);\n                border-radius:4px; text-decoration:none; font:14px/1.4 -apple-system,sans-serif; }\ntable.slots a:hover { border-color:var(--wine); }\n.notice { padding:14px 16px; border-left:3px solid var(--wine); background:#fffdf8; margin:18px 0; }\n.notice.ok { border-color:var(--green); }\n.notice.error { border-color:var(--wine); }\n.big-code { font:26px/1.3 ui-monospace,SFMono-Regular,Menlo,monospace; letter-spacing:.08em; }\nul.menu { list-style:none; padding:0; }\nul.menu li { padding:10px 0; border-bottom:1px solid var(--line); display:flex; justify-content:space-between; gap:20px; }\nul.menu li span { color:var(--muted); }\nfooter { border-top:1px solid var(--line); padding:16px 28px; color:var(--muted);\n         font:13px/1.4 -apple-system,sans-serif; }\n</style>\n</head>\n<body>\n<header class=\"site\">\n  <div class=\"brand\">Casa <span>Zeta</span></div>\n  <nav>\n    <a href=\"/\">Inicio</a>\n    <a href=\"/menu\">Menú</a>\n    <a href=\"/disponibilidad\">Disponibilidad</a>\n    <a href=\"/reserva\">Consultar reserva</a>\n  </nav>\n</header>\n<main>\n\n<h1>Disponibilidad</h1>\n<p class=\"lead\">Elige fecha y número de comensales. Cada servicio tiene cuatro mesas.</p>\n<form class=\"card\" method=\"get\" action=\"/disponibilidad\">\n  <div class=\"row\">\n    <div><label for=\"date\">Fecha</label>\n      <input id=\"date\" name=\"date\" type=\"date\" value=\"\" required></div>\n    <div><label for=\"people\">Comensales</label>\n      <input id=\"people\" name=\"people\" type=\"number\" min=\"1\" max=\"12\" value=\"\" required></div>\n    <button type=\"submit\">Buscar mesa</button>\n  </div>\n</form>\n\n</main>\n<footer>Casa Zeta · Cocina de mercado · Calle del Puerto 14 · 28001 Madrid</footer>\n</body>\n</html>",
+   "json": null
+  },
+  {
+   "id": 6,
+   "step": 9,
+   "kind": "document",
+   "method": "GET",
+   "url": "http://localhost:8002/disponibilidad?date=2026-10-24&people=1",
+   "status": 200,
+   "request_content_type": "",
+   "post_data": null,
+   "content_type": "text/html; charset=utf-8",
+   "body": "<!doctype html>\n<html lang=\"es\">\n<head>\n<meta charset=\"utf-8\">\n<meta name=\"viewport\" content=\"width=device-width, initial-scale=1\">\n<title>Disponibilidad · Casa Zeta</title>\n<style>\n:root { --paper:#faf7f0; --ink:#211d17; --muted:#6f675c; --line:#e0d8c8; --wine:#7d2430; --green:#2f6b4f; }\n* { box-sizing:border-box; }\nbody { margin:0; background:var(--paper); color:var(--ink);\n       font:16px/1.6 Georgia,\"Times New Roman\",serif; }\nheader.site { border-bottom:1px solid var(--line); padding:16px 28px; display:flex;\n              align-items:baseline; justify-content:space-between; gap:18px; flex-wrap:wrap; }\nheader.site .brand { font-size:22px; letter-spacing:.02em; }\nheader.site .brand span { color:var(--wine); }\nheader.site nav { display:flex; gap:16px; flex-wrap:wrap; font:14px/1.4 -apple-system,BlinkMacSystemFont,\"Segoe UI\",sans-serif; }\nheader.site nav a { color:var(--muted); text-decoration:none; }\nheader.site nav a:hover { color:var(--wine); }\nmain { max-width:860px; margin:0 auto; padding:32px 28px 70px; }\nh1 { font-size:30px; margin:0 0 8px; letter-spacing:-.01em; }\nh2 { font-size:21px; margin:28px 0 10px; }\np.lead { color:var(--muted); margin-top:0; }\na { color:var(--wine); }\nform.card { border:1px solid var(--line); background:#fffdf8; border-radius:6px; padding:18px; margin:18px 0; }\nform.card .row { display:flex; gap:12px; flex-wrap:wrap; align-items:flex-end; }\nform.card label { display:block; font:13px/1.4 -apple-system,BlinkMacSystemFont,\"Segoe UI\",sans-serif;\n                  color:var(--muted); margin-bottom:4px; }\nform.card input, form.card select { font:inherit; padding:8px 10px; border:1px solid var(--line);\n                  border-radius:4px; background:#fff; min-width:150px; }\nform.card button { font:15px/1 Georgia,serif; padding:10px 18px; border:1px solid var(--wine);\n                  background:var(--wine); color:#fff8ee; border-radius:4px; cursor:pointer; }\nform.card button:hover { background:#651d26; }\ntable.slots { width:100%; border-collapse:collapse; margin:14px 0; }\ntable.slots th, table.slots td { text-align:left; padding:10px 8px; border-bottom:1px solid var(--line); }\ntable.slots a { display:inline-block; padding:5px 12px; border:1px solid var(--line);\n                border-radius:4px; text-decoration:none; font:14px/1.4 -apple-system,sans-serif; }\ntable.slots a:hover { border-color:var(--wine); }\n.notice { padding:14px 16px; border-left:3px solid var(--wine); background:#fffdf8; margin:18px 0; }\n.notice.ok { border-color:var(--green); }\n.notice.error { border-color:var(--wine); }\n.big-code { font:26px/1.3 ui-monospace,SFMono-Regular,Menlo,monospace; letter-spacing:.08em; }\nul.menu { list-style:none; padding:0; }\nul.menu li { padding:10px 0; border-bottom:1px solid var(--line); display:flex; justify-content:space-between; gap:20px; }\nul.menu li span { color:var(--muted); }\nfooter { border-top:1px solid var(--line); padding:16px 28px; color:var(--muted);\n         font:13px/1.4 -apple-system,sans-serif; }\n</style>\n</head>\n<body>\n<header class=\"site\">\n  <div class=\"brand\">Casa <span>Zeta</span></div>\n  <nav>\n    <a href=\"/\">Inicio</a>\n    <a href=\"/menu\">Menú</a>\n    <a href=\"/disponibilidad\">Disponibilidad</a>\n    <a href=\"/reserva\">Consultar reserva</a>\n  </nav>\n</header>\n<main>\n\n<h1>Disponibilidad</h1>\n<form class=\"card\" method=\"get\" action=\"/disponibilidad\">\n  <div class=\"row\">\n    <div><label for=\"date\">Fecha</label>\n      <input id=\"date\" name=\"date\" type=\"date\" value=\"2026-10-24\" required></div>\n    <div><label for=\"people\">Comensales</label>\n      <input id=\"people\" name=\"people\" type=\"number\" min=\"1\" max=\"12\" value=\"1\" required></div>\n    <button type=\"submit\">Buscar mesa</button>\n  </div>\n</form>\n<h2>Mesas libres para 1 comensales el 2026-10-24</h2><table class=\"slots\">\n  <thead><tr><th>Hora</th><th>Mesa</th><th></th></tr></thead>\n  <tbody><tr><td>13:00</td><td>1 comensales</td><td><a href=\"/reservar?date=2026-10-24&amp;time=13:00&amp;people=1\">Reservar</a></td></tr><tr><td>14:30</td><td>1 comensales</td><td><a href=\"/reservar?date=2026-10-24&amp;time=14:30&amp;people=1\">Reservar</a></td></tr><tr><td>20:00</td><td>1 comensales</td><td><a href=\"/reservar?date=2026-10-24&amp;time=20:00&amp;people=1\">Reservar</a></td></tr><tr><td>20:30</td><td>1 comensales</td><td><a href=\"/reservar?date=2026-10-24&amp;time=20:30&amp;people=1\">Reservar</a></td></tr><tr><td>21:00</td><td>1 comensales</td><td><a href=\"/reservar?date=2026-10-24&amp;time=21:00&amp;people=1\">Reservar</a></td></tr><tr><td>21:30</td><td>1 comensales</td><td><a href=\"/reservar?date=2026-10-24&amp;time=21:30&amp;people=1\">Reservar</a></td></tr><tr><td>22:00</td><td>1 comensales</td><td><a href=\"/reservar?date=2026-10-24&amp;time=22:00&amp;people=1\">Reservar</a></td></tr></tbody>\n</table>\n\n</main>\n<footer>Casa Zeta · Cocina de mercado · Calle del Puerto 14 · 28001 Madrid</footer>\n</body>\n</html>",
+   "json": null
+  },
+  {
+   "id": 7,
+   "step": 10,
+   "kind": "document",
+   "method": "GET",
+   "url": "http://localhost:8002/reservar?date=2026-10-24&time=13:00&people=1",
+   "status": 200,
+   "request_content_type": "",
+   "post_data": null,
+   "content_type": "text/html; charset=utf-8",
+   "body": "<!doctype html>\n<html lang=\"es\">\n<head>\n<meta charset=\"utf-8\">\n<meta name=\"viewport\" content=\"width=device-width, initial-scale=1\">\n<title>Reservar · Casa Zeta</title>\n<style>\n:root { --paper:#faf7f0; --ink:#211d17; --muted:#6f675c; --line:#e0d8c8; --wine:#7d2430; --green:#2f6b4f; }\n* { box-sizing:border-box; }\nbody { margin:0; background:var(--paper); color:var(--ink);\n       font:16px/1.6 Georgia,\"Times New Roman\",serif; }\nheader.site { border-bottom:1px solid var(--line); padding:16px 28px; display:flex;\n              align-items:baseline; justify-content:space-between; gap:18px; flex-wrap:wrap; }\nheader.site .brand { font-size:22px; letter-spacing:.02em; }\nheader.site .brand span { color:var(--wine); }\nheader.site nav { display:flex; gap:16px; flex-wrap:wrap; font:14px/1.4 -apple-system,BlinkMacSystemFont,\"Segoe UI\",sans-serif; }\nheader.site nav a { color:var(--muted); text-decoration:none; }\nheader.site nav a:hover { color:var(--wine); }\nmain { max-width:860px; margin:0 auto; padding:32px 28px 70px; }\nh1 { font-size:30px; margin:0 0 8px; letter-spacing:-.01em; }\nh2 { font-size:21px; margin:28px 0 10px; }\np.lead { color:var(--muted); margin-top:0; }\na { color:var(--wine); }\nform.card { border:1px solid var(--line); background:#fffdf8; border-radius:6px; padding:18px; margin:18px 0; }\nform.card .row { display:flex; gap:12px; flex-wrap:wrap; align-items:flex-end; }\nform.card label { display:block; font:13px/1.4 -apple-system,BlinkMacSystemFont,\"Segoe UI\",sans-serif;\n                  color:var(--muted); margin-bottom:4px; }\nform.card input, form.card select { font:inherit; padding:8px 10px; border:1px solid var(--line);\n                  border-radius:4px; background:#fff; min-width:150px; }\nform.card button { font:15px/1 Georgia,serif; padding:10px 18px; border:1px solid var(--wine);\n                  background:var(--wine); color:#fff8ee; border-radius:4px; cursor:pointer; }\nform.card button:hover { background:#651d26; }\ntable.slots { width:100%; border-collapse:collapse; margin:14px 0; }\ntable.slots th, table.slots td { text-align:left; padding:10px 8px; border-bottom:1px solid var(--line); }\ntable.slots a { display:inline-block; padding:5px 12px; border:1px solid var(--line);\n                border-radius:4px; text-decoration:none; font:14px/1.4 -apple-system,sans-serif; }\ntable.slots a:hover { border-color:var(--wine); }\n.notice { padding:14px 16px; border-left:3px solid var(--wine); background:#fffdf8; margin:18px 0; }\n.notice.ok { border-color:var(--green); }\n.notice.error { border-color:var(--wine); }\n.big-code { font:26px/1.3 ui-monospace,SFMono-Regular,Menlo,monospace; letter-spacing:.08em; }\nul.menu { list-style:none; padding:0; }\nul.menu li { padding:10px 0; border-bottom:1px solid var(--line); display:flex; justify-content:space-between; gap:20px; }\nul.menu li span { color:var(--muted); }\nfooter { border-top:1px solid var(--line); padding:16px 28px; color:var(--muted);\n         font:13px/1.4 -apple-system,sans-serif; }\n</style>\n</head>\n<body>\n<header class=\"site\">\n  <div class=\"brand\">Casa <span>Zeta</span></div>\n  <nav>\n    <a href=\"/\">Inicio</a>\n    <a href=\"/menu\">Menú</a>\n    <a href=\"/disponibilidad\">Disponibilidad</a>\n    <a href=\"/reserva\">Consultar reserva</a>\n  </nav>\n</header>\n<main>\n\n<h1>Reservar mesa</h1>\n<p class=\"lead\">Déjanos tus datos y te guardamos la mesa.</p>\n<form class=\"card\" method=\"post\" action=\"/reservar\">\n  <input type=\"hidden\" name=\"csrf_token\" value=\"2bd89d0ffd95e0d95d1443e514217c9d\">\n  <div class=\"row\">\n    <div><label for=\"name\">Nombre</label>\n      <input id=\"name\" name=\"name\" type=\"text\" required></div>\n    <div><label for=\"phone\">Teléfono</label>\n      <input id=\"phone\" name=\"phone\" type=\"tel\" required></div>\n  </div>\n  <div class=\"row\" style=\"margin-top:12px\">\n    <div><label for=\"date\">Fecha</label>\n      <input id=\"date\" name=\"date\" type=\"date\" value=\"2026-10-24\" required></div>\n    <div><label for=\"time\">Hora</label>\n      <select id=\"time\" name=\"time\"><option value=\"13:00\" selected>13:00</option><option value=\"13:30\">13:30</option><option value=\"14:00\">14:00</option><option value=\"14:30\">14:30</option><option value=\"20:00\">20:00</option><option value=\"20:30\">20:30</option><option value=\"21:00\">21:00</option><option value=\"21:30\">21:30</option><option value=\"22:00\">22:00</option></select></div>\n    <div><label for=\"people\">Comensales</label>\n      <input id=\"people\" name=\"people\" type=\"number\" min=\"1\" max=\"12\" value=\"1\" required></div>\n    <button type=\"submit\">Confirmar reserva</button>\n  </div>\n</form>\n<p><a href=\"/disponibilidad?date=2026-10-24&amp;people=1\">Ver otras horas</a></p>\n\n</main>\n<footer>Casa Zeta · Cocina de mercado · Calle del Puerto 14 · 28001 Madrid</footer>\n</body>\n</html>",
+   "json": null
+  },
+  {
+   "id": 8,
+   "step": 16,
+   "kind": "document",
+   "method": "POST",
+   "url": "http://localhost:8002/reservar",
+   "status": 200,
+   "request_content_type": "application/x-www-form-urlencoded",
+   "post_data": "csrf_token=2bd89d0ffd95e0d95d1443e514217c9d&name=zxq_name&phone=600123456&date=2026-10-24&time=13%3A00&people=1",
+   "content_type": "text/html; charset=utf-8",
+   "body": "<!doctype html>\n<html lang=\"es\">\n<head>\n<meta charset=\"utf-8\">\n<meta name=\"viewport\" content=\"width=device-width, initial-scale=1\">\n<title>Reserva confirmada · Casa Zeta</title>\n<style>\n:root { --paper:#faf7f0; --ink:#211d17; --muted:#6f675c; --line:#e0d8c8; --wine:#7d2430; --green:#2f6b4f; }\n* { box-sizing:border-box; }\nbody { margin:0; background:var(--paper); color:var(--ink);\n       font:16px/1.6 Georgia,\"Times New Roman\",serif; }\nheader.site { border-bottom:1px solid var(--line); padding:16px 28px; display:flex;\n              align-items:baseline; justify-content:space-between; gap:18px; flex-wrap:wrap; }\nheader.site .brand { font-size:22px; letter-spacing:.02em; }\nheader.site .brand span { color:var(--wine); }\nheader.site nav { display:flex; gap:16px; flex-wrap:wrap; font:14px/1.4 -apple-system,BlinkMacSystemFont,\"Segoe UI\",sans-serif; }\nheader.site nav a { color:var(--muted); text-decoration:none; }\nheader.site nav a:hover { color:var(--wine); }\nmain { max-width:860px; margin:0 auto; padding:32px 28px 70px; }\nh1 { font-size:30px; margin:0 0 8px; letter-spacing:-.01em; }\nh2 { font-size:21px; margin:28px 0 10px; }\np.lead { color:var(--muted); margin-top:0; }\na { color:var(--wine); }\nform.card { border:1px solid var(--line); background:#fffdf8; border-radius:6px; padding:18px; margin:18px 0; }\nform.card .row { display:flex; gap:12px; flex-wrap:wrap; align-items:flex-end; }\nform.card label { display:block; font:13px/1.4 -apple-system,BlinkMacSystemFont,\"Segoe UI\",sans-serif;\n                  color:var(--muted); margin-bottom:4px; }\nform.card input, form.card select { font:inherit; padding:8px 10px; border:1px solid var(--line);\n                  border-radius:4px; background:#fff; min-width:150px; }\nform.card button { font:15px/1 Georgia,serif; padding:10px 18px; border:1px solid var(--wine);\n                  background:var(--wine); color:#fff8ee; border-radius:4px; cursor:pointer; }\nform.card button:hover { background:#651d26; }\ntable.slots { width:100%; border-collapse:collapse; margin:14px 0; }\ntable.slots th, table.slots td { text-align:left; padding:10px 8px; border-bottom:1px solid var(--line); }\ntable.slots a { display:inline-block; padding:5px 12px; border:1px solid var(--line);\n                border-radius:4px; text-decoration:none; font:14px/1.4 -apple-system,sans-serif; }\ntable.slots a:hover { border-color:var(--wine); }\n.notice { padding:14px 16px; border-left:3px solid var(--wine); background:#fffdf8; margin:18px 0; }\n.notice.ok { border-color:var(--green); }\n.notice.error { border-color:var(--wine); }\n.big-code { font:26px/1.3 ui-monospace,SFMono-Regular,Menlo,monospace; letter-spacing:.08em; }\nul.menu { list-style:none; padding:0; }\nul.menu li { padding:10px 0; border-bottom:1px solid var(--line); display:flex; justify-content:space-between; gap:20px; }\nul.menu li span { color:var(--muted); }\nfooter { border-top:1px solid var(--line); padding:16px 28px; color:var(--muted);\n         font:13px/1.4 -apple-system,sans-serif; }\n</style>\n</head>\n<body>\n<header class=\"site\">\n  <div class=\"brand\">Casa <span>Zeta</span></div>\n  <nav>\n    <a href=\"/\">Inicio</a>\n    <a href=\"/menu\">Menú</a>\n    <a href=\"/disponibilidad\">Disponibilidad</a>\n    <a href=\"/reserva\">Consultar reserva</a>\n  </nav>\n</header>\n<main>\n\n<h1>Reserva confirmada</h1>\n<div class=\"notice ok\">\n  <p>Gracias, zxq_name. Te esperamos el <strong>2026-10-24</strong>\n  a las <strong>13:00</strong> para <strong>1</strong> comensales.</p>\n  <p>Tu código de reserva es <span class=\"big-code\">R-B14FBD</span></p>\n</div>\n<p><a href=\"/reserva?code=R-B14FBD\">Consultar esta reserva</a> · <a href=\"/menu\">Ver el menú</a></p>\n\n</main>\n<footer>Casa Zeta · Cocina de mercado · Calle del Puerto 14 · 28001 Madrid</footer>\n</body>\n</html>",
+   "json": null
+  },
+  {
+   "id": 9,
+   "step": 17,
+   "kind": "document",
+   "method": "GET",
+   "url": "http://localhost:8002/menu",
+   "status": 200,
+   "request_content_type": "",
+   "post_data": null,
+   "content_type": "text/html; charset=utf-8",
+   "body": "<!doctype html>\n<html lang=\"es\">\n<head>\n<meta charset=\"utf-8\">\n<meta name=\"viewport\" content=\"width=device-width, initial-scale=1\">\n<title>Menú · Casa Zeta</title>\n<style>\n:root { --paper:#faf7f0; --ink:#211d17; --muted:#6f675c; --line:#e0d8c8; --wine:#7d2430; --green:#2f6b4f; }\n* { box-sizing:border-box; }\nbody { margin:0; background:var(--paper); color:var(--ink);\n       font:16px/1.6 Georgia,\"Times New Roman\",serif; }\nheader.site { border-bottom:1px solid var(--line); padding:16px 28px; display:flex;\n              align-items:baseline; justify-content:space-between; gap:18px; flex-wrap:wrap; }\nheader.site .brand { font-size:22px; letter-spacing:.02em; }\nheader.site .brand span { color:var(--wine); }\nheader.site nav { display:flex; gap:16px; flex-wrap:wrap; font:14px/1.4 -apple-system,BlinkMacSystemFont,\"Segoe UI\",sans-serif; }\nheader.site nav a { color:var(--muted); text-decoration:none; }\nheader.site nav a:hover { color:var(--wine); }\nmain { max-width:860px; margin:0 auto; padding:32px 28px 70px; }\nh1 { font-size:30px; margin:0 0 8px; letter-spacing:-.01em; }\nh2 { font-size:21px; margin:28px 0 10px; }\np.lead { color:var(--muted); margin-top:0; }\na { color:var(--wine); }\nform.card { border:1px solid var(--line); background:#fffdf8; border-radius:6px; padding:18px; margin:18px 0; }\nform.card .row { display:flex; gap:12px; flex-wrap:wrap; align-items:flex-end; }\nform.card label { display:block; font:13px/1.4 -apple-system,BlinkMacSystemFont,\"Segoe UI\",sans-serif;\n                  color:var(--muted); margin-bottom:4px; }\nform.card input, form.card select { font:inherit; padding:8px 10px; border:1px solid var(--line);\n                  border-radius:4px; background:#fff; min-width:150px; }\nform.card button { font:15px/1 Georgia,serif; padding:10px 18px; border:1px solid var(--wine);\n                  background:var(--wine); color:#fff8ee; border-radius:4px; cursor:pointer; }\nform.card button:hover { background:#651d26; }\ntable.slots { width:100%; border-collapse:collapse; margin:14px 0; }\ntable.slots th, table.slots td { text-align:left; padding:10px 8px; border-bottom:1px solid var(--line); }\ntable.slots a { display:inline-block; padding:5px 12px; border:1px solid var(--line);\n                border-radius:4px; text-decoration:none; font:14px/1.4 -apple-system,sans-serif; }\ntable.slots a:hover { border-color:var(--wine); }\n.notice { padding:14px 16px; border-left:3px solid var(--wine); background:#fffdf8; margin:18px 0; }\n.notice.ok { border-color:var(--green); }\n.notice.error { border-color:var(--wine); }\n.big-code { font:26px/1.3 ui-monospace,SFMono-Regular,Menlo,monospace; letter-spacing:.08em; }\nul.menu { list-style:none; padding:0; }\nul.menu li { padding:10px 0; border-bottom:1px solid var(--line); display:flex; justify-content:space-between; gap:20px; }\nul.menu li span { color:var(--muted); }\nfooter { border-top:1px solid var(--line); padding:16px 28px; color:var(--muted);\n         font:13px/1.4 -apple-system,sans-serif; }\n</style>\n</head>\n<body>\n<header class=\"site\">\n  <div class=\"brand\">Casa <span>Zeta</span></div>\n  <nav>\n    <a href=\"/\">Inicio</a>\n    <a href=\"/menu\">Menú</a>\n    <a href=\"/disponibilidad\">Disponibilidad</a>\n    <a href=\"/reserva\">Consultar reserva</a>\n  </nav>\n</header>\n<main>\n\n<h1>Menú de la semana</h1>\n<p class=\"lead\">Trienta euros por persona. Pan de masa madre y aperitivo incluidos.</p>\n<ul class=\"menu\">\n  <li><strong>Alcachofas a la brasa</strong><span>romesco, avellana tostada</span></li>\n  <li><strong>Croquetas de jamón</strong><span>6 unidades</span></li>\n  <li><strong>Merluza del pincho</strong><span>pil-pil de perejil</span></li>\n  <li><strong>Costilla de cerdo ibérico</strong><span>puré de manzana asada</span></li>\n  <li><strong>Tarta de queso</strong><span>mermelada de tomate</span></li>\n</ul>\n<p><a href=\"/disponibilidad\">Reservar mesa</a></p>\n\n</main>\n<footer>Casa Zeta · Cocina de mercado · Calle del Puerto 14 · 28001 Madrid</footer>\n</body>\n</html>",
+   "json": null
+  }
+ ],
+ "candidates": [
+  {
+   "request_ids": [
+    2,
+    3
+   ],
+   "method": "GET",
+   "origin": "http://localhost:8002",
+   "path": "/reserva",
+   "query": [
+    [
+     "code",
+     "{code}"
+    ]
+   ],
+   "body_type": null,
+   "body": null,
+   "params": [
+    {
+     "name": "code",
+     "type": "string",
+     "example": "zxq_code",
+     "location": "query",
+     "key": "code",
+     "source": "input",
+     "label": "Código de reserva"
+    }
+   ],
+   "literals": [
+    {
+     "location": "path",
+     "key": null,
+     "value": "reserva"
+    }
+   ],
+   "status": 200,
+   "content_type": "text/html",
+   "response_preview": "Consultar reserva\nNo existe ninguna reserva con el código «zxq_code».\nCódigo de reserva\nConsultar reserva",
+   "step": 2,
+   "csrf_fields": [],
+   "browser": {
+    "start_url": "http://localhost:8002/",
+    "steps": [
+     {
+      "action": "fill",
+      "selector": "#code",
+      "value": "{code}"
+     },
+     {
+      "action": "click",
+      "selector": "form[action=\"/reserva\"] button[type=\"submit\"]"
+     }
+    ],
+    "extract": "main",
+    "params": [
+     {
+      "name": "code",
+      "type": "string",
+      "example": "zxq_code",
+      "location": "query",
+      "key": "code",
+      "source": "input",
+      "label": "Código de reserva"
+     }
+    ]
+   },
+   "variants": 2,
+   "id": "c1",
+   "trigger": "click [8] button \"Consultar reserva\"",
+   "url": "http://localhost:8002/reserva?code={code}"
+  },
+  {
+   "request_ids": [
+    6
+   ],
+   "method": "GET",
+   "origin": "http://localhost:8002",
+   "path": "/disponibilidad",
+   "query": [
+    [
+     "date",
+     "{date}"
+    ],
+    [
+     "people",
+     "{people}"
+    ]
+   ],
+   "body_type": null,
+   "body": null,
+   "params": [
+    {
+     "name": "date",
+     "type": "string",
+     "format": "date",
+     "example": "2026-10-24",
+     "location": "query",
+     "key": "date",
+     "source": "input",
+     "label": "Fecha"
+    },
+    {
+     "name": "people",
+     "type": "integer",
+     "example": "1",
+     "location": "query",
+     "key": "people",
+     "source": "input",
+     "label": "Comensales"
+    }
+   ],
+   "literals": [
+    {
+     "location": "path",
+     "key": null,
+     "value": "disponibilidad"
+    }
+   ],
+   "status": 200,
+   "content_type": "text/html",
+   "response_preview": "Disponibilidad\nFecha\nComensales\nBuscar mesa\nMesas libres para 1 comensales el 2026-10-24\nHora | Mesa | | \n13:00 | 1 comensales | [/reservar?date=2026-10-24&time=13:00&people=1] Reservar | \n14:30 | 1 comensales | [/reservar?date=2026-10-24&time=14:30&people=1] Reservar | \n20:00 | 1 comensales | [/reservar?date=2026-10-24&time=20:00&people=1] Reservar | \n20:30 | 1 comensales | [/reservar?date=2026-10-24&time=20:30&people=1] Reservar | \n21:00 | 1 comensales | [/reservar?date=2026-10-24&time=21:00&people=1] Reservar | \n21:30 | 1 comensales | [/reservar?date=2026-10-24&time=21:30&people=1] Reservar",
+   "step": 9,
+   "csrf_fields": [],
+   "browser": {
+    "start_url": "http://localhost:8002/disponibilidad",
+    "steps": [
+     {
+      "action": "fill",
+      "selector": "#date",
+      "value": "{date}"
+     },
+     {
+      "action": "fill",
+      "selector": "#people",
+      "value": "{people}"
+     },
+     {
+      "action": "click",
+      "selector": "form[action=\"/disponibilidad\"] button[type=\"submit\"]"
+     }
+    ],
+    "extract": "main",
+    "params": [
+     {
+      "name": "date",
+      "type": "string",
+      "format": "date",
+      "example": "2026-10-24",
+      "location": "query",
+      "key": "date",
+      "source": "input",
+      "label": "Fecha"
+     },
+     {
+      "name": "people",
+      "type": "integer",
+      "example": "1",
+      "location": "query",
+      "key": "people",
+      "source": "input",
+      "label": "Comensales"
+     }
+    ]
+   },
+   "variants": 1,
+   "id": "c2",
+   "trigger": "click [7] button \"Buscar mesa\"",
+   "url": "http://localhost:8002/disponibilidad?date={date}&people={people}"
+  },
+  {
+   "request_ids": [
+    8
+   ],
+   "method": "POST",
+   "origin": "http://localhost:8002",
+   "path": "/reservar",
+   "query": [],
+   "body_type": "form",
+   "body": {
+    "csrf_token": "2bd89d0ffd95e0d95d1443e514217c9d",
+    "name": "{name}",
+    "phone": "{phone}",
+    "date": "{date}",
+    "time": "{time}",
+    "people": "{people}"
+   },
+   "params": [
+    {
+     "name": "name",
+     "type": "string",
+     "example": "zxq_name",
+     "location": "body",
+     "key": "name",
+     "source": "input",
+     "label": "Nombre"
+    },
+    {
+     "name": "phone",
+     "type": "string",
+     "example": "600123456",
+     "location": "body",
+     "key": "phone",
+     "source": "input",
+     "label": "Teléfono"
+    },
+    {
+     "name": "date",
+     "type": "string",
+     "format": "date",
+     "example": "2026-10-24",
+     "location": "body",
+     "key": "date",
+     "source": "input",
+     "label": "Fecha"
+    },
+    {
+     "name": "time",
+     "type": "string",
+     "enum": [
+      "13:00",
+      "13:30",
+      "14:00",
+      "14:30",
+      "20:00",
+      "20:30",
+      "21:00",
+      "21:30",
+      "22:00"
+     ],
+     "example": "13:00",
+     "location": "body",
+     "key": "time",
+     "source": "input",
+     "label": "Hora"
+    },
+    {
+     "name": "people",
+     "type": "integer",
+     "example": "1",
+     "location": "body",
+     "key": "people",
+     "source": "input",
+     "label": "Comensales"
+    }
+   ],
+   "literals": [
+    {
+     "location": "path",
+     "key": null,
+     "value": "reservar"
+    },
+    {
+     "location": "body",
+     "key": "csrf_token",
+     "value": "2bd89d0ffd95e0d95d1443e514217c9d"
+    }
+   ],
+   "status": 200,
+   "content_type": "text/html",
+   "response_preview": "Reserva confirmada\nGracias, zxq_name. Te esperamos el 2026-10-24\n a las 13:00 para 1 comensales.\nTu código de reserva es R-B14FBD\n [/reserva?code=R-B14FBD] Consultar esta reserva · [/menu] Ver el menú",
+   "step": 16,
+   "csrf_fields": [
+    "csrf_token"
+   ],
+   "browser": {
+    "start_url": "http://localhost:8002/reservar?date=2026-10-24&time=13:00&people=1",
+    "steps": [
+     {
+      "action": "fill",
+      "selector": "#name",
+      "value": "{name}"
+     },
+     {
+      "action": "fill",
+      "selector": "#phone",
+      "value": "{phone}"
+     },
+     {
+      "action": "fill",
+      "selector": "#date",
+      "value": "{date}"
+     },
+     {
+      "action": "select",
+      "selector": "#time",
+      "value": "{time}"
+     },
+     {
+      "action": "fill",
+      "selector": "#people",
+      "value": "{people}"
+     },
+     {
+      "action": "click",
+      "selector": "form[action=\"/reservar\"] button[type=\"submit\"]"
+     }
+    ],
+    "extract": "main",
+    "params": [
+     {
+      "name": "name",
+      "type": "string",
+      "example": "zxq_name",
+      "location": "body",
+      "key": "name",
+      "source": "input",
+      "label": "Nombre"
+     },
+     {
+      "name": "phone",
+      "type": "string",
+      "example": "600123456",
+      "location": "body",
+      "key": "phone",
+      "source": "input",
+      "label": "Teléfono"
+     },
+     {
+      "name": "date",
+      "type": "string",
+      "format": "date",
+      "example": "2026-10-24",
+      "location": "body",
+      "key": "date",
+      "source": "input",
+      "label": "Fecha"
+     },
+     {
+      "name": "time",
+      "type": "string",
+      "enum": [
+       "13:00",
+       "13:30",
+       "14:00",
+       "14:30",
+       "20:00",
+       "20:30",
+       "21:00",
+       "21:30",
+       "22:00"
+      ],
+      "example": "13:00",
+      "location": "body",
+      "key": "time",
+      "source": "input",
+      "label": "Hora"
+     },
+     {
+      "name": "people",
+      "type": "integer",
+      "example": "1",
+      "location": "body",
+      "key": "people",
+      "source": "input",
+      "label": "Comensales"
+     }
+    ]
+   },
+   "variants": 1,
+   "id": "c3",
+   "trigger": "click [10] button \"Confirmar reserva\"",
+   "url": "http://localhost:8002/reservar"
+  }
+ ],
+ "dependencies": []
+}
