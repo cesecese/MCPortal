@@ -9,7 +9,7 @@ import asyncio
 import json
 import os
 import re
-from dataclasses import dataclass, field
+from dataclasses import dataclass
 from typing import Any
 from urllib.parse import quote, urlsplit
 
@@ -84,8 +84,10 @@ def build_url(template: str, args: dict[str, Any]) -> str:
             continue
         if pure:
             pairs.append(f"{key}={_substitute(value, args, url_encode=True)}")
+        elif "=" in pair:
+            pairs.append(f"{key}={_substitute(value, args, url_encode=True)}")
         else:
-            pairs.append(f"{key}={value}" if "=" in pair else key)
+            pairs.append(key)
     url = _substitute(base, args, url_encode=True)
     return f"{url}?{'&'.join(pairs)}" if pairs else url
 
@@ -222,7 +224,7 @@ def finish_text(text: str) -> str:
 
 def _user_agent() -> str:
     contact = os.environ.get("MCPORTAL_CONTACT")
-    return f"{USER_AGENT}; {contact})" if contact else f"{USER_AGENT.rstrip(')')})"
+    return USER_AGENT.replace(")", f"; {contact})") if contact else USER_AGENT
 
 
 # --------------------------------------------------------------------------------- http
@@ -265,6 +267,7 @@ class BrowserSession:
     def __init__(self) -> None:
         self._playwright: Any = None
         self._browser: Any = None
+        self._context: Any = None
         self._lock = asyncio.Lock()
 
     @classmethod
@@ -282,9 +285,16 @@ class BrowserSession:
                 self._browser = await self._playwright.chromium.launch(
                     headless=os.environ.get("MCPORTAL_HEADED") != "1"
                 )
-        return self._browser
+            if self._context is None:
+                self._context = await self._browser.new_context(
+                    locale="es-ES", viewport={"width": 1280, "height": 860}
+                )
+        return self._context
 
     async def close(self) -> None:
+        if self._context is not None:
+            await self._context.close()
+            self._context = None
         if self._browser is not None:
             await self._browser.close()
             self._browser = None
@@ -304,8 +314,7 @@ def _same_host(url: str, base: str) -> bool:
 async def run_browser(tool: dict[str, Any], args: dict[str, Any]) -> Result:
     impl = tool["impl"]
     start_url = _substitute(impl.get("start_url") or "", args, url_encode=True)
-    browser = await BrowserSession.instance()._ensure()
-    context = await browser.new_context(locale="es-ES", viewport={"width": 1280, "height": 860})
+    context = await BrowserSession.instance()._ensure()
     page = await context.new_page()
     statuses: list[int] = []
 
@@ -355,7 +364,7 @@ async def run_browser(tool: dict[str, Any], args: dict[str, Any]) -> Result:
             text = await page.locator("body").inner_text(timeout=5_000)
         current = page.url
     finally:
-        await context.close()
+        await page.close()
 
     last_status = statuses[-1] if statuses else None
     ok = last_status is None or last_status < 400

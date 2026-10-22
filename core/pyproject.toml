@@ -21,7 +21,7 @@ dependencies = [
 [project.optional-dependencies]
 # El SDK del proveedor de LLM se instala aparte (depende del proveedor elegido).
 # Ejemplo: pip install -e "core[llm]" tras añadir aquí el paquete correspondiente.
-llm = []
+llm = ["anthropic>=0.40"]
 
 [tool.setuptools.packages.find]
 where = ["."]

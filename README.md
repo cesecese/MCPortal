@@ -60,6 +60,17 @@ bash start.sh
 | `MCPORTAL_CONTACT` | Contacto que se añade al User-Agent |
 | `MCPORTAL_ALLOW_WRITES=1` | Quitar el modo solo lectura (nunca en webs reales de terceros) |
 
+## LLM (opcional)
+
+Sin clave todo funciona en modo determinista. Con Anthropic:
+
+```bash
+pip install -e "core[llm]"
+export MCPORTAL_LLM_PROVIDER=anthropic
+export MCPORTAL_MODEL=<modelo>          # obligatorio: los nombres cambian por versión
+export MCPORTAL_LLM_API_KEY=<clave>
+```
+
 ## Estructura
 
 ```

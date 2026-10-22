@@ -29,7 +29,7 @@ BASE_URL_ENV = "MCPORTAL_LLM_BASE_URL"
 DEFAULT_MODELS = {
     "openai": "gpt-5",
     "openai_compatible": "gpt-5",
-    "anthropic": "claude-sonnet-4-6",
+    "anthropic": "",  # se exige MCPORTAL_MODEL: los nombres cambian por versión
 }
 STANDARD_KEY_VARS = {
     "openai": ("OPENAI_API_KEY",),
@@ -161,6 +161,7 @@ class Conversation:
         effort: str = "low",
         model_name: str | None = None,
         max_tokens: int = MAX_OUTPUT_TOKENS_AGENT,
+        tool_choice: dict[str, Any] | None = None,
     ) -> None:
         if not available(model_name):
             raise LLMUnavailable(
@@ -172,6 +173,7 @@ class Conversation:
         self.tools = list(tools or [])
         self.effort = _normalise_effort(effort)
         self.max_tokens = max_tokens
+        self.tool_choice = tool_choice
         self.messages: list[dict[str, Any]] = []
         self._raw_messages: list[Any] = []
 
@@ -281,6 +283,8 @@ class Conversation:
                 }
                 for tool in self.tools
             ]
+            if self.tool_choice:
+                payload["tool_choice"] = self.tool_choice
         try:
             response = client.messages.create(**payload)
         except Exception as exc:
@@ -336,6 +340,7 @@ def structured(
         effort=effort,
         model_name=model_name,
         max_tokens=MAX_OUTPUT_TOKENS_STRUCTURED,
+        tool_choice={"type": "tool", "name": "responder"},
     )
     if conversation.provider in ("openai", "openai_compatible"):
         client = conversation._openai_client()  # noqa: SLF001 - mismo módulo
