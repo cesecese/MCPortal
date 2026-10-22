@@ -76,15 +76,15 @@
   margin-left: auto;
 }
 
-.nav__library-mobile {
+.nav__how-mobile {
   display: none;
 }
 
-.btn.nav__library-mobile {
+.btn.nav__how-mobile {
   display: none;
 }
 
-.nav__library-mobile.is-active {
+.nav__how-mobile.is-active {
   background: var(--surface-2);
   color: var(--ink);
 }
@@ -158,11 +158,11 @@
     display: none;
   }
 
-  .nav__library-mobile {
+  .nav__how-mobile {
     display: inline-flex;
   }
 
-  .btn.nav__library-mobile {
+  .btn.nav__how-mobile {
     display: inline-flex;
   }
 

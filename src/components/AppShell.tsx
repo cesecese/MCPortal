@@ -30,21 +30,21 @@ export function AppShell({ children }: { children: ReactNode }) {
               Explorar
             </Link>
             <Link
-              href="/biblioteca"
-              className={pathname.startsWith('/biblioteca') ? 'nav__link is-active' : 'nav__link'}
+              href="/como-funciona"
+              className={pathname.startsWith('/como-funciona') ? 'nav__link is-active' : 'nav__link'}
             >
-              Biblioteca
+              Cómo funciona
             </Link>
           </nav>
 
           <div className="nav__actions">
             <Link
-              href="/biblioteca"
-              className={`btn btn--ghost btn--sm btn--icon nav__library-mobile${pathname.startsWith('/biblioteca') ? ' is-active' : ''}`}
-              aria-label="Biblioteca"
-              title="Biblioteca"
+              href="/como-funciona"
+              className={`btn btn--ghost btn--sm btn--icon nav__how-mobile${pathname.startsWith('/como-funciona') ? ' is-active' : ''}`}
+              aria-label="Cómo funciona"
+              title="Cómo funciona"
             >
-              <Icon name="inbox" size={16} />
+              <Icon name="route" size={16} />
             </Link>
             {pathname !== '/crear' && (
               <Link href="/crear" className="btn btn--primary btn--sm">
