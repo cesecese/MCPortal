@@ -1,0 +1,224 @@
+{
+  "site": "localhost:8001",
+  "start_url": "http://localhost:8001/",
+  "synthesis": "heuristic",
+  "validated_at": "2026-10-22 10:30:00",
+  "slug": "ejemplo",
+  "display_name": "Manifiesto de ejemplo",
+  "version": "0.1.0",
+  "category": "desarrollo",
+  "tags": ["ejemplo", "carrito", "reservas"],
+  "license": "MIT",
+  "author": "equipo",
+  "mode": "read_write",
+  "generated_with": "mcportal-core 0.1",
+  "tools": [
+    {
+      "name": "crates_search_crates",
+      "description": "Busca crates (paquetes de Rust) en crates.io por texto libre. Web real de solo lectura: devuelve id, nombre, descripción y descargas de cada crate.",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "query": {"type": "string", "description": "Texto a buscar (nombre o descripción)"},
+          "per_page": {"type": "integer", "description": "Resultados por página", "default": 10}
+        },
+        "required": ["query"]
+      },
+      "impl": {
+        "kind": "http",
+        "method": "GET",
+        "url": "https://crates.io/api/v1/crates?q={query}&per_page={per_page}&page=1&sort=relevance"
+      },
+      "examples": {"query": "http client", "per_page": 5}
+    },
+    {
+      "name": "libreria_zeta_list_categories",
+      "description": "Lista las categorías de la librería con su id y nombre. No necesita parámetros.",
+      "input_schema": {"type": "object", "properties": {}, "required": []},
+      "impl": {
+        "kind": "http",
+        "method": "GET",
+        "url": "http://localhost:8001/api/categories"
+      }
+    },
+    {
+      "name": "libreria_zeta_search_products",
+      "description": "Busca libros por título o autor y opcionalmente filtra por categoría. Devuelve una lista de resultados con id, título, autor, categoría y precio; usa results[0].id como product_id.",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "query": {"type": "string", "description": "Texto a buscar en el título o el autor (vacío u omitido: todos)"},
+          "category": {"type": "string", "description": "Id de categoría: scifi, fantasy, history, programming"}
+        },
+        "required": []
+      },
+      "impl": {
+        "kind": "http",
+        "method": "GET",
+        "url": "http://localhost:8001/api/search?q={query}&category={category}"
+      },
+      "examples": {"query": "asimov"}
+    },
+    {
+      "name": "libreria_zeta_get_product",
+      "description": "Devuelve la ficha de un libro (descripción, precio y stock). El product_id se obtiene con libreria_zeta_search_products.",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "product_id": {"type": "string", "description": "Id del libro, por ejemplo bk-1001"}
+        },
+        "required": ["product_id"]
+      },
+      "impl": {
+        "kind": "http",
+        "method": "GET",
+        "url": "http://localhost:8001/api/products/{product_id}"
+      },
+      "examples": {"product_id": "bk-1001"}
+    },
+    {
+      "name": "libreria_zeta_create_cart",
+      "description": "Crea un carrito vacío y devuelve su cart_id. Ese id es necesario para añadir artículos y para el checkout.",
+      "input_schema": {"type": "object", "properties": {}, "required": []},
+      "impl": {
+        "kind": "http",
+        "method": "POST",
+        "url": "http://localhost:8001/api/cart"
+      }
+    },
+    {
+      "name": "libreria_zeta_get_cart",
+      "description": "Consulta un carrito: artículos, cantidades, subtotales, total y estado. Requiere un cart_id obtenido con libreria_zeta_create_cart.",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "cart_id": {"type": "string", "description": "Id del carrito, por ejemplo cart_8f2c1a3b"}
+        },
+        "required": ["cart_id"]
+      },
+      "impl": {
+        "kind": "http",
+        "method": "GET",
+        "url": "http://localhost:8001/api/cart/{cart_id}"
+      }
+    },
+    {
+      "name": "libreria_zeta_add_to_cart",
+      "description": "Añade un libro a un carrito. Requiere un cart_id obtenido con libreria_zeta_create_cart y un product_id obtenido con libreria_zeta_search_products. Devuelve el carrito actualizado con el total.",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "cart_id": {"type": "string", "description": "Id del carrito, por ejemplo cart_8f2c1a3b"},
+          "product_id": {"type": "string", "description": "Id del libro, por ejemplo bk-1001"},
+          "qty": {"type": "integer", "description": "Unidades (1 o más)", "default": 1}
+        },
+        "required": ["cart_id", "product_id"]
+      },
+      "impl": {
+        "kind": "http",
+        "method": "POST",
+        "url": "http://localhost:8001/api/cart/{cart_id}/items",
+        "body_type": "json",
+        "body": {"product_id": "{product_id}", "qty": "{qty}"},
+        "headers": {}
+      },
+      "examples": {"product_id": "bk-1001", "qty": 1},
+      "depends_on": [
+        {"param": "cart_id", "tool": "libreria_zeta_create_cart", "path": "cart_id"},
+        {"param": "product_id", "tool": "libreria_zeta_search_products", "path": "results[0].id"}
+      ]
+    },
+    {
+      "name": "libreria_zeta_checkout",
+      "description": "Finaliza la compra de un carrito con nombre y email del cliente. Requiere un cart_id obtenido con libreria_zeta_create_cart y un carrito con artículos. Devuelve el order_id y el total.",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "cart_id": {"type": "string", "description": "Id del carrito, por ejemplo cart_8f2c1a3b"},
+          "name": {"type": "string", "description": "Nombre del cliente"},
+          "email": {"type": "string", "description": "Email del cliente"}
+        },
+        "required": ["cart_id", "name", "email"]
+      },
+      "impl": {
+        "kind": "http",
+        "method": "POST",
+        "url": "http://localhost:8001/api/cart/{cart_id}/checkout",
+        "body_type": "json",
+        "body": {"name": "{name}", "email": "{email}"}
+      },
+      "examples": {"name": "Ada Lovelace", "email": "ada@example.com"},
+      "depends_on": [
+        {"param": "cart_id", "tool": "libreria_zeta_create_cart", "path": "cart_id"}
+      ]
+    },
+    {
+      "name": "casa_zeta_check_availability",
+      "description": "Consulta las horas libres para reservar mesa en el restaurante. Devuelve la tabla de horas disponibles para esa fecha y número de personas. La fecha va en formato YYYY-MM-DD.",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "date": {"type": "string", "format": "date", "description": "Fecha de la reserva, formato YYYY-MM-DD"},
+          "people": {"type": "integer", "description": "Número de comensales (1 a 12)"}
+        },
+        "required": ["date", "people"]
+      },
+      "impl": {
+        "kind": "http",
+        "method": "GET",
+        "url": "http://localhost:8002/disponibilidad?date={date}&people={people}"
+      },
+      "examples": {"date": "2026-10-24", "people": 4}
+    },
+    {
+      "name": "casa_zeta_book_table",
+      "description": "Reserva una mesa en el restaurante y devuelve el código de reserva. Requiere una fecha (YYYY-MM-DD), una hora de las disponibles, el número de comensales, nombre y teléfono. Usa casa_zeta_check_availability para conocer las horas libres.",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "name": {"type": "string", "description": "Nombre de quien reserva"},
+          "phone": {"type": "string", "description": "Teléfono de contacto"},
+          "date": {"type": "string", "format": "date", "description": "Fecha de la reserva, formato YYYY-MM-DD"},
+          "time": {
+            "type": "string",
+            "enum": ["13:00", "13:30", "14:00", "14:30", "20:00", "20:30", "21:00", "21:30", "22:00"],
+            "description": "Hora de la reserva"
+          },
+          "people": {"type": "integer", "description": "Número de comensales (1 a 12)"}
+        },
+        "required": ["name", "phone", "date", "time", "people"]
+      },
+      "impl": {
+        "kind": "browser",
+        "start_url": "http://localhost:8002/reservar",
+        "steps": [
+          {"action": "fill", "selector": "form[action=\"/reservar\"] input[name=\"name\"]", "value": "{name}"},
+          {"action": "fill", "selector": "form[action=\"/reservar\"] input[name=\"phone\"]", "value": "{phone}"},
+          {"action": "fill", "selector": "form[action=\"/reservar\"] input[name=\"date\"]", "value": "{date}"},
+          {"action": "select", "selector": "form[action=\"/reservar\"] select[name=\"time\"]", "value": "{time}"},
+          {"action": "fill", "selector": "form[action=\"/reservar\"] input[name=\"people\"]", "value": "{people}"},
+          {"action": "click", "selector": "form[action=\"/reservar\"] button[type=\"submit\"]"}
+        ],
+        "extract": "main"
+      },
+      "examples": {"name": "Ada Lovelace", "phone": "600123456", "date": "2026-10-24", "time": "21:00", "people": 4}
+    },
+    {
+      "name": "casa_zeta_get_reservation",
+      "description": "Consulta una reserva por su código (formato R-XXXXXX) y devuelve su estado. Una reserva inexistente responde con un aviso, no con un error.",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "code": {"type": "string", "description": "Código de reserva, por ejemplo R-4F2A19"}
+        },
+        "required": ["code"]
+      },
+      "impl": {
+        "kind": "http",
+        "method": "GET",
+        "url": "http://localhost:8002/reserva?code={code}"
+      },
+      "examples": {"code": "R-4F2A19"}
+    }
+  ]
+}

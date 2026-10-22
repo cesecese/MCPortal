@@ -1,0 +1,254 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>MCPortal · panel en vivo</title>
+<style>
+  :root {
+    --papel: #F4F2EC; --tinta: #15140F; --regla: #D9D5CA; --sec: #6E6A60;
+    --senal: #FF4F1A; --ok: #1F7A4D; --aviso: #B7791F; --error: #C2370A; --azul: #2B59C3;
+    --fondo: #14130F; --panel: #1B1A15; --panel2: #221F19; --texto: #EDEAE2;
+    --mono: ui-monospace, "IBM Plex Mono", "Cascadia Mono", Consolas, monospace;
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--fondo); color: var(--texto); font: 14px/1.45 system-ui, "Segoe UI", sans-serif; }
+  header { padding: 14px 20px; border-bottom: 1px solid #2E2B23; display: flex; flex-wrap: wrap; gap: 10px; align-items: center; }
+  h1 { font-size: 15px; margin: 0 12px 0 0; letter-spacing: .02em; font-weight: 600; }
+  h1 span { color: var(--senal); }
+  input[type=url], select { background: var(--panel2); border: 1px solid #35312a; color: var(--texto);
+    padding: 7px 10px; border-radius: 4px; font: 13px var(--mono); }
+  input[type=url] { flex: 1 1 320px; min-width: 220px; }
+  button { background: var(--senal); color: #16130f; border: 0; border-radius: 4px; padding: 8px 14px;
+    font-weight: 600; cursor: pointer; }
+  button.ghost { background: transparent; color: var(--texto); border: 1px solid #3b372e; font-weight: 500; }
+  button:disabled { opacity: .45; cursor: not-allowed; }
+  label.check { display: inline-flex; gap: 6px; align-items: center; color: #b9b3a6; font-size: 13px; }
+  .fases { display: flex; gap: 6px; padding: 10px 20px; border-bottom: 1px solid #2E2B23; flex-wrap: wrap; }
+  .fase { font: 11px var(--mono); letter-spacing: .06em; text-transform: uppercase; color: #7b7568;
+    border: 1px solid #322e26; padding: 4px 10px; border-radius: 999px; }
+  .fase.on { color: var(--tinta); background: var(--senal); border-color: var(--senal); }
+  .fase.done { color: var(--ok); border-color: #2c4738; }
+  main { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 1px; background: #2E2B23; min-height: calc(100vh - 132px); }
+  section { background: var(--panel); padding: 12px 14px 40px; overflow: auto; max-height: calc(100vh - 132px); }
+  h2 { font: 11px var(--mono); text-transform: uppercase; letter-spacing: .1em; color: #8b8577;
+    margin: 0 0 10px; display: flex; justify-content: space-between; }
+  .row { padding: 6px 0; border-bottom: 1px dashed #2a271f; font-size: 13px; }
+  .mono { font-family: var(--mono); font-size: 12px; }
+  .muted { color: #8b8577; }
+  .method { display: inline-block; min-width: 52px; font: 600 11px var(--mono); letter-spacing: .04em; }
+  .GET { color: #6fa8ff; } .POST { color: var(--senal); } .PUT { color: var(--aviso); }
+  .DELETE { color: #ff6b5e; } .QUERY { color: #c58cff; }
+  .status2 { color: var(--ok); } .status3 { color: var(--aviso); } .status4 { color: #ff6b5e; }
+  .badge { font: 10px var(--mono); padding: 1px 6px; border-radius: 3px; border: 1px solid #3a362d; color: #a9a396; }
+  .badge.http { color: #9fc2ff; border-color: #2c3f5c; }
+  .badge.browser { color: #ffb38f; border-color: #5c3a2c; }
+  .badge.ok { color: #9be0bd; border-color: #2c4738; }
+  .badge.no { color: #ff9b8f; border-color: #5c2c28; }
+  .step { display: grid; grid-template-columns: 26px 1fr; gap: 8px; }
+  .step .n { font: 11px var(--mono); color: #6f6a5e; text-align: right; }
+  .thought { color: #b9b3a6; font-style: italic; border-left: 2px solid #3a362d; padding-left: 8px; margin: 6px 0; }
+  .warn { color: var(--aviso); } .err { color: #ff9b8f; } .lock { color: var(--aviso); font-size: 12px; }
+  .done { margin-top: 12px; padding: 10px; border: 1px solid #2c4738; background: #16241b; border-radius: 4px;
+    font-size: 12px; color: #b7e6cd; }
+  .empty { color: #6f6a5e; font-size: 12px; font-style: italic; }
+  footer { padding: 6px 20px; border-top: 1px solid #2E2B23; color: #6f6a5e; font: 11px var(--mono); }
+  @media (max-width: 900px) { main { grid-template-columns: 1fr; } section { max-height: none; } }
+</style>
+</head>
+<body>
+<header>
+  <h1>MCP<span>·</span>portal <span class="muted" style="font-weight:400;font-size:11px">panel en vivo</span></h1>
+  <input id="url" type="url" value="http://localhost:8001/" placeholder="http://localhost:8001/">
+  <select id="policy">
+    <option value="auto">Agente: auto</option>
+    <option value="llm">Agente: LLM</option>
+    <option value="heuristic">Agente: heurístico</option>
+  </select>
+  <label class="check"><input id="cache" type="checkbox"> desde caché</label>
+  <label class="check"><input id="nolllm" type="checkbox"> sin LLM</label>
+  <button id="go">Explorar</button>
+  <button class="ghost" id="s8001">Tienda :8001</button>
+  <button class="ghost" id="s8002">Restaurante :8002</button>
+  <select id="runs"><option value="">ejecuciones…</option></select>
+</header>
+
+<div class="fases">
+  <span class="fase" id="f1">1 Explorar</span>
+  <span class="fase" id="f2">2 Sintetizar</span>
+  <span class="fase" id="f3">3 Validar</span>
+  <span class="fase" id="f4">4 Servir por MCP</span>
+  <span class="fase" id="flock" style="display:none">🔒 Solo lectura</span>
+  <span style="flex:1"></span>
+  <span class="fase" id="counter">0 propuestas · 0 validadas</span>
+</div>
+
+<main>
+  <section><h2>Agente <span class="muted" id="agentState"></span></h2><div id="agent"></div></section>
+  <section><h2>Red capturada <span class="muted" id="netCount"></span></h2><div id="net"></div></section>
+  <section><h2>Herramientas <span class="muted" id="toolCount"></span></h2><div id="tools"></div></section>
+</main>
+<footer id="foot">sin ejecución</footer>
+
+<script>
+const $ = (id) => document.getElementById(id);
+const state = { run: "", since: 0, timer: null, steps: 0, requests: 0, proposed: 0, validated: 0, done: false };
+const PHASES = { explore_started: 1, explore_done: 2, synth_done: 3, validate_done: 4, done: 4 };
+
+function esc(text) {
+  return String(text ?? "").replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
+}
+function row(html, cls = "") { const div = document.createElement("div"); div.className = "row " + cls; div.innerHTML = html; return div; }
+function methodClass(m) { return "method " + esc(m || ""); }
+function statusClass(s) { return s >= 400 ? "status4" : s >= 300 ? "status3" : "status2"; }
+function pathOf(url) { try { const u = new URL(url); return u.pathname + (u.search || ""); } catch { return url; } }
+
+function setPhase(n) {
+  for (let i = 1; i <= 4; i++) {
+    const el = $("f" + i);
+    el.classList.toggle("on", i === n && !state.done);
+    el.classList.toggle("done", i < n || state.done);
+  }
+}
+
+function handle(ev) {
+  const n = PHASES[ev.type];
+  if (n) setPhase(n);
+  switch (ev.type) {
+    case "run_started":
+      $("foot").textContent = `ejecución: ${ev.url}${ev.cached ? " · desde caché" : ""}`;
+      break;
+    case "explore_started":
+      $("agentState").textContent = `${ev.policy} · máx ${ev.max_steps}`;
+      break;
+    case "mode":
+      if (ev.read_only) $("flock").style.display = "";
+      break;
+    case "thought":
+      $("agent").appendChild(row(`<div class="thought">${esc(ev.text)}</div>`));
+      break;
+    case "warning":
+      $("agent").appendChild(row(`<div class="warn">⚠ ${esc(ev.text)}</div>`));
+      break;
+    case "blocked":
+      $("agent").appendChild(row(`<div class="err">🔒 bloqueado <span class="mono">${esc(ev.method)} ${esc(pathOf(ev.url))}</span></div>`));
+      $("net").appendChild(row(`<span class="${methodClass(ev.method)}">${esc(ev.method)}</span> <span class="mono err">${esc(pathOf(ev.url))}</span> <span class="badge no">bloqueada</span>`));
+      break;
+    case "step":
+      state.steps++;
+      $("agent").appendChild(row(`<div class="step"><div class="n">${ev.i}</div><div class="mono">${esc(ev.action)}</div></div>`));
+      break;
+    case "request":
+      state.requests++;
+      $("net").appendChild(row(`<span class="${methodClass(ev.method)}">${esc(ev.method)}</span> <span class="mono">${esc(pathOf(ev.url))}</span> <span class="mono ${statusClass(ev.status)}">${esc(ev.status)}</span> <span class="muted mono">${esc(ev.kind)}</span>`));
+      $("netCount").textContent = state.requests;
+      break;
+    case "candidate":
+      $("tools").appendChild(row(`<span class="mono muted">${esc(ev.id)}</span> <span class="${methodClass(ev.method)}">${esc(ev.method)}</span> <span class="mono">${esc(pathOf(ev.url))}</span><div class="mono muted" style="font-size:11px">${esc((ev.params || []).join(", ") || "sin parámetros")}${(ev.csrf || []).length ? " · csrf" : ""}</div>`));
+      break;
+    case "tool_proposed":
+      state.proposed++;
+      $("tools").appendChild(row(`<span class="badge ${esc(ev.kind)}">${esc(ev.kind)}</span> <span class="mono">${esc(ev.name)}</span><div class="muted" style="font-size:12px">${esc(ev.description)}</div>`));
+      $("counter").textContent = `${state.proposed} propuestas · ${state.validated} validadas`;
+      break;
+    case "candidate_discarded":
+      $("tools").appendChild(row(`<span class="badge no">descartado</span> <span class="mono">${esc(ev.candidate_id)}</span> <span class="muted">${esc(ev.reason)}</span>`));
+      break;
+    case "validate_retry":
+      $("tools").appendChild(row(`<span class="badge">reintento</span> <span class="mono">${esc(ev.name)}</span> → <span class="badge browser">${esc(ev.kind)}</span><div class="muted" style="font-size:12px">${esc(ev.reason)}</div>`));
+      break;
+    case "validated":
+      if (ev.ok) state.validated++;
+      $("tools").appendChild(row(`<span class="badge ${ev.ok ? "ok" : "no"}">${ev.ok ? "✓" : "✗"}</span> <span class="mono">${esc(ev.name)}</span> <span class="badge ${esc(ev.kind)}">${esc(ev.kind)}</span>${ev.swapped ? ' <span class="badge browser">cambio</span>' : ""}<div class="muted" style="font-size:12px">${esc(ev.reason)}</div>`));
+      $("counter").textContent = `${state.proposed} propuestas · ${state.validated} validadas`;
+      break;
+    case "done":
+      state.done = true;
+      setPhase(4);
+      $("tools").appendChild(row(`<div class="done">listo → <span class="mono">${esc(ev.manifest)}</span><br>en el cliente MCP: reconectar si no aparecen las herramientas</div>`));
+      $("foot").textContent = `terminado · ${ev.proposed} propuestas · ${ev.validated} validadas`;
+      stop();
+      break;
+    case "finish":
+      $("agent").appendChild(row(`<div class="muted">fin: ${esc(ev.summary)}</div>`));
+      break;
+  }
+  ["agent", "net", "tools"].forEach((id) => { const el = $(id); el.scrollTop = el.scrollHeight; });
+}
+
+function reset() {
+  state.since = 0; state.steps = 0; state.requests = 0; state.proposed = 0; state.validated = 0; state.done = false;
+  ["agent", "net", "tools"].forEach((id) => { $(id).innerHTML = ""; });
+  $("counter").textContent = "0 propuestas · 0 validadas";
+  $("netCount").textContent = "";
+  $("flock").style.display = "none";
+  setPhase(1);
+}
+
+async function poll() {
+  if (!state.run) return;
+  try {
+    const res = await fetch(`/api/events?run=${encodeURIComponent(state.run)}&since=${state.since}`);
+    const data = await res.json();
+    if (data.reset) reset();
+    data.events.forEach(handle);
+    state.since = data.next;
+  } catch (err) { /* el servidor puede estar arrancando */ }
+}
+
+function stop() { if (state.timer) { clearInterval(state.timer); state.timer = null; } }
+
+async function loadRuns() {
+  const res = await fetch("/api/runs");
+  const data = await res.json();
+  const select = $("runs");
+  select.innerHTML = '<option value="">ejecuciones…</option>';
+  data.runs.forEach((run) => {
+    const opt = document.createElement("option");
+    opt.value = run.slug;
+    opt.textContent = `${run.slug} (${run.events} eventos)`;
+    select.appendChild(opt);
+  });
+  if (data.active) select.value = data.active;
+}
+
+async function explore() {
+  stop();
+  reset();
+  const body = {
+    url: $("url").value.trim(),
+    policy: $("policy").value,
+    no_llm: $("nolllm").checked,
+    from_cache: $("cache").checked,
+    headless: false,
+  };
+  $("go").disabled = true;
+  try {
+    const res = await fetch("/api/run", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(body) });
+    const data = await res.json();
+    if (!res.ok) throw new Error(data.detail || "no se pudo lanzar");
+    state.run = data.run;
+    $("foot").textContent = `ejecutando ${data.run}…`;
+    state.timer = setInterval(poll, 400);
+    loadRuns();
+  } catch (err) {
+    $("agent").appendChild(row(`<div class="err">${esc(err.message)}</div>`));
+  } finally {
+    $("go").disabled = false;
+  }
+}
+
+$("go").addEventListener("click", explore);
+$("s8001").addEventListener("click", () => { $("url").value = "http://localhost:8001/"; explore(); });
+$("s8002").addEventListener("click", () => { $("url").value = "http://localhost:8002/"; explore(); });
+$("runs").addEventListener("change", (e) => {
+  if (!e.target.value) return;
+  stop(); reset();
+  state.run = e.target.value;
+  state.timer = setInterval(poll, 400);
+  loadRuns();
+});
+loadRuns();
+</script>
+</body>
+</html>

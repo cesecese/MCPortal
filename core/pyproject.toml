@@ -1,0 +1,28 @@
+[build-system]
+requires = ["setuptools>=69"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "mcportal-core"
+version = "0.1.0"
+description = "MCPortal core: de URL a herramientas MCP validadas"
+requires-python = ">=3.11"
+dependencies = [
+  "mcp>=2.3",
+  "httpx>=0.27",
+  "playwright>=1.47",
+  "fastapi>=0.110",
+  "uvicorn>=0.29",
+  "python-multipart>=0.0.9",
+  "beautifulsoup4>=4.12",
+  "jsonschema>=4.20",
+]
+
+[project.optional-dependencies]
+# El SDK del proveedor de LLM se instala aparte (depende del proveedor elegido).
+# Ejemplo: pip install -e "core[llm]" tras añadir aquí el paquete correspondiente.
+llm = ["anthropic>=0.40"]
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["mcportal_core*"]
