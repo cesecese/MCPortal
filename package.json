@@ -4,7 +4,7 @@
   "version": "0.1.0",
   "type": "module",
   "scripts": {
-    "dev": "next dev -p 5179",
+    "dev": "NEXT_DIST_DIR=.next-dev next dev -p 5179",
     "build": "next build",
     "start": "next start -p 5179",
     "typecheck": "tsc --noEmit"
