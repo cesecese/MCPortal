@@ -76,6 +76,19 @@
   margin-left: auto;
 }
 
+.nav__library-mobile {
+  display: none;
+}
+
+.btn.nav__library-mobile {
+  display: none;
+}
+
+.nav__library-mobile.is-active {
+  background: var(--surface-2);
+  color: var(--ink);
+}
+
 /* ── Pie ──────────────────────────────────────────────── */
 .footer {
   margin-top: 80px;
@@ -143,6 +156,14 @@
 @media (max-width: 720px) {
   .nav__links {
     display: none;
+  }
+
+  .nav__library-mobile {
+    display: inline-flex;
+  }
+
+  .btn.nav__library-mobile {
+    display: inline-flex;
   }
 
   .footer {

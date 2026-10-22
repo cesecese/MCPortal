@@ -90,7 +90,7 @@ export function Specimen({ mcps }: { mcps: Mcp[] }) {
 
       <div className="specimen__body">
         <div className="specimen__section">
-          <div className="specimen__head">traza</div>
+          <div className="specimen__head">traza de exploración</div>
           <ol className="specimen__trace">
             {trace.map((l, i) => (
               <li key={`${mcp.slug}-${i}`} className={cx(l.kind, i < traceShown && 'is-in')}>
@@ -104,9 +104,9 @@ export function Specimen({ mcps }: { mcps: Mcp[] }) {
 
         <div className="specimen__section">
           <div className="specimen__head">
-            herramientas
+            herramientas MCP
             <span>
-              {Math.min(outShown, out.length)}/{validatedTools(mcp).length}
+              {Math.min(outShown, out.length)}/{out.length}
             </span>
           </div>
           <ul className="specimen__tools">

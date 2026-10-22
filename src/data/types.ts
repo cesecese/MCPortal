@@ -57,9 +57,34 @@ export interface RatingSummary {
 export interface McpVersion {
   version: string;
   publishedAt: string;
-  author: string;
-  changes: string[];
-  downloads: number;
+  author?: string;
+  /** Formato del portal: lista de cambios publicada. */
+  changes?: string[];
+  downloads?: number;
+  /** Formato del registro: resumen de la versión. */
+  notes?: string;
+  tools?: number;
+  validated?: number;
+}
+
+/** Resultado de validar una herramienta concreta contra la web. */
+export interface ValidationResult {
+  name: string;
+  kind: ImplKind;
+  ok: boolean;
+  reason: string | null;
+  swapped: boolean;
+  status: number | null;
+  seconds: number;
+  preview?: string;
+}
+
+/** Informe que produce el validador y consume la pestaña Validación. */
+export interface ValidationReport {
+  validatedAt: string;
+  proposed: number;
+  validated: number;
+  results: ValidationResult[];
 }
 
 export type ReportKind = 'broken' | 'tool' | 'outdated' | 'other';
@@ -115,6 +140,7 @@ export interface Mcp {
   sourceUpdatedAt?: string;
   rating?: RatingSummary;
   versions?: McpVersion[];
+  validation?: ValidationReport;
   reports?: McpReport[];
   /** Voto del visitante en esta maqueta, si ya ha valorado. */
   myRating?: number;

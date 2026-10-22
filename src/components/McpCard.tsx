@@ -1,40 +1,40 @@
 import Link from 'next/link';
 import type { Mcp } from '../data/types';
 import { ratingOf } from '../lib/catalog';
-import { formatCompact, formatNumber, validatedTools } from '../lib/format';
+import { formatCompact, validatedTools } from '../lib/format';
 import { Icon } from './Icon';
 import { McpBadges } from './Badges';
 import { SiteIcon } from './primitives';
 import '../styles/mcp-card.css';
 
-/** Fila del índice: sitio, descripción corta y valoración. Sin tarjeta ni sombra. */
+/** Fila del índice: web, qué permite hacer y dos señales (valoración y uso). */
 export function McpCard({ mcp, variants = [mcp], static: isStatic }: { mcp: Mcp; variants?: Mcp[]; static?: boolean }) {
   const tools = validatedTools(mcp).length;
   const rating = ratingOf(mcp);
+  const isNew = mcp.status === 'draft' || mcp.installs === 0;
   const body = (
     <>
       <SiteIcon mcp={mcp} size={34} />
-      <div className="mcp-row__id">
+      <div className="mcp-row__main">
         <div className="mcp-row__title">
           <h3>{mcp.name}</h3>
           <McpBadges mcp={mcp} variants={variants} max={1} />
         </div>
-        <span className="mono mcp-row__site">
-          {mcp.site}
-          {variants.length > 1 ? ` · ${variants.length} MCPs` : ''}
-        </span>
+        <p className="mcp-row__desc">{mcp.description}</p>
+        <span className="mono mcp-row__site">{mcp.site}</span>
       </div>
-      <p className="mcp-row__desc">{mcp.description}</p>
       <div className="mcp-row__meta mono">
-        <span className="mcp-row__rating" title={`${formatNumber(rating.count)} valoraciones`}>
-          <Icon name="star" size={11} filled />
-          {rating.average.toFixed(1)}
-          <span className="mcp-row__rating-count">({formatNumber(rating.count)})</span>
-        </span>
-        <span>
-          {tools} {tools === 1 ? 'herramienta' : 'herramientas'}
-        </span>
-        <span>{formatCompact(mcp.installs)} inst.</span>
+        {isNew ? (
+          <span className="mcp-row__new">Nuevo</span>
+        ) : (
+          <>
+            <span className="mcp-row__rating" title={`${rating.average} de 5`}>
+              <Icon name="star" size={11} filled />
+              {rating.average.toFixed(1)}
+            </span>
+            <span title={`${tools} acciones disponibles`}>{formatCompact(mcp.installs)} usos</span>
+          </>
+        )}
       </div>
       {!isStatic && <Icon name="arrowRight" size={15} className="mcp-row__go" />}
     </>

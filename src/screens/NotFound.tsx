@@ -16,7 +16,7 @@ export function NotFound({ what = 'página' }: { what?: string }) {
               Ir al catálogo
             </Link>
             <Link href="/crear" className="btn btn--primary">
-              <Icon name="plus" size={15} /> Crear MCP
+              <Icon name="plus" size={15} /> Conectar una web
             </Link>
           </>
         }

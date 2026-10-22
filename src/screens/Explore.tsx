@@ -5,21 +5,14 @@ import Link from 'next/link';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { Icon } from '../components/Icon';
 import { McpCard } from '../components/McpCard';
-import { EmptyState } from '../components/primitives';
 import { Specimen } from '../components/Specimen';
+import { EmptyState } from '../components/primitives';
 import { categoryOf } from '../data/categories';
 import type { Mcp } from '../data/types';
-import { groupBySite, siteKey, sortMcps, type SortMode } from '../lib/catalog';
+import { groupBySite, siteKey } from '../lib/catalog';
 import { formatNumber, validatedTools } from '../lib/format';
 import { usePublicCatalog } from '../store/store';
 import '../styles/explore.css';
-
-const SORT_LABELS: Record<SortMode, string> = {
-  recommended: 'Recomendados',
-  recent: 'Más recientes',
-  rating: 'Mejor valorados',
-  installs: 'Más instalados',
-};
 
 const fold = (s: string) =>
   s
@@ -44,7 +37,6 @@ export function Explore() {
   const searchRef = useRef<HTMLInputElement>(null);
   const q = params.get('q') ?? '';
   const [term, setTerm] = useState(q);
-  const [sort, setSort] = useState<SortMode>('recommended');
 
   // La URL puede cambiar por atrás/adelante, pero nunca mientras se escribe.
   useEffect(() => {
@@ -69,8 +61,8 @@ export function Explore() {
   }, []);
 
   const results = useMemo(
-    () => sortMcps(catalog.filter((m) => matches(m, term)), sort),
-    [catalog, term, sort],
+    () => catalog.filter((m) => matches(m, term)).sort((a, b) => b.installs - a.installs),
+    [catalog, term],
   );
   const groups = useMemo(() => groupBySite(catalog), [catalog]);
   const toolCount = useMemo(() => catalog.reduce((n, m) => n + validatedTools(m).length, 0), [catalog]);
@@ -84,12 +76,13 @@ export function Explore() {
           <div className="hero__copy">
             <p className="eyebrow">Registro de servidores MCP</p>
             <h1>
-              Una URL.
+              Cualquier web,
               <br />
-              <span className="hero__accent">Un MCP.</span>
+              <span className="hero__accent">ahora un MCP.</span>
             </h1>
             <p className="hero__lede">
-              El agente explora la web, descubre sus acciones y publica herramientas validadas para tu cliente MCP.
+              Busca la web que ya usas o pega su dirección. Si no existe, un agente la explora y publica un MCP con
+              herramientas validadas para tu asistente.
             </p>
 
             <form
@@ -107,8 +100,8 @@ export function Explore() {
                 type="search"
                 value={term}
                 onChange={(e) => setQuery(e.target.value)}
-                placeholder="Buscar una web o una tarea"
-                aria-label="Buscar MCPs"
+                placeholder="Busca una web o una tarea"
+                aria-label="Buscar webs"
               />
               {term ? (
                 <button type="button" className="search__clear" onClick={() => setQuery('')} aria-label="Borrar búsqueda">
@@ -122,7 +115,7 @@ export function Explore() {
             <div className="hero__cta">
               <Link href="/crear" className="btn btn--primary">
                 <Icon name="plus" size={15} />
-                Crear MCP
+                Conectar una web
               </Link>
               <a href="#catalog" className="hero__link">
                 Ver catálogo
@@ -140,28 +133,11 @@ export function Explore() {
       <section className="container catalog" id="catalog" aria-labelledby="catalog-title">
         <div className="section-head">
           <h2 id="catalog-title">{term ? 'Resultados' : 'Catálogo'}</h2>
-          <div className="catalog__controls">
-            <span className="section-head__meta" aria-live="polite">
-              {term
-                ? `${results.length} de ${catalog.length} para «${term}»`
-                : `${formatNumber(catalog.length)} MCPs · ${formatNumber(toolCount)} herramientas`}
-            </span>
-            <label className="sort-control">
-              <span>Orden</span>
-              <select
-                className="select"
-                value={sort}
-                onChange={(event) => setSort(event.target.value as SortMode)}
-                aria-label="Ordenar MCPs"
-              >
-                {Object.entries(SORT_LABELS).map(([value, label]) => (
-                  <option key={value} value={value}>
-                    {label}
-                  </option>
-                ))}
-              </select>
-            </label>
-          </div>
+          <span className="section-head__meta" aria-live="polite">
+            {term
+              ? `${results.length} de ${catalog.length} para «${term}»`
+              : `${formatNumber(catalog.length)} MCPs · ${formatNumber(toolCount)} herramientas validadas`}
+          </span>
         </div>
 
         {results.length ? (
@@ -173,18 +149,24 @@ export function Explore() {
         ) : (
           <EmptyState
             icon="search"
-            title={`Sin resultados para «${term}»`}
+            title={term ? `No encontramos «${term}»` : 'Todavía no hay MCPs publicados'}
             actions={
               <>
-                <button className="btn btn--outline" onClick={() => setQuery('')}>
-                  Ver todo
-                </button>
+                {term && (
+                  <button className="btn btn--outline" onClick={() => setQuery('')}>
+                    Ver todo
+                  </button>
+                )}
                 <Link href={looksLikeUrl ? `/crear?url=${encodeURIComponent(term)}` : '/crear'} className="btn btn--primary">
-                  <Icon name="plus" size={15} /> Crear MCP
+                  <Icon name="plus" size={15} /> {looksLikeUrl ? 'Conectar esta web' : 'Conectar una web'}
                 </Link>
               </>
             }
-          />
+          >
+            {looksLikeUrl
+              ? 'Todavía no está conectada. Puedes crear su MCP en unos minutos.'
+              : 'Prueba con otra búsqueda o conecta la web que necesitas.'}
+          </EmptyState>
         )}
       </section>
     </>

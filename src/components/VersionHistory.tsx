@@ -28,25 +28,47 @@ export function VersionHistory({ mcp }: { mcp: Mcp }) {
     <ol className="version-list">
       {versions.map((entry) => {
         const current = entry.version === mcp.version;
+        const author = entry.author ?? mcp.author;
+        const changes = entry.changes?.length
+          ? entry.changes
+          : entry.notes
+            ? [entry.notes]
+            : ['Publicación del MCP y sus herramientas.'];
         return (
           <li key={`${entry.version}-${entry.publishedAt}`} className={cx('version-item', current && 'is-current')}>
             <div className="version-item__version">
               <span className="mono">v{entry.version}</span>
               {current && <span className="tag tag--ok">Actual</span>}
-              {entry.author === 'Tú' && <span className="tag tag--ink">Tu parche</span>}
+              {author === 'Tú' && <span className="tag tag--ink">Tu parche</span>}
             </div>
             <div className="version-item__body">
               <p className="version-item__meta">
                 <span>{formatDate(entry.publishedAt)}</span>
                 <span aria-hidden>·</span>
                 <span>{relativeTime(entry.publishedAt)}</span>
-                <span aria-hidden>·</span>
-                <span>por {entry.author}</span>
-                <span aria-hidden>·</span>
-                <span>{formatNumber(entry.downloads)} descargas</span>
+                {author && (
+                  <>
+                    <span aria-hidden>·</span>
+                    <span>por {author}</span>
+                  </>
+                )}
+                {entry.tools !== undefined && (
+                  <>
+                    <span aria-hidden>·</span>
+                    <span>
+                      {entry.validated ?? entry.tools}/{entry.tools} herramientas
+                    </span>
+                  </>
+                )}
+                {entry.downloads !== undefined && (
+                  <>
+                    <span aria-hidden>·</span>
+                    <span>{formatNumber(entry.downloads)} descargas</span>
+                  </>
+                )}
               </p>
               <ul className="version-item__changes">
-                {entry.changes.map((change) => (
+                {changes.map((change) => (
                   <li key={change}>{change}</li>
                 ))}
               </ul>

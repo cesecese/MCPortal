@@ -29,13 +29,27 @@ export function AppShell({ children }: { children: ReactNode }) {
             <Link href="/" className={exploring ? 'nav__link is-active' : 'nav__link'}>
               Explorar
             </Link>
+            <Link
+              href="/biblioteca"
+              className={pathname.startsWith('/biblioteca') ? 'nav__link is-active' : 'nav__link'}
+            >
+              Biblioteca
+            </Link>
           </nav>
 
           <div className="nav__actions">
+            <Link
+              href="/biblioteca"
+              className={`btn btn--ghost btn--sm btn--icon nav__library-mobile${pathname.startsWith('/biblioteca') ? ' is-active' : ''}`}
+              aria-label="Biblioteca"
+              title="Biblioteca"
+            >
+              <Icon name="inbox" size={16} />
+            </Link>
             {pathname !== '/crear' && (
               <Link href="/crear" className="btn btn--primary btn--sm">
                 <Icon name="plus" size={15} />
-                Crear
+                Conectar
               </Link>
             )}
             <button
@@ -59,7 +73,7 @@ export function AppShell({ children }: { children: ReactNode }) {
             <span className="footer__sep" aria-hidden>
               /
             </span>
-            <span className="footer__muted">registro de servidores MCP</span>
+            <span className="footer__muted">webs conectadas a tu asistente</span>
             <span className="footer__by">
               por <LinenMark height={9} />
             </span>
@@ -68,7 +82,6 @@ export function AppShell({ children }: { children: ReactNode }) {
             <span className="footer__status">
               <span className="dot footer__ok" /> operativo
             </span>
-            <span>runtime 0.4.2</span>
           </div>
         </div>
       </footer>

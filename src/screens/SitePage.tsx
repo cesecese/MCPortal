@@ -1,6 +1,6 @@
 'use client';
 
-import { useMemo, useState } from 'react';
+import { useMemo } from 'react';
 import Link from 'next/link';
 import { useParams } from 'next/navigation';
 import { McpBadges } from '../components/Badges';
@@ -17,36 +17,26 @@ import {
   siteKey,
   siteUrl,
   sortMcps,
-  type SortMode,
 } from '../lib/catalog';
 import { usePublicCatalog } from '../store/store';
 import { NotFound } from './NotFound';
 import '../styles/site.css';
 
-const SORT_MODES: [SortMode, string][] = [
-  ['recommended', 'Recomendado'],
-  ['recent', 'Más reciente'],
-  ['rating', 'Mejor valorado'],
-];
-
 export function SitePage() {
   const { site = '' } = useParams<{ site: string }>();
   const catalog = usePublicCatalog();
-  const [sort, setSort] = useState<SortMode>('recommended');
-
   const key = siteKey(decodeURIComponent(site));
   const variants = useMemo(() => catalog.filter((mcp) => siteKey(mcp.site) === key), [catalog, key]);
 
   if (!variants.length) return <NotFound what="web" />;
 
   const lead = recommendedOf(variants) ?? variants[0];
-  const sorted = sortMcps(variants, sort);
+  const sorted = sortMcps(variants, 'recommended');
   const recommended = recommendedOf(variants);
   const average = averageRatingOf(variants);
   const sourceDate = latestSourceUpdate(variants);
   const outdated = variants.filter((mcp) => freshnessOf(mcp).outdated);
   const openReports = variants.reduce((total, mcp) => total + openReportsOf(mcp).length, 0);
-  const latestMcp = [...variants].sort((a, b) => +new Date(b.updatedAt) - +new Date(a.updatedAt))[0];
 
   return (
     <div className="site-page">
@@ -73,9 +63,6 @@ export function SitePage() {
             <a href={siteUrl(lead.site)} className="btn btn--outline" target="_blank" rel="noreferrer">
               Visitar la web <Icon name="arrowUpRight" size={14} />
             </a>
-            <Link href={`/crear?url=${encodeURIComponent(siteUrl(lead.site))}`} className="btn btn--primary">
-              <Icon name="plus" size={15} /> Crear alternativa
-            </Link>
           </div>
         </header>
 
@@ -96,13 +83,6 @@ export function SitePage() {
             <dd>
               {sourceDate ? formatDate(sourceDate) : '—'}
               <span className="site-stats__sub">{sourceDate ? relativeTime(sourceDate) : 'sin registrar'}</span>
-            </dd>
-          </div>
-          <div>
-            <dt>Último MCP actualizado</dt>
-            <dd>
-              {formatDate(latestMcp.updatedAt)}
-              <span className="site-stats__sub">{relativeTime(latestMcp.updatedAt)}</span>
             </dd>
           </div>
         </dl>
@@ -132,27 +112,7 @@ export function SitePage() {
 
         <section className="site-list-section" aria-labelledby="site-list-title">
           <div className="section-head site-list-head">
-            <div>
-              <h2 id="site-list-title">Implementaciones para esta web</h2>
-              <p className="site-list-head__note">
-                El recomendado combina valoración, actividad reciente, instalaciones y ausencia de incidencias.
-              </p>
-            </div>
-            {variants.length > 1 && (
-              <div className="segmented" role="tablist" aria-label="Ordenar implementaciones">
-                {SORT_MODES.map(([id, label]) => (
-                  <button
-                    key={id}
-                    role="tab"
-                    aria-selected={sort === id}
-                    className={sort === id ? 'is-active' : undefined}
-                    onClick={() => setSort(id)}
-                  >
-                    {label}
-                  </button>
-                ))}
-              </div>
-            )}
+            <h2 id="site-list-title">Implementaciones para esta web</h2>
           </div>
 
           <div className="site-list">
@@ -194,38 +154,6 @@ export function SitePage() {
               );
             })}
           </div>
-        </section>
-
-        <section className="site-legend" aria-labelledby="site-legend-title">
-          <div>
-            <h2 id="site-legend-title">Cómo leer la clasificación</h2>
-            <p>
-              Una misma web puede tener varias implementaciones. La plataforma no oculta las antiguas: las etiqueta
-              para que puedas elegir con contexto y, si hace falta, contribuir a arreglarlas.
-            </p>
-          </div>
-          <ul className="site-legend__list">
-            <li>
-              <span className="tag tag--ink">Recomendado</span>
-              <span>Mejor combinación de valoración, actividad reciente e instalaciones.</span>
-            </li>
-            <li>
-              <span className="tag tag--ok">Mejor valorado</span>
-              <span>La nota media más alta entre las implementaciones de la web.</span>
-            </li>
-            <li>
-              <span className="tag tag--outline">Más reciente</span>
-              <span>La última versión publicada contra la web actual.</span>
-            </li>
-            <li>
-              <span className="tag tag--warn">Desactualizado</span>
-              <span>La web ha cambiado después de la última publicación del MCP.</span>
-            </li>
-            <li>
-              <span className="tag tag--danger">Con incidencias</span>
-              <span>Tiene informes de error abiertos que todavía no se han resuelto.</span>
-            </li>
-          </ul>
         </section>
       </div>
     </div>
