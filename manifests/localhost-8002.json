@@ -1,0 +1,163 @@
+{
+  "site": "localhost:8002",
+  "start_url": "http://localhost:8002",
+  "synthesis": "llm",
+  "validated_at": "2026-10-22 15:26:04",
+  "slug": "localhost_8002",
+  "display_name": "Inicio · Casa Zeta",
+  "version": "0.1.0",
+  "category": "",
+  "tags": [],
+  "license": "MIT",
+  "author": "",
+  "mode": "read_write",
+  "generated_with": "mcportal-core 0.1",
+  "tools": [
+    {
+      "name": "casa_zeta_get_reservation",
+      "description": "Consulta una reserva existente de Casa Zeta a partir de su código de reserva (formato R-XXXXXX). Devuelve una página con los datos de la reserva (nombre, fecha, hora, comensales) o un mensaje indicando que no existe ninguna reserva con ese código. El código se obtiene al confirmar una reserva con casa_zeta_create_reservation.",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "string",
+            "description": "Código de reserva, p. ej. R-24BD0D"
+          }
+        },
+        "required": [
+          "code"
+        ]
+      },
+      "impl": {
+        "kind": "http",
+        "method": "GET",
+        "url": "http://localhost:8002/reserva?code={code}"
+      },
+      "examples": {
+        "code": "R-24BD0D"
+      }
+    },
+    {
+      "name": "casa_zeta_check_availability",
+      "description": "Busca mesas libres en Casa Zeta para una fecha y número de comensales. Devuelve una lista de horas disponibles (p. ej. 13:00, 14:00, 20:30) con el tipo de mesa y enlace para reservar.",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "date": {
+            "type": "string",
+            "description": "Fecha deseada en formato YYYY-MM-DD",
+            "format": "date"
+          },
+          "people": {
+            "type": "integer",
+            "description": "Número de comensales"
+          }
+        },
+        "required": [
+          "date",
+          "people"
+        ]
+      },
+      "impl": {
+        "kind": "http",
+        "method": "GET",
+        "url": "http://localhost:8002/disponibilidad?date={date}&people={people}"
+      },
+      "examples": {
+        "date": "2026-10-30",
+        "people": 2
+      }
+    },
+    {
+      "name": "casa_zeta_create_reservation",
+      "description": "Crea una reserva de mesa en Casa Zeta mediante el formulario web (requiere token CSRF de sesión). Devuelve la confirmación con fecha, hora, comensales y el código de reserva (formato R-XXXXXX), que sirve para casa_zeta_get_reservation. Conviene comprobar antes la hora con casa_zeta_check_availability.",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "Nombre de la persona que reserva"
+          },
+          "phone": {
+            "type": "string",
+            "description": "Teléfono de contacto"
+          },
+          "date": {
+            "type": "string",
+            "description": "Fecha de la reserva en formato YYYY-MM-DD",
+            "format": "date"
+          },
+          "time": {
+            "type": "string",
+            "description": "Hora de la reserva (HH:MM)",
+            "enum": [
+              "13:00",
+              "13:30",
+              "14:00",
+              "14:30",
+              "20:00",
+              "20:30",
+              "21:00",
+              "21:30",
+              "22:00"
+            ]
+          },
+          "people": {
+            "type": "integer",
+            "description": "Número de comensales"
+          }
+        },
+        "required": [
+          "name",
+          "phone",
+          "date",
+          "time",
+          "people"
+        ]
+      },
+      "impl": {
+        "kind": "browser",
+        "start_url": "http://localhost:8002/reservar?date=2026-10-30&time=13:00&people=2",
+        "steps": [
+          {
+            "action": "fill",
+            "selector": "#name",
+            "value": "{name}"
+          },
+          {
+            "action": "fill",
+            "selector": "#phone",
+            "value": "{phone}"
+          },
+          {
+            "action": "fill",
+            "selector": "#date",
+            "value": "{date}"
+          },
+          {
+            "action": "select",
+            "selector": "#time",
+            "value": "{time}"
+          },
+          {
+            "action": "fill",
+            "selector": "#people",
+            "value": "{people}"
+          },
+          {
+            "action": "click",
+            "selector": "form[action=\"/reservar\"] button[type=\"submit\"]"
+          }
+        ],
+        "extract": "main"
+      },
+      "examples": {
+        "name": "María García",
+        "phone": "600123456",
+        "date": "2026-10-30",
+        "time": "13:00",
+        "people": 2
+      }
+    }
+  ]
+}
