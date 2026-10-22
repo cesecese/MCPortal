@@ -1,0 +1,117 @@
+.mcp-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 16px;
+}
+
+.mcp-card {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  min-width: 0;
+  padding: 20px;
+  border: 1px solid var(--line);
+  border-radius: var(--r-l);
+  background: var(--surface);
+  transition:
+    border-color 0.18s var(--ease),
+    transform 0.18s var(--ease);
+}
+
+a.mcp-card:hover {
+  border-color: var(--ink);
+}
+
+/* Al pasar por encima, el portal se llena */
+a.mcp-card:hover .monogram {
+  background: var(--ink);
+  color: var(--on-ink);
+}
+
+a.mcp-card:active {
+  transform: translateY(1px);
+}
+
+.mcp-card__head {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-width: 0;
+}
+
+.mcp-card__id {
+  display: grid;
+  min-width: 0;
+}
+
+.mcp-card__name {
+  font-size: 16px;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  line-height: 1.3;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.mcp-card__site {
+  font-size: 12px;
+  color: var(--muted);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.mcp-card__desc {
+  flex: 1;
+  font-size: 14px;
+  line-height: 1.5;
+  color: var(--ink-2);
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.mcp-card__stats {
+  display: flex;
+  gap: 24px;
+  margin: 0;
+  padding-top: 14px;
+  border-top: 1px dashed var(--line-strong);
+}
+
+.mcp-card__stats > div {
+  display: flex;
+  align-items: baseline;
+  gap: 6px;
+}
+
+.mcp-card__stats dd {
+  margin: 0;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--ink);
+}
+
+.mcp-card__stats dt {
+  font-size: 12px;
+  color: var(--muted);
+}
+
+@media (max-width: 1080px) {
+  .mcp-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 640px) {
+  .mcp-grid {
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+
+  .mcp-card {
+    padding: 16px;
+  }
+}

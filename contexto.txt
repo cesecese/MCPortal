@@ -1,0 +1,222 @@
+# Auto-MCP: brief del proyecto (hackathon de 5 h, equipo de 4)
+
+    Documento de contexto para Claude Code. Resume la idea, las decisiones ya tomadas y el plan. Trabajemos de forma incremental: primero el contrato (manifiesto), después cada pieza por separado con datos de prueba y al final la integración. Ante la duda, prioriza que la demo funcione de extremo a extremo antes que añadir funcionalidades.
+
+---
+
+## 1. La idea
+
+Le das una URL de una web *sin API pública. Un agente la explora solo, descubre qué **acciones* permite (buscar, filtrar, crear, reservar, comprar…) y genera un *servidor MCP* con herramientas tipadas para esa web. Después, un agente consumidor (Claude Code) se conecta a ese servidor y hace tareas reales en la web.
+
+Importante para el pitch: el agente *no scrapea contenido, descubre capacidades*. El resultado no son datos, son herramientas.
+
+*Frase de la demo:* «Esta web no tiene API. Dentro de tres minutos, Claude podrá usarla como si la tuviera. Cero clics humanos: de URL a herramientas funcionando.»
+
+## 2. Referencias y en qué nos diferenciamos
+
+•  *Spectral ( spectral-mcp ): graba el tráfico mientras **un humano* navega, un LLM interpreta las llamadas y genera herramientas MCP. Tiene autorreparación: si una herramienta falla, un LLM la corrige.
+•  *Integuru (YC W24, open source): a partir de un HAR (grabado por un humano), cookies y un prompt, genera código Python que llama a los endpoints internos. Resuelve dependencias entre peticiones con un **grafo*: recorre desde las peticiones finales hacia atrás hasta la petición maestra. Es la mejor referencia para el encadenamiento.
+•  *Pilot Browse MCP*: un agente explora webs y construye "manuales" con capacidades reutilizables.
+•  Piezas base: Playwright (lo usaremos directamente), browser-use y Playwright MCP.
+
+*Nuestro diferencial:* ciclo *100 % autónomo y en vivo*: explorar, descubrir, sintetizar, validar, servir y usar, sin que un humano navegue. Si sobra tiempo: autorreparación.
+
+*Nota legal:* usar APIs internas no oficiales puede chocar con los términos de servicio o con leyes (CFAA en EE. UU.). Por eso usamos webs propias y una pública sin login. Hay que tener la respuesta preparada por si el jurado pregunta.
+
+## 3. Webs objetivo (2 propias + 1 real)
+
+Las webs propias son atrezo: tienen que estar listas en 20 o 30 minutos, con datos falsos y diseño mínimo.
+
+1. *Tienda propia con API JSON y peticiones encadenadas* (caso fácil y difícil a la vez)
+   - Buscador que llama a  GET /api/search?q=...
+   -  POST /api/cart , que devuelve un  cart_id
+   -  POST /api/cart/{cart_id}/items  con  product_id  y  qty
+   -  POST /api/cart/{cart_id}/checkout
+   - Pone a prueba la detección de endpoints y el encadenamiento de IDs.
+
+2. *Reservas de restaurante propia, solo HTML renderizado en servidor* (sin API JSON)
+   - Formularios clásicos ( <form method="POST"> ) para buscar disponibilidad y reservar.
+   - Pone a prueba las herramientas de tipo navegador. Nota: el POST del formulario también se captura, así que a veces se puede convertir en herramienta HTTP. Si metemos un token CSRF, se fuerza el uso de Playwright. Decidir si incluirlo, porque demuestra que el agente elige el tipo de herramienta según lo que encuentra.
+
+3. *Web real: Open Library* (o similar, pública, sin login ni anti-bots)
+   - Su buscador usa una API JSON detectable en el tráfico.
+   - Demuestra que el sistema generaliza y no está hecho a medida.
+   - *Comprobar antes del hackathon* que la exploración funciona.
+
+## 4. Arquitectura (5 piezas)
+
+
+URL ──► [1] Explorador ──► traza + emparejamientos
+                           │
+                           ▼
+        [2] Sintetizador ──► manifest.json (propuesto)
+                           │
+                           ▼
+        [3] Validador ──► manifest.json (solo herramientas que funcionan)
+                           │
+                           ▼
+        [4] Runtime MCP genérico ◄──► [5] Claude Code (consumidor)
+
+
+### 4.1 El contrato:  manifest.json
+
+Es la interfaz entre todas las piezas. Se cierra en la primera media hora y cada pieza se desarrolla contra un manifiesto escrito a mano mientras las demás no existen.
+
+ json
+{
+  "site": "openlibrary.org",
+  "tools": [
+    {
+      "name": "search_books",
+      "description": "Busca libros por título o autor",
+      "input_schema": {
+        "type": "object",
+        "properties": { "query": { "type": "string" } },
+        "required": ["query"]
+      },
+      "impl": {
+        "kind": "http",
+        "method": "GET",
+        "url": "https://openlibrary.org/search.json?q={query}"
+      }
+    },
+    {
+      "name": "book_table",
+      "description": "Reserva mesa en el restaurante",
+      "input_schema": { "...": "..." },
+      "impl": {
+        "kind": "browser",
+        "start_url": "http://localhost:3002/reservar",
+        "steps": [
+          { "action": "fill", "selector": "input[name=people]", "value": "{people}" },
+          { "action": "fill", "selector": "input[name=date]", "value": "{date}" },
+          { "action": "click", "selector": "button[type=submit]" }
+        ],
+        "extract": "main"
+      }
+    }
+  ]
+}
+
+
+Hay dos tipos de implementación: * http * (plantilla de petición, rápida y robusta) y * browser * (pasos de Playwright con parámetros). Pendiente de definir: cómo se representan el cuerpo de un POST y las cabeceras en  impl  (propuesta:  body  como plantilla JSON o form y  headers  opcional).
+
+### 4.2 Explorador
+
+Bucle *observar → decidir → actuar* sobre un Chromium controlado con Playwright (visible, que queda mejor en la demo).
+
+*Captura de red.* Antes de empezar,  page.on("response", ...)  guarda las peticiones  xhr  y  fetch  y también las navegaciones  document  con POST (envíos de formularios). De cada una: método, URL, cuerpo enviado, estado y un fragmento de la respuesta.
+
+*Observación compacta.* Nunca pasar el HTML al LLM. Un script de JavaScript inyectado recorre los elementos interactivos *visibles* ( a ,  button ,  input ,  select ,  textarea ,  [role=button] ), asigna  data-agent-id  y devuelve:
+
+
+URL: /shop  ·  Título: Tienda
+[3] input "Buscar productos" (placeholder)
+[4] button "Buscar"
+[7] link "Ciencia ficción"
+[12] button "Añadir al carrito" (×20 similares)
+
+
+Los elementos repetidos se agrupan ("×20 similares") para no gastar pasos.
+
+*Decisión.* El LLM recibe la observación, una memoria corta de lo explorado y una pista del dominio. Responde con una llamada a herramienta:  click(id) ,  fill(id, value) ,  select(id, option) ,  goto(url) ,  back()  o  finish() . Se ejecuta con  page.locator('[data-agent-id="N"]') .
+
+Idea clave del prompt: «Tu objetivo es descubrir qué acciones distintas permite la web. Prueba cada tipo de formulario y botón una vez. No repitas patrones ni explores contenido.»
+
+*Atribución acción → peticiones (el corazón).* Antes de cada acción se apunta el número de peticiones capturadas; después se ejecuta, se espera con  wait_for_load_state("networkidle")  y las peticiones nuevas se asocian a esa acción:
+
+ json
+{ "accion": "fill [3] 'zxq_asimov' + click [4]",
+  "peticiones": [{ "method": "GET", "url": "/api/search?q=zxq_asimov", "status": 200 }] }
+
+
+*Valores centinela.* Al rellenar campos, el agente usa valores raros y reconocibles ( zxq_asimov ,  zxq_4 ). Después, *con código y no con el LLM*, se buscan en las peticiones capturadas para saber qué input corresponde a qué parámetro. Es determinista y no alucina. Lo mismo para IDs encadenados: si un valor de una respuesta (por ejemplo  cart_id ) aparece después en otra petición, hay una dependencia.
+
+*Límites.* Unos 20 pasos como máximo, solo el mismo dominio, URLs normalizadas ( /book/123  pasa a ser  /book/{id} ) para no repetir páginas, y parar cuando no aparezcan patrones nuevos.
+
+*Salida.* La traza completa más los emparejamientos de parámetros y dependencias ya resueltos.
+
+### 4.3 Sintetizador
+
+Un LLM convierte la traza en el  manifest.json . Como los emparejamientos ya vienen resueltos, su trabajo es sobre todo *nombrar, describir, deduplicar y escribir los esquemas*.
+
+•  Preferir  http  si hay un endpoint claro; usar  browser  si solo funciona por interfaz o hay CSRF o sesión.
+•  En las descripciones, explicitar las dependencias: «requiere un  cart_id  obtenido con  create_cart ».
+•  El LLM *solo produce datos estructurados (JSON), nunca código*.
+
+### 4.4 Validador
+
+Ejecuta cada herramienta propuesta con entradas de ejemplo (las de la exploración sirven), comprueba que la respuesta tiene sentido (estado 2xx, cuerpo no vacío, sin página de error) y descarta las que fallan. Para la demo, muestra algo como «14 herramientas propuestas, 11 validadas».
+
+### 4.5 Runtime MCP genérico
+
+*No generamos código del servidor con el LLM.* Hay un único servidor genérico que lee el manifiesto.
+
+•  Python, con la *API de bajo nivel del SDK de MCP* ( mcp.server.lowlevel.Server ), no FastMCP, porque FastMCP deduce los esquemas de funciones escritas a mano y los nuestros vienen de un JSON.
+•   list_tools : lee  manifest.json  y devuelve  Tool(name, description, inputSchema)  tal cual.
+•   call_tool(name, arguments) : según  impl.kind :
+  -  http : rellena la plantilla y hace la petición con  httpx .
+  -  browser : reproduce los pasos con Playwright sustituyendo los parámetros.
+  - Devuelve el resultado como texto, recortado si es largo.
+•  Un único navegador abierto mientras vive el servidor, para no lanzar Chromium en cada llamada.
+•  Tamaño estimado: unas 60 u 80 líneas.
+•  Extra opcional: vigilar el manifiesto y emitir  notifications/tools/list_changed  para que las herramientas nuevas aparezcan sin reconectar.
+
+*El encadenamiento lo resuelve el consumidor.* El servidor no tiene que orquestar el flujo del carrito. Expone  create_cart() ,  add_to_cart(cart_id, product_id, qty)  y  checkout(cart_id)  con buenas descripciones, y Claude encadena solo.
+
+### 4.6 Uso desde Claude Code
+
+ bash
+claude mcp add auto-mcp -- python server.py
+# o, para compartirlo en el repo:
+claude mcp add --scope project auto-mcp -- python server.py
+
+
+•   /mcp  dentro de Claude Code muestra el estado y las herramientas ( mcp__auto-mcp__search_books , etc.).
+•  Las herramientas se cargan al arrancar: tras regenerar el manifiesto, reconectar desde  /mcp .
+•  Aprobar los permisos de antemano para que la demo no se corte.
+
+## 5. Guion de la demo
+
+1. Mostrar una web y decir que no tiene API.
+2. Lanzar la exploración *en directo* sobre la web más fiable, con el panel en vivo: el navegador moviéndose, las peticiones capturadas y las herramientas apareciendo.
+3. Validador: «N propuestas, M validadas».
+4. Reconectar en Claude Code y enseñar que las herramientas nuevas están ahí.
+5. Pedir una tarea que cruce webs, por ejemplo: «Busca libros de Asimov en Open Library, añade dos libros de ciencia ficción a un carrito en la tienda, haz el checkout y resérvame mesa para cuatro el viernes.»
+6. Cierre: diferencial (autónomo de extremo a extremo) y respuesta preparada sobre la parte legal.
+
+*Plan B:* tener en caché una exploración buena de cada web y un vídeo grabado de la demo completa. Los bucles de agentes son impredecibles.
+
+## 6. Reparto y calendario
+
+| Persona | Responsabilidad |
+|---|---|
+| 1 | Explorador: Playwright, observación compacta, captura de red, atribución, centinelas |
+| 2 | Sintetizador: prompts de traza a manifiesto, deduplicación, nombres y descripciones |
+| 3 | Runtime MCP genérico y validador |
+| 4 | Webs propias (con Claude Code, rápido), panel en vivo, integración con Claude Code y pitch |
+
+| Tiempo | Qué |
+|---|---|
+| 0:00–0:30 | Todos: cerrar  manifest.json , stack, webs objetivo y guion de la demo |
+| 0:30–2:30 | Piezas en paralelo, cada una contra un manifiesto o traza de prueba escritos a mano |
+| 2:30–3:30 | Integración de extremo a extremo con las webs propias |
+| 3:30–4:15 | Web real (Open Library) y pulido del panel |
+| 4:15–5:00 | Congelar, grabar el vídeo de respaldo y ensayar el pitch dos veces |
+
+## 7. Reglas de recorte
+
+•  No prometer que funcione en cualquier web: solo en las tres elegidas.
+•  Nada de webs con login, pagos reales, captchas o anti-bots.
+•  Si algo se atasca más de 20 minutos, simplificar o escribir a mano esa parte del manifiesto y seguir.
+•  La autorreparación y  list_changed  son extras: solo si sobra tiempo.
+
+## 8. Primeros pasos sugeridos para Claude Code
+
+1. Crear la estructura del repo:  sites/shop ,  sites/restaurant ,  explorer/ ,  synthesizer/ ,  runtime/ ,  validator/ ,  ui/ .
+2. Escribir  manifest.example.json  con 3 o 4 herramientas a mano (una  http  de Open Library, las del carrito y una  browser  del restaurante).
+3. Implementar el runtime MCP genérico contra ese manifiesto y probarlo con  claude mcp add .
+4. Construir las dos webs propias.
+5. Explorador: primero la observación compacta y la captura de red, después el bucle con el LLM, después la atribución y los centinelas.
+6. Sintetizador y validador.
+7. Panel en vivo.

@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1164 302" role="img" aria-label="Linen">
+  <title>Linen</title>
+  <g fill="#000">
+    <!-- L -->
+    <path d="M0 0H64V252H209V302H0Z"/>
+    <!-- I -->
+    <path d="M244 0H308V302H244Z"/>
+    <!-- N -->
+    <path d="M346 0H429L543 225V0H607V302H524L410 77V302H346Z"/>
+    <!-- E: tres barras sin asta -->
+    <path d="M657 0H849V50H657Z"/>
+    <path d="M657 126H831V176H657Z"/>
+    <path d="M657 252H859V302H657Z"/>
+    <!-- N -->
+    <path d="M903 0H986L1100 225V0H1164V302H1081L967 77V302H903Z"/>
+  </g>
+</svg>

@@ -1,0 +1,159 @@
+.specimen {
+  margin: 0;
+  border: 1px solid var(--ink);
+  border-radius: var(--r-l);
+  background: var(--surface);
+  overflow: hidden;
+  font-family: var(--font-mono);
+  font-size: 12.5px;
+  box-shadow: 6px 6px 0 -1px var(--surface-3), 6px 6px 0 0 var(--ink);
+}
+
+.specimen__bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  height: 40px;
+  padding: 0 14px;
+  border-bottom: 1px solid var(--line);
+}
+
+.specimen__label {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--ink-2);
+}
+
+.specimen__url {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  color: var(--muted);
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.specimen__body {
+  display: grid;
+}
+
+.specimen__section {
+  padding: 14px 14px 16px;
+}
+
+.specimen__section + .specimen__section {
+  border-top: 1px dashed var(--line-strong);
+}
+
+.specimen__head {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 10px;
+  font-size: 10.5px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--faint);
+}
+
+.specimen__trace,
+.specimen__tools {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 6px;
+}
+
+.specimen__trace li,
+.specimen__tools li {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-height: 22px;
+  opacity: 0;
+  transform: translateX(-4px);
+  transition:
+    opacity 0.25s var(--ease),
+    transform 0.25s var(--ease);
+}
+
+.specimen__trace li.is-in,
+.specimen__tools li.is-in {
+  opacity: 1;
+  transform: none;
+}
+
+.specimen__glyph {
+  width: 12px;
+  color: var(--faint);
+  text-align: center;
+}
+
+.specimen__trace li.req .specimen__glyph {
+  color: var(--signal);
+}
+
+.specimen__text {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  color: var(--ink-2);
+}
+
+.specimen__trace li.req .specimen__text {
+  color: var(--ink);
+}
+
+.specimen__status {
+  font-size: 11px;
+  color: var(--ok);
+}
+
+.specimen__tools li svg {
+  color: var(--ok);
+}
+
+.specimen__tools code {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  color: var(--ink);
+  font-weight: 500;
+}
+
+.specimen__foot {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 10px 14px;
+  border-top: 1px solid var(--line);
+  background: var(--surface-2);
+  font-size: 11.5px;
+  color: var(--muted);
+}
+
+.specimen__open {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  color: var(--ink);
+  border-radius: var(--r-s);
+  white-space: nowrap;
+}
+
+.specimen__open:hover {
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
