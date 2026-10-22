@@ -110,7 +110,21 @@ def build_arguments(tool: dict[str, Any], produced: dict[str, Any]) -> tuple[dic
         if value is not None:
             args[dep["param"]] = value
     required = (tool.get("input_schema") or {}).get("required") or []
+    impl = tool.get("impl") or {}
+    recipe = {p["name"]: p for p in impl.get("params") or []}
+    upload_params = set()
+    for step in impl.get("steps") or []:
+        if step.get("action") == "upload":
+            match = re.search(r"\{(\w+)\}", str(step.get("value") or ""))
+            if match:
+                upload_params.add(match.group(1))
+    # Los archivos no pueden inventarse: se usa el ejemplo de la receta.
+    for name in upload_params:
+        if name in recipe and recipe[name].get("example") not in (None, ""):
+            args[name] = recipe[name]["example"]
     for name in required:
+        if args.get(name) is None and name in recipe and recipe[name].get("example") not in (None, ""):
+            args[name] = recipe[name]["example"]
         if args.get(name) is None:
             return args, f"falta {name} sin valor de ejemplo"
     return args, None

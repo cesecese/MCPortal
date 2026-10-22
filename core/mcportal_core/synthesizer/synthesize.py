@@ -26,6 +26,7 @@ Reglas:
 - Una herramienta por capacidad distinta (buscar, ver detalle, crear carrito, añadir, pagar, consultar, reservar…). Descarta lo que no aporta: cargas de página, peticiones de analítica o seguimiento, recursos internos, duplicados. Explica cada descarte en discarded.
 - kind "http" si hay un endpoint claro. kind "browser" si el candidato tiene csrf_fields (token ligado a la sesión) o solo funciona a través de la interfaz. En browser, usa exactamente los nombres de parámetro de browser.params del candidato; url, method y body se ignoran.
 - En http, url y body son plantillas: {nombre} se sustituye por el parámetro. Puedes renombrar un parámetro (q → query) cambiándolo también en la plantilla, convertir en parámetro un literal útil (p. ej. qty) o dejar literales fijos. Cada {nombre} de la plantilla debe estar en params. Un parámetro de query opcional ausente se omite de la URL.
+- En herramientas de búsqueda o listado, los filtros (q, categoría, estado, tipo, página…) deben ser parámetros opcionales; no los fijes como literales salvo que la web no permita cambiarlos.
 - Nombres en snake_case e inglés, con el prefijo de sitio indicado (p. ej. PREFIJO_search_products).
 - Descripciones en español, concretas: qué hace, qué devuelve y de qué depende («requiere un cart_id obtenido con PREFIJO_create_cart»). Incluye formatos (fecha YYYY-MM-DD) y valores válidos conocidos.
 - Si un parámetro sale de la respuesta de otra herramienta (source "response" en el candidato), pon en depends_on_tool el nombre de la herramienta que generas para el candidato from_candidate y en depends_on_field la ruta del campo (path del candidato, p. ej. results[0].id o cart_id). Si no, déjalos vacíos.
@@ -472,6 +473,13 @@ def assemble(
                 "steps": recipe.get("steps"),
                 "extract": recipe.get("extract") or "body",
             }
+            recipe_params = {p["name"]: p for p in recipe.get("params") or []}
+            upload_params = set()
+            for step in recipe.get("steps") or []:
+                if step.get("action") == "upload":
+                    match = re.search(r"\{(\w+)\}", str(step.get("value") or ""))
+                    if match:
+                        upload_params.add(match.group(1))
             declared = {p["name"] for p in params}
             for recipe_param in recipe.get("params") or []:
                 if recipe_param["name"] not in declared:
@@ -483,6 +491,17 @@ def assemble(
                     })
                     if recipe_param.get("enum"):
                         params[-1]["enum"] = _coerce_enum(recipe_param["enum"], params[-1]["type"])
+            # Los ejemplos de la receta son la verdad para selects y archivos:
+            # el LLM no ve la ruta del PDF ni el valor real del desplegable.
+            for entry in params:
+                recipe_param = recipe_params.get(entry["name"])
+                if not recipe_param:
+                    continue
+                if entry["name"] in upload_params and recipe_param.get("example"):
+                    entry["example"] = recipe_param["example"]
+                elif "example" not in entry and recipe_param.get("example") not in (None, ""):
+                    entry["example"] = _typed(recipe_param["example"], entry["type"])
+            impl["params"] = recipe.get("params") or []
         else:
             url = item.get("url") or cand.get("url") or ""
             body_type = item.get("body_type") or cand.get("body_type") or "json"
