@@ -12,15 +12,18 @@ import argparse
 import asyncio
 import json
 import time
+from pathlib import Path
 
 from mcportal_core.explorer.analyze import analyze
 from mcportal_core.explorer.browser import Session
 from mcportal_core.explorer.policies import POLICIES, llm_available
 
-try:  # contrato compartido; el stub permite trabajar antes de que exista common/
-    from mcportal_core.common.events import RUNS, Events, slug_for
+try:  # contrato compartido (persona 2); el stub cubre el trabajo en solitario de P1
+    from mcportal_core.common.events import Events, slug_for
 except ImportError:
-    from mcportal_core.explorer.events_stub import RUNS, Events, slug_for
+    from mcportal_core.explorer.events_stub import Events, slug_for
+
+RUNS = Path(__file__).resolve().parents[3] / "runs"
 
 
 async def explore(url: str, policy: str = "auto", max_steps: int = 20, headless: bool = False,
