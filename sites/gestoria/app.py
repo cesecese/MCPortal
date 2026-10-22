@@ -10,6 +10,7 @@ from __future__ import annotations
 
 import html
 import secrets
+import unicodedata
 from datetime import date
 from pathlib import Path
 from typing import Any
@@ -226,12 +227,26 @@ async function showClient(id) {
     </div>`;
 }
 form.addEventListener('submit', (event) => { event.preventDefault(); load(); });
+const nameForm = document.getElementById('name-search');
+nameForm.addEventListener('submit', async (event) => {
+  event.preventDefault();
+  const value = nameForm.elements.namedItem('name').value;
+  const res = await fetch('/api/clients/by-name?name=' + encodeURIComponent(value));
+  const body = await res.json();
+  if (body.client) { await showClient(body.client.id); }
+  else { detail.innerHTML = '<div class="notice">' + esc(body.message || 'No se encontró el cliente.') + '</div>'; }
+});
 load();
 """
 
 
 def esc(value: Any) -> str:
     return html.escape(str(value or ""))
+
+
+def norm(value: str) -> str:
+    text = unicodedata.normalize("NFKD", value.casefold())
+    return "".join(char for char in text if not unicodedata.combining(char)).strip()
 
 
 def options(items: list[tuple[str, str]], selected: str = "") -> str:
@@ -414,6 +429,12 @@ def clients_page() -> HTMLResponse:
     <button class="btn" type="submit">Buscar</button>
   </form>
 </div>
+<div class="toolbar">
+  <form id="name-search" method="get" action="/clientes">
+    <input class="search-q" type="search" name="name" placeholder="Nombre y apellidos exactos" aria-label="Buscar por nombre">
+    <button class="btn btn--outline" type="submit">Buscar por nombre</button>
+  </form>
+</div>
 <div class="card table-card"><div class="scroll"><table>
   <thead><tr><th>Cliente</th><th>CIF</th><th>Tipo</th><th>Estado</th><th>Asesor</th><th></th></tr></thead>
   <tbody id="client-rows"></tbody>
@@ -438,6 +459,17 @@ def api_clients(q: str = "", estado: str = "", tipo: str = "") -> JSONResponse:
             continue
         results.append(client_payload(client))
     return JSONResponse({"clients": results, "total": len(results)})
+
+
+@app.get("/api/clients/by-name")
+def api_client_by_name(name: str = "") -> JSONResponse:
+    needle = norm(name)
+    if not needle:
+        return JSONResponse({"client": None, "message": "Indica un nombre."})
+    for client in CLIENTS:
+        if needle in norm(f"{client['nombre']} {client['apellidos']}"):
+            return JSONResponse({"client": client_payload(client)})
+    return JSONResponse({"client": None, "message": "No existe ningún cliente con ese nombre."})
 
 
 @app.get("/api/clients/{client_id}")

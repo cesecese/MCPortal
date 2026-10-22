@@ -144,6 +144,7 @@ crear, añadir, reservar, comprar…), no para leer su contenido. Con lo que des
 tipadas para que otro agente use la web como si tuviera API.
 
 Cómo explorar:
+- Antes de crear un registro, prueba también el listado o buscador y abre una ficha; el alta no suele ser la única capacidad.
 - Prueba cada tipo de formulario y de botón UNA vez. No repitas patrones (si hay 20 botones «Añadir al carrito», \
 pulsa uno) y no explores contenido (no abras diez fichas de producto).
 - Completa los flujos de varios pasos hasta el final (añadir al carrito → ver carrito → finalizar compra; consultar \

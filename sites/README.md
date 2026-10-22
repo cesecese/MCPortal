@@ -84,8 +84,8 @@ CSRF y **subida real de un PDF** de balance de situación. Es el caso de uso
 - `GET /` resumen; `GET /clientes` buscador (la tabla se carga por `fetch`);
   `GET /clientes/nuevo` formulario; `GET /clientes/{id}` ficha;
   `GET /documentos` balances.
-- `GET /api/clients?q=&estado=&tipo=` JSON para el buscador;
-  `GET /api/clients/{id}` JSON de la ficha.
+- `GET /api/clients?q=&estado=&tipo=` JSON para el buscador (lista);
+  `GET /api/clients/{id}` JSON de la ficha; `GET /api/clients/by-name?name=` búsqueda por nombre exacto.
 - `POST /clientes/nuevo` multipart con `csrf_token` + cookie de sesión y un PDF
   obligatorio (`balance`); 303 a la ficha creada. CIF duplicado se muestra como
   aviso, no bloquea (el explorador repite ejemplos).

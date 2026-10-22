@@ -242,7 +242,7 @@ async function explore() {
 $("go").addEventListener("click", explore);
 $("s8001").addEventListener("click", () => { $("url").value = "http://localhost:8001/"; explore(); });
 $("s8002").addEventListener("click", () => { $("url").value = "http://localhost:8002/"; explore(); });
-$("s8003").addEventListener("click", () => { $("url").value = "http://localhost:8003/"; explore(); });
+$("s8003").addEventListener("click", () => { $("url").value = "http://localhost:8003/"; $("policy").value = "heuristic"; explore(); });
 $("runs").addEventListener("change", (e) => {
   if (!e.target.value) return;
   stop(); reset();

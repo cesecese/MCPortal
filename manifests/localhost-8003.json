@@ -2,7 +2,7 @@
   "site": "localhost:8003",
   "start_url": "http://localhost:8003/",
   "synthesis": "llm",
-  "validated_at": "2026-10-22 17:03:56",
+  "validated_at": "2026-10-22 17:15:33",
   "slug": "localhost_8003",
   "display_name": "Resumen · Gestoría Meridian",
   "version": "0.1.0",
@@ -14,148 +14,98 @@
   "generated_with": "mcportal-core 0.1",
   "tools": [
     {
-      "name": "gestoria_meridian_search_clients",
-      "description": "Busca y lista clientes de la gestoría Meridian. Permite filtrar por texto libre, estado y tipo de cliente. Devuelve una lista 'clients' con id (p. ej. CL-2026-0001), nombre, apellidos, CIF/NIF, teléfono, email, dirección, ciudad, código postal, provincia y tipo. El id se usa en gestoria_meridian_get_client.",
-      "input_schema": {
-        "type": "object",
-        "properties": {
-          "q": {
-            "type": "string",
-            "description": "Texto de búsqueda (nombre, apellidos, CIF, email...). Opcional."
-          },
-          "estado": {
-            "type": "string",
-            "description": "Estado del cliente para filtrar. Valor conocido: activo. Opcional."
-          },
-          "tipo": {
-            "type": "string",
-            "description": "Tipo de cliente para filtrar. Valor conocido: empresa. Opcional."
-          }
-        },
-        "required": []
-      },
-      "impl": {
-        "kind": "http",
-        "method": "GET",
-        "url": "http://localhost:8003/api/clients?q={q}&estado={estado}&tipo={tipo}"
-      },
-      "examples": {
-        "q": "Marta",
-        "estado": "activo",
-        "tipo": "empresa"
-      }
-    },
-    {
-      "name": "gestoria_meridian_get_client",
-      "description": "Obtiene la ficha completa de un cliente por su id. Devuelve el objeto 'client' con id, nombre, apellidos, CIF, teléfono, email, dirección, ciudad, código postal, provincia y tipo. Requiere un client_id obtenido con gestoria_meridian_search_clients.",
-      "input_schema": {
-        "type": "object",
-        "properties": {
-          "client_id": {
-            "type": "string",
-            "description": "Identificador del cliente, p. ej. CL-2026-0001."
-          }
-        },
-        "required": [
-          "client_id"
-        ]
-      },
-      "impl": {
-        "kind": "http",
-        "method": "GET",
-        "url": "http://localhost:8003/api/clients/{client_id}"
-      },
-      "depends_on": [
-        {
-          "param": "client_id",
-          "tool": "gestoria_meridian_search_clients",
-          "path": "clients[0].id"
-        }
-      ]
-    },
-    {
       "name": "gestoria_meridian_create_client",
-      "description": "Crea un nuevo cliente en la gestoría mediante el formulario web (requiere token CSRF, por eso se usa el navegador). Obligatorios: nombre, apellidos, CIF/NIF, teléfono, email, dirección, balance de situación (PDF), tipo, asesor, estado y fecha de alta (YYYY-MM-DD). Tras crear, redirige a la ficha del cliente.",
+      "description": "Crea un nuevo cliente en la gestoría mediante el formulario web (requiere token CSRF de sesión). Tras crear, redirige a la ficha del cliente con su ID (formato CL-AAAA-NNNN). Requiere adjuntar el balance de situación en PDF.",
       "input_schema": {
         "type": "object",
         "properties": {
           "nombre": {
             "type": "string",
-            "description": "Nombre del cliente."
+            "description": "Nombre del cliente (obligatorio)"
           },
           "apellidos": {
             "type": "string",
-            "description": "Apellidos del cliente."
+            "description": "Apellidos del cliente (obligatorio)"
           },
           "cif": {
             "type": "string",
-            "description": "CIF/NIF del cliente."
-          },
-          "telefono": {
-            "type": "string",
-            "description": "Teléfono de contacto."
-          },
-          "email": {
-            "type": "string",
-            "description": "Email de contacto."
-          },
-          "direccion": {
-            "type": "string",
-            "description": "Dirección postal."
-          },
-          "iban": {
-            "type": "string",
-            "description": "IBAN del cliente. Opcional."
-          },
-          "balance": {
-            "type": "string",
-            "description": "Ruta del archivo PDF del balance de situación a subir."
-          },
-          "notas": {
-            "type": "string",
-            "description": "Notas libres. Opcional."
+            "description": "CIF o NIF del cliente (obligatorio)"
           },
           "tipo": {
             "type": "string",
-            "description": "Tipo de cliente (p. ej. empresa)."
+            "description": "Tipo de cliente (obligatorio). Valores conocidos: empresa, autonomo, particular",
+            "enum": [
+              "empresa",
+              "autonomo",
+              "particular"
+            ]
+          },
+          "telefono": {
+            "type": "string",
+            "description": "Teléfono de contacto (obligatorio)"
+          },
+          "email": {
+            "type": "string",
+            "description": "Correo electrónico (obligatorio)"
+          },
+          "direccion": {
+            "type": "string",
+            "description": "Dirección postal (obligatorio)"
           },
           "ciudad": {
             "type": "string",
-            "description": "Ciudad. Opcional."
+            "description": "Ciudad (opcional)"
           },
           "cp": {
             "type": "string",
-            "description": "Código postal. Opcional."
+            "description": "Código postal (opcional)"
           },
           "provincia": {
             "type": "string",
-            "description": "Provincia. Opcional."
+            "description": "Provincia (opcional)"
+          },
+          "iban": {
+            "type": "string",
+            "description": "IBAN (opcional)"
           },
           "asesor": {
             "type": "string",
-            "description": "Asesor asignado (según opciones del desplegable)."
+            "description": "Asesor asignado (obligatorio); elegir una opción del desplegable del formulario"
           },
           "estado": {
             "type": "string",
-            "description": "Estado del cliente (p. ej. activo)."
+            "description": "Estado del cliente (obligatorio). Valores conocidos: activo, pendiente, inactivo",
+            "enum": [
+              "activo",
+              "pendiente",
+              "inactivo"
+            ]
           },
           "fecha_alta": {
             "type": "string",
-            "description": "Fecha de alta en formato YYYY-MM-DD."
+            "description": "Fecha de alta en formato YYYY-MM-DD (obligatorio)"
+          },
+          "balance": {
+            "type": "string",
+            "description": "Ruta del archivo PDF del balance de situación a subir (obligatorio)"
+          },
+          "notas": {
+            "type": "string",
+            "description": "Notas adicionales (opcional)"
           }
         },
         "required": [
           "nombre",
           "apellidos",
           "cif",
+          "tipo",
           "telefono",
           "email",
           "direccion",
-          "balance",
-          "tipo",
           "asesor",
           "estado",
-          "fecha_alta"
+          "fecha_alta",
+          "balance"
         ]
       },
       "impl": {
@@ -178,6 +128,11 @@
             "value": "{cif}"
           },
           {
+            "action": "select",
+            "selector": "#tipo",
+            "value": "{tipo}"
+          },
+          {
             "action": "fill",
             "selector": "#telefono",
             "value": "{telefono}"
@@ -191,26 +146,6 @@
             "action": "fill",
             "selector": "#direccion",
             "value": "{direccion}"
-          },
-          {
-            "action": "fill",
-            "selector": "#iban",
-            "value": "{iban}"
-          },
-          {
-            "action": "upload",
-            "selector": "#balance",
-            "value": "{balance}"
-          },
-          {
-            "action": "fill",
-            "selector": "#notas",
-            "value": "{notas}"
-          },
-          {
-            "action": "select",
-            "selector": "#tipo",
-            "value": "{tipo}"
           },
           {
             "action": "fill",
@@ -228,6 +163,11 @@
             "value": "{provincia}"
           },
           {
+            "action": "fill",
+            "selector": "#iban",
+            "value": "{iban}"
+          },
+          {
             "action": "select",
             "selector": "#asesor",
             "value": "{asesor}"
@@ -241,6 +181,16 @@
             "action": "fill",
             "selector": "#fecha_alta",
             "value": "{fecha_alta}"
+          },
+          {
+            "action": "upload",
+            "selector": "#balance",
+            "value": "{balance}"
+          },
+          {
+            "action": "fill",
+            "selector": "#notas",
+            "value": "{notas}"
           },
           {
             "action": "click",
@@ -266,51 +216,9 @@
           {
             "name": "cif",
             "type": "string",
-            "example": "B12345674",
+            "example": "zxq_cif",
             "source": "input",
             "label": "CIF / NIF *"
-          },
-          {
-            "name": "telefono",
-            "type": "string",
-            "example": "600123456",
-            "source": "input",
-            "label": "Teléfono *"
-          },
-          {
-            "name": "email",
-            "type": "string",
-            "example": "zxq@example.com",
-            "source": "input",
-            "label": "Email *"
-          },
-          {
-            "name": "direccion",
-            "type": "string",
-            "example": "zxq_direccion 1",
-            "source": "input",
-            "label": "Dirección *"
-          },
-          {
-            "name": "iban",
-            "type": "string",
-            "example": "ES9121000418450200051332",
-            "source": "input",
-            "label": "IBAN"
-          },
-          {
-            "name": "balance",
-            "type": "string",
-            "example": "sites/gestoria/samples/balance-ejemplo.pdf",
-            "source": "input",
-            "label": "Balance de situación (PDF) *"
-          },
-          {
-            "name": "notas",
-            "type": "string",
-            "example": "zxq_notas",
-            "source": "input",
-            "label": "Notas"
           },
           {
             "name": "tipo",
@@ -323,6 +231,27 @@
             "example": "empresa",
             "source": "input",
             "label": "Tipo de cliente *"
+          },
+          {
+            "name": "telefono",
+            "type": "string",
+            "example": "600123456",
+            "source": "input",
+            "label": "Teléfono *"
+          },
+          {
+            "name": "email",
+            "type": "string",
+            "example": "zxq.user@example.com",
+            "source": "input",
+            "label": "Email *"
+          },
+          {
+            "name": "direccion",
+            "type": "string",
+            "example": "zxq_direccion",
+            "source": "input",
+            "label": "Dirección *"
           },
           {
             "name": "ciudad",
@@ -344,6 +273,13 @@
             "example": "Madrid",
             "source": "input",
             "label": "Provincia"
+          },
+          {
+            "name": "iban",
+            "type": "string",
+            "example": "zxq_iban",
+            "source": "input",
+            "label": "IBAN"
           },
           {
             "name": "asesor",
@@ -376,26 +312,134 @@
             "example": "2026-10-22",
             "source": "input",
             "label": "Fecha de alta *"
+          },
+          {
+            "name": "balance",
+            "type": "string",
+            "example": "sites/gestoria/samples/balance-ejemplo.pdf",
+            "source": "input",
+            "label": "Balance de situación (PDF) *"
+          },
+          {
+            "name": "notas",
+            "type": "string",
+            "example": "zxq_notas",
+            "source": "input",
+            "label": "Notas"
           }
         ]
       },
       "examples": {
-        "nombre": "Laura",
-        "apellidos": "Gómez Ruiz",
-        "cif": "B12345678",
-        "telefono": "600 123 456",
-        "email": "laura@ejemplo.es",
-        "direccion": "Calle Mayor 10",
-        "iban": "ES9121000418450200051332",
-        "balance": "sites/gestoria/samples/balance-ejemplo.pdf",
-        "notas": "Cliente derivado por recomendación",
+        "nombre": "Lucía",
+        "apellidos": "Fernández Gil",
+        "cif": "B45123987",
         "tipo": "empresa",
+        "telefono": "600 123 456",
+        "email": "lucia@example.com",
+        "direccion": "Calle Mayor 10",
         "ciudad": "Madrid",
         "cp": "28014",
         "provincia": "Madrid",
+        "iban": "ES9121000418450200051332",
         "asesor": "elena",
         "estado": "activo",
-        "fecha_alta": "2026-01-15"
+        "fecha_alta": "2026-01-15",
+        "balance": "sites/gestoria/samples/balance-ejemplo.pdf",
+        "notas": "Cliente derivado por recomendación"
+      }
+    },
+    {
+      "name": "gestoria_meridian_search_clients",
+      "description": "Lista y busca clientes de la gestoría. Todos los filtros son opcionales. Devuelve un JSON con 'clients': id, nombre, apellidos, cif, teléfono, email, dirección, ciudad, cp, provincia, tipo y tipo_label.",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "q": {
+            "type": "string",
+            "description": "Texto libre de búsqueda de clientes (nombre, CIF, etc.)"
+          },
+          "estado": {
+            "type": "string",
+            "description": "Filtra por estado del cliente",
+            "enum": [
+              "activo",
+              "pendiente",
+              "inactivo"
+            ]
+          },
+          "tipo": {
+            "type": "string",
+            "description": "Filtra por tipo de cliente",
+            "enum": [
+              "empresa",
+              "autonomo",
+              "particular"
+            ]
+          }
+        },
+        "required": []
+      },
+      "impl": {
+        "kind": "http",
+        "method": "GET",
+        "url": "http://localhost:8003/api/clients?q={q}&estado={estado}&tipo={tipo}"
+      },
+      "examples": {
+        "q": "Rivas",
+        "estado": "activo",
+        "tipo": "empresa"
+      }
+    },
+    {
+      "name": "gestoria_meridian_get_client",
+      "description": "Obtiene la ficha de un cliente por su ID (formato CL-AAAA-NNNN). Devuelve 'client' con datos de contacto, dirección, CIF y tipo. Requiere un client_id obtenido con gestoria_meridian_search_clients.",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "client_id": {
+            "type": "string",
+            "description": "ID del cliente, p. ej. CL-2026-0001"
+          }
+        },
+        "required": [
+          "client_id"
+        ]
+      },
+      "impl": {
+        "kind": "http",
+        "method": "GET",
+        "url": "http://localhost:8003/api/clients/{client_id}"
+      },
+      "depends_on": [
+        {
+          "param": "client_id",
+          "tool": "gestoria_meridian_search_clients",
+          "path": "clients[0].id"
+        }
+      ]
+    },
+    {
+      "name": "gestoria_meridian_find_client_by_name",
+      "description": "Busca un cliente por nombre. Devuelve 'client' con sus datos, o client null y un mensaje si no existe ningún cliente con ese nombre.",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "Nombre del cliente a buscar"
+          }
+        },
+        "required": [
+          "name"
+        ]
+      },
+      "impl": {
+        "kind": "http",
+        "method": "GET",
+        "url": "http://localhost:8003/api/clients/by-name?name={name}"
+      },
+      "examples": {
+        "name": "Marta"
       }
     }
   ]
