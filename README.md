@@ -120,6 +120,8 @@ repositorio solo trae un ejemplo; **tu archivo personal no se sube a git**.
 cp .env.example .env.local
 ```
 
+Si ya tienes un `.env.local`, **no lo sobrescribas**: edítalo directamente.
+
 Abre `.env.local` y rellena tus valores:
 
 ```dotenv
