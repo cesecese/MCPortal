@@ -78,6 +78,9 @@ export function versionsOf(mcp: Mcp): McpVersion[] {
     {
       version: mcp.version,
       publishedAt: new Date(base).toISOString(),
+      notes: 'Revalidación contra la web y ajuste de los esquemas de entrada.',
+      tools: mcp.tools.length,
+      validated: tools.length,
       author: mcp.author,
       changes: [
         `Revalidación contra ${mcp.site} y ajuste de los esquemas de entrada.`,
@@ -88,6 +91,9 @@ export function versionsOf(mcp: Mcp): McpVersion[] {
     {
       version: previous,
       publishedAt: new Date(base - 38 * DAY).toISOString(),
+      notes: 'Ampliación de cobertura y corrección de dependencias entre parámetros.',
+      tools: mcp.tools.length,
+      validated: tools.length,
       author: mcp.author,
       changes: [
         lastTool ? `Se añade la herramienta ${lastTool} y su validación.` : 'Se amplía la cobertura de acciones de la web.',
@@ -101,6 +107,9 @@ export function versionsOf(mcp: Mcp): McpVersion[] {
     history.push({
       version: initial,
       publishedAt: new Date(base - 96 * DAY).toISOString(),
+      notes: 'Primera publicación del MCP y validación de las herramientas principales.',
+      tools: mcp.tools.length,
+      validated: tools.length,
       author: mcp.author,
       changes: ['Primera publicación del MCP y validación de las herramientas principales.'],
       downloads: Math.max(6, Math.round(mcp.installs * 0.05)),

@@ -1,3 +1,4 @@
+import type { HttpMethod, InputSchema, JsonSchemaProperty, Manifest, ManifestTool } from '../types/contract';
 import type { Mcp, Tool } from '../data/types';
 
 /** Fecha "actual" fija para que los datos de ejemplo no envejezcan. */
@@ -72,34 +73,87 @@ export function installCommand(mcp: Pick<Mcp, 'slug'>): string {
   return `npx -y mcportal add ${mcp.slug}`;
 }
 
-/** Manifiesto con el contrato de contexto.txt (§4.1), solo con herramientas validadas. */
-export function toManifest(mcp: Pick<Mcp, 'site' | 'tools'>): string {
-  const origin = mcp.site.startsWith('http') ? mcp.site : `https://${mcp.site}`;
-  const tools = mcp.tools
+/** Origen real del sitio (las webs de demo locales van por http). */
+export function originOf(mcp: Pick<Mcp, 'site'>): string {
+  const local = /^(localhost|127\.0\.0\.1)(:|$)/.test(mcp.site);
+  return `${local ? 'http' : 'https'}://${mcp.site}`;
+}
+
+/** Manifiesto §6.1 con las herramientas validadas e incluidas en la revisión. */
+export function toManifest(mcp: Mcp): string {
+  const origin = originOf(mcp);
+  const tools: ManifestTool[] = mcp.tools
     .filter((t) => t.validated)
-    .map((t) => ({
-      name: t.name,
-      description: t.description,
-      input_schema: {
-        type: 'object',
-        properties: Object.fromEntries(
-          t.params.map((p) => [
-            p.name,
-            p.type === 'date' ? { type: 'string', format: 'date' } : { type: p.type },
-          ]),
-        ),
-        required: t.params.filter((p) => p.required).map((p) => p.name),
-      },
-      impl:
-        t.kind === 'http'
+    .map((t) => {
+      const properties: Record<string, JsonSchemaProperty> = {};
+      for (const param of t.params) {
+        const prop: JsonSchemaProperty = { type: param.type === 'date' ? 'string' : param.type };
+        if (param.description) prop.description = param.description;
+        const format = param.format ?? (param.type === 'date' ? 'date' : undefined);
+        if (format) prop.format = format;
+        if (param.enum) prop.enum = param.enum;
+        if (param.default !== undefined) prop.default = param.default;
+        properties[param.name] = prop;
+      }
+      const inputSchema: InputSchema = { type: 'object', properties };
+      const required = t.params.filter((p) => p.required).map((p) => p.name);
+      if (required.length) inputSchema.required = required;
+
+      const impl: ManifestTool['impl'] =
+        t.impl ??
+        (t.kind === 'http'
           ? {
               kind: 'http',
-              method: t.method,
-              url: t.endpoint?.includes('.') && !t.endpoint.startsWith('/') ? `https://${t.endpoint}` : `${origin}${t.endpoint}`,
+              method: (t.method as HttpMethod) ?? 'GET',
+              url: t.endpoint?.startsWith('http') ? t.endpoint : `${origin}${t.endpoint ?? ''}`,
             }
-          : { kind: 'browser', start_url: origin, steps: t.steps },
-    }));
-  return JSON.stringify({ site: mcp.site, tools }, null, 2);
+          : {
+              kind: 'browser',
+              start_url: `${origin}/`,
+              steps: [],
+              extract: 'main',
+            });
+
+      const tool: ManifestTool = {
+        name: t.name,
+        description: t.description,
+        input_schema: inputSchema,
+        impl,
+      };
+      if (t.examples) tool.examples = t.examples;
+      const dependencies =
+        t.dependencies ??
+        (t.dependsOn
+          ? [
+              {
+                param: t.dependsOnParam ?? t.params.find((p) => p.name === 'cart_id')?.name ?? 'id',
+                tool: t.dependsOn,
+                path: t.dependsOnPath ?? '',
+              },
+            ]
+          : []);
+      if (dependencies.length) tool.depends_on = dependencies;
+      return tool;
+    });
+
+  const manifest: Manifest = {
+    site: mcp.site,
+    start_url: mcp.manifest?.start_url ?? `${origin}/`,
+    synthesis: mcp.manifest?.synthesis ?? 'llm',
+    validated_at:
+      mcp.manifest?.validated_at ?? mcp.updatedAt.replace('T', ' ').replace(/\.\d+Z$/, '').replace('Z', ''),
+    slug: mcp.slug,
+    display_name: mcp.name,
+    version: mcp.version,
+    category: mcp.category,
+    tags: mcp.tags,
+    license: mcp.license,
+    author: mcp.authorHandle,
+    mode: mcp.mode,
+    generated_with: mcp.manifest?.generated_with ?? 'mcportal-core 0.1',
+    tools,
+  };
+  return JSON.stringify(manifest, null, 2);
 }
 
 export function cx(...parts: (string | false | null | undefined)[]): string {
