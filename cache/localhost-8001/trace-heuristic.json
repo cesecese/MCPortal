@@ -1,0 +1,1399 @@
+{
+ "site": "localhost:8001",
+ "title": "Librería Zeta",
+ "start_url": "http://localhost:8001/",
+ "policy": "heuristic",
+ "started": 1792672079.097707,
+ "finished": 1792672089.3818922,
+ "steps": [
+  {
+   "i": 0,
+   "action": {
+    "type": "goto",
+    "url": "http://localhost:8001/",
+    "initial": true
+   },
+   "element": {},
+   "url_before": "about:blank",
+   "url_after": "http://localhost:8001/",
+   "request_ids": [
+    1,
+    2,
+    3
+   ],
+   "error": null,
+   "note": null,
+   "has_main": true,
+   "forms": []
+  },
+  {
+   "i": 1,
+   "action": {
+    "type": "click",
+    "id": 3
+   },
+   "element": {
+    "id": 3,
+    "tag": "a",
+    "kind": "link",
+    "label": "Ciencia ficción",
+    "href": "#",
+    "raw_href": "http://localhost:8001/#",
+    "type": null,
+    "name": null,
+    "value": null,
+    "required": false,
+    "min": null,
+    "max": null,
+    "options": null,
+    "form": null,
+    "selector": "a:has-text(\"Ciencia ficción\")",
+    "similar": 0
+   },
+   "url_before": "http://localhost:8001/",
+   "url_after": "http://localhost:8001/",
+   "request_ids": [
+    4
+   ],
+   "error": null,
+   "note": null,
+   "has_main": true,
+   "forms": [
+    {
+     "index": 1,
+     "method": "GET",
+     "action": "/",
+     "hidden": []
+    }
+   ]
+  },
+  {
+   "i": 2,
+   "action": {
+    "type": "click",
+    "id": 4
+   },
+   "element": {
+    "id": 4,
+    "tag": "a",
+    "kind": "link",
+    "label": "Fantasía",
+    "href": "#",
+    "raw_href": "http://localhost:8001/#",
+    "type": null,
+    "name": null,
+    "value": null,
+    "required": false,
+    "min": null,
+    "max": null,
+    "options": null,
+    "form": null,
+    "selector": "a:has-text(\"Fantasía\")",
+    "similar": 0
+   },
+   "url_before": "http://localhost:8001/",
+   "url_after": "http://localhost:8001/",
+   "request_ids": [
+    5
+   ],
+   "error": null,
+   "note": null,
+   "has_main": true,
+   "forms": [
+    {
+     "index": 1,
+     "method": "GET",
+     "action": "/",
+     "hidden": []
+    }
+   ]
+  },
+  {
+   "i": 3,
+   "action": {
+    "type": "click",
+    "id": 65
+   },
+   "element": {
+    "id": 65,
+    "tag": "button",
+    "kind": "button",
+    "label": "Ver detalle",
+    "href": null,
+    "raw_href": null,
+    "type": "button",
+    "name": null,
+    "value": null,
+    "required": false,
+    "min": null,
+    "max": null,
+    "options": null,
+    "form": null,
+    "selector": "button:has-text(\"Ver detalle\")",
+    "similar": 2
+   },
+   "url_before": "http://localhost:8001/",
+   "url_after": "http://localhost:8001/",
+   "request_ids": [
+    6
+   ],
+   "error": null,
+   "note": null,
+   "has_main": true,
+   "forms": [
+    {
+     "index": 1,
+     "method": "GET",
+     "action": "/",
+     "hidden": []
+    }
+   ]
+  },
+  {
+   "i": 4,
+   "action": {
+    "type": "click",
+    "id": 67
+   },
+   "element": {
+    "id": 67,
+    "tag": "button",
+    "kind": "button",
+    "label": "Añadir al carrito",
+    "href": null,
+    "raw_href": null,
+    "type": "button",
+    "name": null,
+    "value": null,
+    "required": false,
+    "min": null,
+    "max": null,
+    "options": null,
+    "form": null,
+    "selector": "button:has-text(\"Añadir al carrito\")",
+    "similar": 2
+   },
+   "url_before": "http://localhost:8001/",
+   "url_after": "http://localhost:8001/",
+   "request_ids": [
+    7,
+    8
+   ],
+   "error": null,
+   "note": null,
+   "has_main": true,
+   "forms": [
+    {
+     "index": 1,
+     "method": "GET",
+     "action": "/",
+     "hidden": []
+    }
+   ]
+  },
+  {
+   "i": 5,
+   "action": {
+    "type": "click",
+    "id": 46
+   },
+   "element": {
+    "id": 46,
+    "tag": "button",
+    "kind": "button",
+    "label": "Ver carrito (1)",
+    "href": null,
+    "raw_href": null,
+    "type": "button",
+    "name": null,
+    "value": null,
+    "required": false,
+    "min": null,
+    "max": null,
+    "options": null,
+    "form": null,
+    "selector": "#cart-toggle",
+    "similar": 0
+   },
+   "url_before": "http://localhost:8001/",
+   "url_after": "http://localhost:8001/",
+   "request_ids": [
+    9
+   ],
+   "error": null,
+   "note": null,
+   "has_main": true,
+   "forms": [
+    {
+     "index": 1,
+     "method": "GET",
+     "action": "/",
+     "hidden": []
+    }
+   ]
+  },
+  {
+   "i": 6,
+   "action": {
+    "type": "fill",
+    "id": 1,
+    "value": "zxq_q"
+   },
+   "element": {
+    "id": 1,
+    "tag": "input",
+    "kind": "input",
+    "label": "Buscar por título o autor",
+    "href": null,
+    "raw_href": null,
+    "type": "search",
+    "name": "q",
+    "value": "",
+    "required": false,
+    "min": null,
+    "max": null,
+    "options": null,
+    "form": 1,
+    "selector": "form#search-form input[name=\"q\"]",
+    "similar": 0
+   },
+   "url_before": "http://localhost:8001/",
+   "url_after": "http://localhost:8001/",
+   "request_ids": [],
+   "error": null,
+   "note": null,
+   "has_main": true,
+   "forms": [
+    {
+     "index": 1,
+     "method": "GET",
+     "action": "/",
+     "hidden": []
+    },
+    {
+     "index": 2,
+     "method": "GET",
+     "action": "/",
+     "hidden": []
+    }
+   ]
+  },
+  {
+   "i": 7,
+   "action": {
+    "type": "click",
+    "id": 2
+   },
+   "element": {
+    "id": 2,
+    "tag": "button",
+    "kind": "button",
+    "label": "Buscar",
+    "href": null,
+    "raw_href": null,
+    "type": "submit",
+    "name": null,
+    "value": null,
+    "required": false,
+    "min": null,
+    "max": null,
+    "options": null,
+    "form": 1,
+    "selector": "form#search-form button[type=\"submit\"]",
+    "similar": 0
+   },
+   "url_before": "http://localhost:8001/",
+   "url_after": "http://localhost:8001/",
+   "request_ids": [
+    10
+   ],
+   "error": null,
+   "note": null,
+   "has_main": true,
+   "forms": [
+    {
+     "index": 1,
+     "method": "GET",
+     "action": "/",
+     "hidden": []
+    },
+    {
+     "index": 2,
+     "method": "GET",
+     "action": "/",
+     "hidden": []
+    }
+   ]
+  },
+  {
+   "i": 8,
+   "action": {
+    "type": "fill",
+    "id": 74,
+    "value": "zxq_name"
+   },
+   "element": {
+    "id": 74,
+    "tag": "input",
+    "kind": "input",
+    "label": "Nombre",
+    "href": null,
+    "raw_href": null,
+    "type": "text",
+    "name": "name",
+    "value": "",
+    "required": false,
+    "min": null,
+    "max": null,
+    "options": null,
+    "form": 2,
+    "selector": "form#checkout-form input[name=\"name\"]",
+    "similar": 0
+   },
+   "url_before": "http://localhost:8001/",
+   "url_after": "http://localhost:8001/",
+   "request_ids": [],
+   "error": null,
+   "note": null,
+   "has_main": true,
+   "forms": [
+    {
+     "index": 1,
+     "method": "GET",
+     "action": "/",
+     "hidden": []
+    },
+    {
+     "index": 2,
+     "method": "GET",
+     "action": "/",
+     "hidden": []
+    }
+   ]
+  },
+  {
+   "i": 9,
+   "action": {
+    "type": "fill",
+    "id": 75,
+    "value": "zxq.user@example.com"
+   },
+   "element": {
+    "id": 75,
+    "tag": "input",
+    "kind": "input",
+    "label": "Email",
+    "href": null,
+    "raw_href": null,
+    "type": "email",
+    "name": "email",
+    "value": "",
+    "required": false,
+    "min": null,
+    "max": null,
+    "options": null,
+    "form": 2,
+    "selector": "form#checkout-form input[name=\"email\"]",
+    "similar": 0
+   },
+   "url_before": "http://localhost:8001/",
+   "url_after": "http://localhost:8001/",
+   "request_ids": [],
+   "error": null,
+   "note": null,
+   "has_main": true,
+   "forms": [
+    {
+     "index": 1,
+     "method": "GET",
+     "action": "/",
+     "hidden": []
+    },
+    {
+     "index": 2,
+     "method": "GET",
+     "action": "/",
+     "hidden": []
+    }
+   ]
+  },
+  {
+   "i": 10,
+   "action": {
+    "type": "click",
+    "id": 76
+   },
+   "element": {
+    "id": 76,
+    "tag": "button",
+    "kind": "button",
+    "label": "Finalizar compra",
+    "href": null,
+    "raw_href": null,
+    "type": "submit",
+    "name": null,
+    "value": null,
+    "required": false,
+    "min": null,
+    "max": null,
+    "options": null,
+    "form": 2,
+    "selector": "form#checkout-form button[type=\"submit\"]",
+    "similar": 0
+   },
+   "url_before": "http://localhost:8001/",
+   "url_after": "http://localhost:8001/",
+   "request_ids": [
+    11
+   ],
+   "error": null,
+   "note": null,
+   "has_main": true,
+   "forms": [
+    {
+     "index": 1,
+     "method": "GET",
+     "action": "/",
+     "hidden": []
+    },
+    {
+     "index": 2,
+     "method": "GET",
+     "action": "/",
+     "hidden": []
+    }
+   ]
+  }
+ ],
+ "requests": [
+  {
+   "id": 1,
+   "step": 0,
+   "kind": "document",
+   "method": "GET",
+   "url": "http://localhost:8001/",
+   "status": 200,
+   "request_content_type": "",
+   "post_data": null,
+   "content_type": "text/html; charset=utf-8",
+   "body": "<!doctype html>\n<html lang=\"es\">\n<head>\n<meta charset=\"utf-8\">\n<meta name=\"viewport\" content=\"width=device-width, initial-scale=1\">\n<title>Librería Zeta</title>\n<style>\n  :root { --paper:#f7f5ef; --ink:#1c1a16; --muted:#6c675d; --line:#ddd8cb; --signal:#c2370a; }\n  * { box-sizing:border-box; }\n  body { margin:0; background:var(--paper); color:var(--ink);\n         font:16px/1.5 -apple-system,BlinkMacSystemFont,\"Segoe UI\",Roboto,Helvetica,Arial,sans-serif; }\n  header { border-bottom:1px solid var(--line); padding:18px 28px; }\n  header h1 { margin:0 0 12px; font-size:22px; letter-spacing:-.02em; }\n  header h1 span { color:var(--signal); }\n  #search-form { display:flex; gap:8px; flex-wrap:wrap; }\n  input, select, button { font:inherit; }\n  input, select { padding:8px 10px; border:1px solid var(--line); background:#fff; border-radius:4px; }\n  input[name=q] { flex:1 1 280px; }\n  button { padding:8px 14px; border:1px solid var(--ink); background:var(--ink); color:var(--paper);\n           border-radius:4px; cursor:pointer; }\n  button:hover { background:#33302a; }\n  button.ghost { background:transparent; color:var(--ink); }\n  nav { display:flex; gap:14px; flex-wrap:wrap; padding:12px 28px; border-bottom:1px solid var(--line); }\n  nav a { color:var(--muted); text-decoration:none; font-size:14px; }\n  nav a:hover { color:var(--signal); }\n  main { max-width:1060px; margin:0 auto; padding:24px 28px 60px; }\n  #status { min-height:22px; color:var(--muted); font-size:14px; }\n  #results { display:grid; grid-template-columns:repeat(auto-fill,minmax(300px,1fr)); gap:16px; }\n  .product { border:1px solid var(--line); background:#fffdf8; border-radius:6px; padding:14px; }\n  .product h3 { margin:0 0 4px; font-size:17px; }\n  .product .meta { color:var(--muted); font-size:13px; margin:0 0 10px; }\n  .product .price { font-weight:600; }\n  .product .actions { display:flex; gap:8px; align-items:center; margin-top:12px; flex-wrap:wrap; }\n  .product input[type=number] { width:64px; }\n  .product button { font-size:13px; padding:6px 10px; }\n  #cart { margin-top:30px; border-top:1px solid var(--line); padding-top:20px; }\n  #cart h2 { font-size:18px; }\n  #cart table { width:100%; border-collapse:collapse; margin:10px 0 16px; }\n  #cart th, #cart td { text-align:left; padding:8px 6px; border-bottom:1px solid var(--line); font-size:14px; }\n  #cart .total { text-align:right; font-weight:600; }\n  #detail { margin-top:24px; }\n  #detail .card { border-left:3px solid var(--signal); padding:12px 16px; background:#fffdf8; }\n  #checkout-form { display:flex; gap:8px; flex-wrap:wrap; margin-top:16px; }\n  #checkout-form input { flex:1 1 180px; }\n  .ok { color:#1f7a4d; }\n  .error { color:var(--signal); }\n</style>\n</head>\n<body>\n<header>\n  <h1>Librería <span>Zeta</span></h1>\n  <form id=\"search-form\" method=\"get\" action=\"/\">\n    <input name=\"q\" type=\"search\" placeholder=\"Buscar por título o autor\" aria-label=\"Buscar por título o autor\">\n    <button type=\"submit\">Buscar</button>\n  </form>\n</header>\n<nav id=\"categories\" aria-label=\"Categorías\"></nav>\n<main>\n  <p id=\"status\"></p>\n  <section id=\"results\" aria-label=\"Resultados\"></section>\n  <section id=\"detail\"></section>\n  <section id=\"cart\"></section>\n</main>\n<script>\nlet cartId = null;\nlet cartCount = 0;\n\nconst $ = (sel) => document.querySelector(sel);\nconst money = (n) => n.toFixed(2).replace(\".\", \",\") + \" €\";\nconst esc = (s) => String(s).replace(/[&<>\"']/g, (c) => ({\"&\":\"&amp;\",\"<\":\"&lt;\",\">\":\"&gt;\",'\"':\"&quot;\",\"'\":\"&#39;\"}[c]));\n\nasync function api(url, options) {\n  const response = await fetch(url, options);\n  const data = await response.json().catch(() => ({}));\n  return { ok: response.ok, status: response.status, data };\n}\n\nfunction setStatus(text, kind) {\n  const el = $(\"#status\");\n  el.textContent = text;\n  el.className = kind || \"\";\n}\n\nasync function loadCategories() {\n  const { ok, data } = await api(\"/api/categories\");\n  if (!ok) return;\n  const nav = $(\"#categories\");\n  nav.innerHTML = \"\";\n  for (const category of data.categories) {\n    const link = document.createElement(\"a\");\n    link.href = \"#\";\n    link.textContent = category.name;\n    link.dataset.category = category.id;\n    link.addEventListener(\"click\", (event) => {\n      event.preventDefault();\n      runSearch(\"\", category.id);\n    });\n    nav.appendChild(link);\n  }\n}\n\nfunction renderResults(results) {\n  const box = $(\"#results\");\n  if (!results.length) {\n    box.innerHTML = \"<p>No hay resultados para esa búsqueda.</p>\";\n    return;\n  }\n  box.innerHTML = results.map((p) => `\n    <article class=\"product\">\n      <h3>${esc(p.title)}</h3>\n      <p class=\"meta\">${esc(p.author)} · ${esc(p.category)}</p>\n      <p class=\"price\">${money(p.price)}</p>\n      <div class=\"actions\">\n        <button type=\"button\" class=\"ghost detail\" data-id=\"${esc(p.id)}\">Ver detalle</button>\n        <input type=\"number\" name=\"qty\" value=\"1\" min=\"1\" max=\"20\" aria-label=\"Cantidad\">\n        <button type=\"button\" class=\"add\" data-id=\"${esc(p.id)}\">Añadir al carrito</button>\n      </div>\n    </article>`).join(\"\");\n  box.querySelectorAll(\"button.detail\").forEach((button) => {\n    button.addEventListener(\"click\", () => showDetail(button.dataset.id));\n  });\n  box.querySelectorAll(\"button.add\").forEach((button) => {\n    button.addEventListener(\"click\", () => {\n      const qty = Number(button.closest(\".product\").querySelector(\"input[name=qty]\").value) || 1;\n      addToCart(button.dataset.id, qty);\n    });\n  });\n}\n\nasync function runSearch(q, category) {\n  const params = new URLSearchParams();\n  if (q) params.set(\"q\", q);\n  if (category) params.set(\"category\", category);\n  const query = params.toString();\n  setStatus(\"Buscando…\");\n  const { ok, data } = await api(\"/api/search\" + (query ? \"?\" + query : \"\"));\n  if (!ok) { setStatus(\"No se pudo buscar.\", \"error\"); return; }\n  renderResults(data.results);\n  const label = [q ? `«${q}»` : null, category || null].filter(Boolean).join(\" · \");\n  setStatus(`${data.count} resultado${data.count === 1 ? \"\" : \"s\"}${label ? \" para \" + label : \"\"}`);\n}\n\nasync function showDetail(productId) {\n  const { ok, data } = await api(\"/api/products/\" + encodeURIComponent(productId));\n  const box = $(\"#detail\");\n  if (!ok) { box.innerHTML = '<p class=\"error\">No se pudo cargar el detalle.</p>'; return; }\n  box.innerHTML = `<div class=\"card\">\n    <h3>${esc(data.title)}</h3>\n    <p class=\"meta\">${esc(data.author)} · ${esc(data.category)} · ${money(data.price)}</p>\n    <p>${esc(data.description)}</p>\n    <p>Stock disponible: <strong>${data.stock}</strong> unidades</p>\n  </div>`;\n}\n\nasync function addToCart(productId, qty) {\n  if (!cartId) {\n    const created = await api(\"/api/cart\", { method: \"POST\" });\n    if (!created.ok) { setStatus(\"No se pudo crear el carrito.\", \"error\"); return; }\n    cartId = created.data.cart_id;\n  }\n  const { ok, data } = await api(`/api/cart/${encodeURIComponent(cartId)}/items`, {\n    method: \"POST\",\n    headers: { \"Content-Type\": \"application/json\" },\n    body: JSON.stringify({ product_id: productId, qty: qty }),\n  });\n  if (!ok) { setStatus(data.detail || \"No se pudo añadir al carrito.\", \"error\"); return; }\n  cartCount = data.items.reduce((total, line) => total + line.qty, 0);\n  const toggle = $(\"#cart-toggle\");\n  if (toggle) toggle.textContent = `Ver carrito (${cartCount})`;\n  setStatus(\"Añadido al carrito.\", \"ok\");\n}\n\nfunction ensureCartToggle() {\n  if ($(\"#cart-toggle\")) return;\n  const button = document.createElement(\"button\");\n  button.type = \"button\";\n  button.id = \"cart-toggle\";\n  button.textContent = `Ver carrito (${cartCount})`;\n  button.style.marginTop = \"20px\";\n  button.addEventListener(\"click\", showCart);\n  $(\"#results\").after(button);\n}\n\nasync function showCart() {\n  if (!cartId) { setStatus(\"El carrito está vacío.\", \"\"); return; }\n  const { ok, data } = await api(\"/api/cart/\" + encodeURIComponent(cartId));\n  if (!ok) { setStatus(\"No se pudo cargar el carrito.\", \"error\"); return; }\n  const box = $(\"#cart\");\n  const rows = data.items.map((line) => `\n    <tr><td>${esc(line.title)}</td><td>${line.qty}</td><td>${money(line.subtotal)}</td></tr>`).join(\"\");\n  box.innerHTML = `<h2>Tu carrito</h2>\n    <table>\n      <thead><tr><th>Libro</th><th>Cantidad</th><th>Subtotal</th></tr></thead>\n      <tbody>${rows}</tbody>\n    </table>\n    <p class=\"total\">Total: ${money(data.total)}</p>\n    <form id=\"checkout-form\">\n      <input name=\"name\" placeholder=\"Nombre\" aria-label=\"Nombre\">\n      <input name=\"email\" type=\"email\" placeholder=\"Email\" aria-label=\"Email\">\n      <button type=\"submit\">Finalizar compra</button>\n    </form>`;\n  $(\"#checkout-form\").addEventListener(\"submit\", (event) => {\n    event.preventDefault();\n    checkout();\n  });\n  setStatus(`${cartCount} unidad${cartCount === 1 ? \"\" : \"es\"} en el carrito.`);\n}\n\nasync function checkout() {\n  const form = $(\"#checkout-form\");\n  const name = form.elements.namedItem(\"name\").value;\n  const email = form.elements.namedItem(\"email\").value;\n  const { ok, data } = await api(`/api/cart/${encodeURIComponent(cartId)}/checkout`, {\n    method: \"POST\",\n    headers: { \"Content-Type\": \"application/json\" },\n    body: JSON.stringify({ name: name, email: email }),\n  });\n  if (!ok) { setStatus(data.detail || \"No se pudo finalizar la compra.\", \"error\"); return; }\n  $(\"#cart\").innerHTML = `<h2 class=\"ok\">Pedido confirmado</h2>\n    <p>Gracias, ${esc(data.customer.name)}. Tu pedido <strong>${esc(data.order_id)}</strong>\n    por ${money(data.total)} está en camino.</p>`;\n  cartId = null;\n  cartCount = 0;\n  setStatus(\"Compra completada.\", \"ok\");\n}\n\n$(\"#search-form\").addEventListener(\"submit\", (event) => {\n  event.preventDefault();\n  const q = $(\"#search-form input[name=q]\").value;\n  runSearch(q, \"\");\n});\n\nloadCategories();\nrunSearch(\"\", \"\");\nensureCartToggle();\n</script>\n</body>\n</html>\n",
+   "json": null
+  },
+  {
+   "id": 2,
+   "step": 0,
+   "kind": "fetch",
+   "method": "GET",
+   "url": "http://localhost:8001/api/categories",
+   "status": 200,
+   "request_content_type": "",
+   "post_data": null,
+   "content_type": "application/json",
+   "body": "{\"categories\":[{\"id\":\"scifi\",\"name\":\"Ciencia ficción\"},{\"id\":\"fantasy\",\"name\":\"Fantasía\"},{\"id\":\"history\",\"name\":\"Historia\"},{\"id\":\"programming\",\"name\":\"Programación\"}]}",
+   "json": {
+    "categories": [
+     {
+      "id": "scifi",
+      "name": "Ciencia ficción"
+     },
+     {
+      "id": "fantasy",
+      "name": "Fantasía"
+     },
+     {
+      "id": "history",
+      "name": "Historia"
+     },
+     {
+      "id": "programming",
+      "name": "Programación"
+     }
+    ]
+   }
+  },
+  {
+   "id": 3,
+   "step": 0,
+   "kind": "fetch",
+   "method": "GET",
+   "url": "http://localhost:8001/api/search",
+   "status": 200,
+   "request_content_type": "",
+   "post_data": null,
+   "content_type": "application/json",
+   "body": "{\"query\":\"\",\"category\":\"\",\"count\":13,\"results\":[{\"id\":\"bk-1001\",\"title\":\"Fundación\",\"author\":\"Isaac Asimov\",\"category\":\"scifi\",\"price\":19.9},{\"id\":\"bk-1002\",\"title\":\"Yo, robot\",\"author\":\"Isaac Asimov\",\"category\":\"scifi\",\"price\":17.5},{\"id\":\"bk-1003\",\"title\":\"Dune\",\"author\":\"Frank Herbert\",\"category\":\"scifi\",\"price\":21.0},{\"id\":\"bk-1004\",\"title\":\"El problema de los tres cuerpos\",\"author\":\"Cixin Liu\",\"category\":\"scifi\",\"price\":18.9},{\"id\":\"bk-1005\",\"title\":\"Neuromante\",\"author\":\"William Gibson\",\"category\":\"scifi\",\"price\":16.95},{\"id\":\"bk-1006\",\"title\":\"La mano izquierda de la oscuridad\",\"author\":\"Ursula K. Le Guin\",\"category\":\"scifi\",\"price\":20.5},{\"id\":\"bk-1007\",\"title\":\"El nombre del viento\",\"author\":\"Patrick Rothfuss\",\"category\":\"fantasy\",\"price\":22.9},{\"id\":\"bk-1008\",\"title\":\"La comunidad del anillo\",\"author\":\"J. R. R. Tolkien\",\"category\":\"fantasy\",\"price\":24.0},{\"id\":\"bk-1009\",\"title\":\"El hobbit\",\"author\":\"J. R. R. Tolkien\",\"category\":\"fantasy\",\"price\":15.9},{\"id\":\"bk-1010\",\"title\":\"SPQR\",\"author\":\"Mary Beard\",\"category\":\"history\",\"price\":26.5},{\"id\":\"bk-1011\",\"title\":\"Los Ángeles que llevamos dentro\",\"author\":\"Steven Pinker\",\"category\":\"history\",\"price\":23.9},{\"id\":\"bk-1012\",\"title\":\"El programador pragmático\",\"author\":\"Andrew Hunt y David Thomas\",\"category\":\"programming\",\"price\":34.9},{\"id\":\"bk-1013\",\"title\":\"Código limpio\",\"author\":\"Robert C. Martin\",\"category\":\"programming\",\"price\":29.9}]}",
+   "json": {
+    "query": "",
+    "category": "",
+    "count": 13,
+    "results": [
+     {
+      "id": "bk-1001",
+      "title": "Fundación",
+      "author": "Isaac Asimov",
+      "category": "scifi",
+      "price": 19.9
+     },
+     {
+      "id": "bk-1002",
+      "title": "Yo, robot",
+      "author": "Isaac Asimov",
+      "category": "scifi",
+      "price": 17.5
+     },
+     {
+      "id": "bk-1003",
+      "title": "Dune",
+      "author": "Frank Herbert",
+      "category": "scifi",
+      "price": 21.0
+     },
+     {
+      "id": "bk-1004",
+      "title": "El problema de los tres cuerpos",
+      "author": "Cixin Liu",
+      "category": "scifi",
+      "price": 18.9
+     },
+     {
+      "id": "bk-1005",
+      "title": "Neuromante",
+      "author": "William Gibson",
+      "category": "scifi",
+      "price": 16.95
+     },
+     {
+      "id": "bk-1006",
+      "title": "La mano izquierda de la oscuridad",
+      "author": "Ursula K. Le Guin",
+      "category": "scifi",
+      "price": 20.5
+     },
+     {
+      "id": "bk-1007",
+      "title": "El nombre del viento",
+      "author": "Patrick Rothfuss",
+      "category": "fantasy",
+      "price": 22.9
+     },
+     {
+      "id": "bk-1008",
+      "title": "La comunidad del anillo",
+      "author": "J. R. R. Tolkien",
+      "category": "fantasy",
+      "price": 24.0
+     },
+     {
+      "id": "bk-1009",
+      "title": "El hobbit",
+      "author": "J. R. R. Tolkien",
+      "category": "fantasy",
+      "price": 15.9
+     },
+     {
+      "id": "bk-1010",
+      "title": "SPQR",
+      "author": "Mary Beard",
+      "category": "history",
+      "price": 26.5
+     },
+     {
+      "id": "bk-1011",
+      "title": "Los Ángeles que llevamos dentro",
+      "author": "Steven Pinker",
+      "category": "history",
+      "price": 23.9
+     },
+     {
+      "id": "bk-1012",
+      "title": "El programador pragmático",
+      "author": "Andrew Hunt y David Thomas",
+      "category": "programming",
+      "price": 34.9
+     },
+     {
+      "id": "bk-1013",
+      "title": "Código limpio",
+      "author": "Robert C. Martin",
+      "category": "programming",
+      "price": 29.9
+     }
+    ]
+   }
+  },
+  {
+   "id": 4,
+   "step": 1,
+   "kind": "fetch",
+   "method": "GET",
+   "url": "http://localhost:8001/api/search?category=scifi",
+   "status": 200,
+   "request_content_type": "",
+   "post_data": null,
+   "content_type": "application/json",
+   "body": "{\"query\":\"\",\"category\":\"scifi\",\"count\":6,\"results\":[{\"id\":\"bk-1001\",\"title\":\"Fundación\",\"author\":\"Isaac Asimov\",\"category\":\"scifi\",\"price\":19.9},{\"id\":\"bk-1002\",\"title\":\"Yo, robot\",\"author\":\"Isaac Asimov\",\"category\":\"scifi\",\"price\":17.5},{\"id\":\"bk-1003\",\"title\":\"Dune\",\"author\":\"Frank Herbert\",\"category\":\"scifi\",\"price\":21.0},{\"id\":\"bk-1004\",\"title\":\"El problema de los tres cuerpos\",\"author\":\"Cixin Liu\",\"category\":\"scifi\",\"price\":18.9},{\"id\":\"bk-1005\",\"title\":\"Neuromante\",\"author\":\"William Gibson\",\"category\":\"scifi\",\"price\":16.95},{\"id\":\"bk-1006\",\"title\":\"La mano izquierda de la oscuridad\",\"author\":\"Ursula K. Le Guin\",\"category\":\"scifi\",\"price\":20.5}]}",
+   "json": {
+    "query": "",
+    "category": "scifi",
+    "count": 6,
+    "results": [
+     {
+      "id": "bk-1001",
+      "title": "Fundación",
+      "author": "Isaac Asimov",
+      "category": "scifi",
+      "price": 19.9
+     },
+     {
+      "id": "bk-1002",
+      "title": "Yo, robot",
+      "author": "Isaac Asimov",
+      "category": "scifi",
+      "price": 17.5
+     },
+     {
+      "id": "bk-1003",
+      "title": "Dune",
+      "author": "Frank Herbert",
+      "category": "scifi",
+      "price": 21.0
+     },
+     {
+      "id": "bk-1004",
+      "title": "El problema de los tres cuerpos",
+      "author": "Cixin Liu",
+      "category": "scifi",
+      "price": 18.9
+     },
+     {
+      "id": "bk-1005",
+      "title": "Neuromante",
+      "author": "William Gibson",
+      "category": "scifi",
+      "price": 16.95
+     },
+     {
+      "id": "bk-1006",
+      "title": "La mano izquierda de la oscuridad",
+      "author": "Ursula K. Le Guin",
+      "category": "scifi",
+      "price": 20.5
+     }
+    ]
+   }
+  },
+  {
+   "id": 5,
+   "step": 2,
+   "kind": "fetch",
+   "method": "GET",
+   "url": "http://localhost:8001/api/search?category=fantasy",
+   "status": 200,
+   "request_content_type": "",
+   "post_data": null,
+   "content_type": "application/json",
+   "body": "{\"query\":\"\",\"category\":\"fantasy\",\"count\":3,\"results\":[{\"id\":\"bk-1007\",\"title\":\"El nombre del viento\",\"author\":\"Patrick Rothfuss\",\"category\":\"fantasy\",\"price\":22.9},{\"id\":\"bk-1008\",\"title\":\"La comunidad del anillo\",\"author\":\"J. R. R. Tolkien\",\"category\":\"fantasy\",\"price\":24.0},{\"id\":\"bk-1009\",\"title\":\"El hobbit\",\"author\":\"J. R. R. Tolkien\",\"category\":\"fantasy\",\"price\":15.9}]}",
+   "json": {
+    "query": "",
+    "category": "fantasy",
+    "count": 3,
+    "results": [
+     {
+      "id": "bk-1007",
+      "title": "El nombre del viento",
+      "author": "Patrick Rothfuss",
+      "category": "fantasy",
+      "price": 22.9
+     },
+     {
+      "id": "bk-1008",
+      "title": "La comunidad del anillo",
+      "author": "J. R. R. Tolkien",
+      "category": "fantasy",
+      "price": 24.0
+     },
+     {
+      "id": "bk-1009",
+      "title": "El hobbit",
+      "author": "J. R. R. Tolkien",
+      "category": "fantasy",
+      "price": 15.9
+     }
+    ]
+   }
+  },
+  {
+   "id": 6,
+   "step": 3,
+   "kind": "fetch",
+   "method": "GET",
+   "url": "http://localhost:8001/api/products/bk-1007",
+   "status": 200,
+   "request_content_type": "",
+   "post_data": null,
+   "content_type": "application/json",
+   "body": "{\"id\":\"bk-1007\",\"title\":\"El nombre del viento\",\"author\":\"Patrick Rothfuss\",\"category\":\"fantasy\",\"price\":22.9,\"stock\":5,\"description\":\"Kvothe narra su vida entre la Universidad, la música y la magia.\"}",
+   "json": {
+    "id": "bk-1007",
+    "title": "El nombre del viento",
+    "author": "Patrick Rothfuss",
+    "category": "fantasy",
+    "price": 22.9,
+    "stock": 5,
+    "description": "Kvothe narra su vida entre la Universidad, la música y la magia."
+   }
+  },
+  {
+   "id": 7,
+   "step": 4,
+   "kind": "fetch",
+   "method": "POST",
+   "url": "http://localhost:8001/api/cart",
+   "status": 200,
+   "request_content_type": "",
+   "post_data": null,
+   "content_type": "application/json",
+   "body": "{\"cart_id\":\"cart_f214cffd\"}",
+   "json": {
+    "cart_id": "cart_f214cffd"
+   }
+  },
+  {
+   "id": 8,
+   "step": 4,
+   "kind": "fetch",
+   "method": "POST",
+   "url": "http://localhost:8001/api/cart/cart_f214cffd/items",
+   "status": 200,
+   "request_content_type": "application/json",
+   "post_data": "{\"product_id\":\"bk-1007\",\"qty\":1}",
+   "content_type": "application/json",
+   "body": "{\"cart_id\":\"cart_f214cffd\",\"status\":\"open\",\"items\":[{\"product_id\":\"bk-1007\",\"title\":\"El nombre del viento\",\"qty\":1,\"subtotal\":22.9}],\"total\":22.9}",
+   "json": {
+    "cart_id": "cart_f214cffd",
+    "status": "open",
+    "items": [
+     {
+      "product_id": "bk-1007",
+      "title": "El nombre del viento",
+      "qty": 1,
+      "subtotal": 22.9
+     }
+    ],
+    "total": 22.9
+   }
+  },
+  {
+   "id": 9,
+   "step": 5,
+   "kind": "fetch",
+   "method": "GET",
+   "url": "http://localhost:8001/api/cart/cart_f214cffd",
+   "status": 200,
+   "request_content_type": "",
+   "post_data": null,
+   "content_type": "application/json",
+   "body": "{\"cart_id\":\"cart_f214cffd\",\"status\":\"open\",\"items\":[{\"product_id\":\"bk-1007\",\"title\":\"El nombre del viento\",\"qty\":1,\"subtotal\":22.9}],\"total\":22.9}",
+   "json": {
+    "cart_id": "cart_f214cffd",
+    "status": "open",
+    "items": [
+     {
+      "product_id": "bk-1007",
+      "title": "El nombre del viento",
+      "qty": 1,
+      "subtotal": 22.9
+     }
+    ],
+    "total": 22.9
+   }
+  },
+  {
+   "id": 10,
+   "step": 7,
+   "kind": "fetch",
+   "method": "GET",
+   "url": "http://localhost:8001/api/search?q=zxq_q",
+   "status": 200,
+   "request_content_type": "",
+   "post_data": null,
+   "content_type": "application/json",
+   "body": "{\"query\":\"zxq_q\",\"category\":\"\",\"count\":0,\"results\":[]}",
+   "json": {
+    "query": "zxq_q",
+    "category": "",
+    "count": 0,
+    "results": []
+   }
+  },
+  {
+   "id": 11,
+   "step": 10,
+   "kind": "fetch",
+   "method": "POST",
+   "url": "http://localhost:8001/api/cart/cart_f214cffd/checkout",
+   "status": 200,
+   "request_content_type": "application/json",
+   "post_data": "{\"name\":\"zxq_name\",\"email\":\"zxq.user@example.com\"}",
+   "content_type": "application/json",
+   "body": "{\"order_id\":\"ord_b81719c5\",\"cart_id\":\"cart_f214cffd\",\"total\":22.9,\"customer\":{\"name\":\"zxq_name\",\"email\":\"zxq.user@example.com\"},\"message\":\"Pago simulado correcto. Gracias por tu compra.\"}",
+   "json": {
+    "order_id": "ord_b81719c5",
+    "cart_id": "cart_f214cffd",
+    "total": 22.9,
+    "customer": {
+     "name": "zxq_name",
+     "email": "zxq.user@example.com"
+    },
+    "message": "Pago simulado correcto. Gracias por tu compra."
+   }
+  }
+ ],
+ "candidates": [
+  {
+   "request_ids": [
+    2
+   ],
+   "method": "GET",
+   "origin": "http://localhost:8001",
+   "path": "/api/categories",
+   "query": [],
+   "body_type": null,
+   "body": null,
+   "params": [],
+   "literals": [
+    {
+     "location": "path",
+     "key": null,
+     "value": "api"
+    },
+    {
+     "location": "path",
+     "key": null,
+     "value": "categories"
+    }
+   ],
+   "status": 200,
+   "content_type": "application/json",
+   "response_preview": "{\"categories\": [{\"id\": \"scifi\", \"name\": \"Ciencia ficción\"}, {\"id\": \"fantasy\", \"name\": \"Fantasía\"}, \"… (4 elementos)\"]}",
+   "step": 0,
+   "csrf_fields": [],
+   "browser": null,
+   "variants": 1,
+   "id": "c1",
+   "trigger": "goto http://localhost:8001/",
+   "url": "http://localhost:8001/api/categories"
+  },
+  {
+   "request_ids": [
+    3,
+    4,
+    5,
+    10
+   ],
+   "method": "GET",
+   "origin": "http://localhost:8001",
+   "path": "/api/search",
+   "query": [
+    [
+     "category",
+     "{category}"
+    ],
+    [
+     "q",
+     "{q}"
+    ]
+   ],
+   "body_type": null,
+   "body": null,
+   "params": [
+    {
+     "name": "category",
+     "type": "string",
+     "example": "scifi",
+     "location": "query",
+     "key": "category",
+     "source": "response",
+     "from_request": 2,
+     "path": "categories[0].id",
+     "from_candidate": "c1"
+    },
+    {
+     "name": "q",
+     "type": "string",
+     "example": "zxq_q",
+     "location": "query",
+     "key": "q",
+     "source": "input",
+     "label": "Buscar por título o autor"
+    }
+   ],
+   "literals": [
+    {
+     "location": "path",
+     "key": null,
+     "value": "api"
+    },
+    {
+     "location": "path",
+     "key": null,
+     "value": "search"
+    }
+   ],
+   "status": 200,
+   "content_type": "application/json",
+   "response_preview": "{\"query\": \"\", \"category\": \"\", \"count\": 13, \"results\": [{\"id\": \"bk-1001\", \"title\": \"Fundación\", \"author\": \"Isaac Asimov\", \"category\": \"scifi\", \"price\": 19.9}, {\"id\": \"bk-1002\", \"title\": \"Yo, robot\", \"author\": \"Isaac Asimov\", \"category\": \"scifi\", \"price\": 17.5}, \"… (13 elementos)\"]}",
+   "step": 0,
+   "csrf_fields": [],
+   "browser": {
+    "start_url": "http://localhost:8001/",
+    "steps": [
+     {
+      "action": "fill",
+      "selector": "form#search-form input[name=\"q\"]",
+      "value": "{q}"
+     },
+     {
+      "action": "click",
+      "selector": "form#search-form button[type=\"submit\"]"
+     }
+    ],
+    "extract": "main",
+    "params": [
+     {
+      "name": "q",
+      "type": "string",
+      "example": "zxq_q",
+      "location": "query",
+      "key": "q",
+      "source": "input",
+      "label": "Buscar por título o autor"
+     }
+    ]
+   },
+   "variants": 4,
+   "id": "c2",
+   "trigger": "goto http://localhost:8001/",
+   "url": "http://localhost:8001/api/search?category={category}&q={q}"
+  },
+  {
+   "request_ids": [
+    6
+   ],
+   "method": "GET",
+   "origin": "http://localhost:8001",
+   "path": "/api/products/{product_id}",
+   "query": [],
+   "body_type": null,
+   "body": null,
+   "params": [
+    {
+     "name": "product_id",
+     "type": "string",
+     "example": "bk-1007",
+     "location": "path",
+     "key": null,
+     "source": "response",
+     "from_request": 5,
+     "path": "results[0].id",
+     "from_candidate": "c2"
+    }
+   ],
+   "literals": [
+    {
+     "location": "path",
+     "key": null,
+     "value": "api"
+    },
+    {
+     "location": "path",
+     "key": null,
+     "value": "products"
+    }
+   ],
+   "status": 200,
+   "content_type": "application/json",
+   "response_preview": "{\"id\": \"bk-1007\", \"title\": \"El nombre del viento\", \"author\": \"Patrick Rothfuss\", \"category\": \"fantasy\", \"price\": 22.9, \"stock\": 5, \"description\": \"Kvothe narra su vida entre la Universidad, la música y la magia.\"}",
+   "step": 3,
+   "csrf_fields": [],
+   "browser": {
+    "start_url": "http://localhost:8001/",
+    "steps": [
+     {
+      "action": "click",
+      "selector": "button:has-text(\"Ver detalle\")"
+     }
+    ],
+    "extract": "main",
+    "params": []
+   },
+   "variants": 1,
+   "id": "c3",
+   "trigger": "click [65] button \"Ver detalle\"",
+   "url": "http://localhost:8001/api/products/{product_id}"
+  },
+  {
+   "request_ids": [
+    7
+   ],
+   "method": "POST",
+   "origin": "http://localhost:8001",
+   "path": "/api/cart",
+   "query": [],
+   "body_type": null,
+   "body": null,
+   "params": [],
+   "literals": [
+    {
+     "location": "path",
+     "key": null,
+     "value": "api"
+    },
+    {
+     "location": "path",
+     "key": null,
+     "value": "cart"
+    }
+   ],
+   "status": 200,
+   "content_type": "application/json",
+   "response_preview": "{\"cart_id\": \"cart_f214cffd\"}",
+   "step": 4,
+   "csrf_fields": [],
+   "browser": {
+    "start_url": "http://localhost:8001/",
+    "steps": [
+     {
+      "action": "click",
+      "selector": "button:has-text(\"Añadir al carrito\")"
+     }
+    ],
+    "extract": "main",
+    "params": []
+   },
+   "variants": 1,
+   "id": "c4",
+   "trigger": "click [67] button \"Añadir al carrito\"",
+   "url": "http://localhost:8001/api/cart"
+  },
+  {
+   "request_ids": [
+    8
+   ],
+   "method": "POST",
+   "origin": "http://localhost:8001",
+   "path": "/api/cart/{cart_id}/items",
+   "query": [],
+   "body_type": "json",
+   "body": {
+    "product_id": "{product_id}",
+    "qty": 1
+   },
+   "params": [
+    {
+     "name": "cart_id",
+     "type": "string",
+     "example": "cart_f214cffd",
+     "location": "path",
+     "key": null,
+     "source": "response",
+     "from_request": 7,
+     "path": "cart_id",
+     "from_candidate": "c4"
+    },
+    {
+     "name": "product_id",
+     "type": "string",
+     "example": "bk-1007",
+     "location": "body",
+     "key": "product_id",
+     "source": "response",
+     "from_request": 6,
+     "path": "id",
+     "from_candidate": "c3"
+    }
+   ],
+   "literals": [
+    {
+     "location": "path",
+     "key": null,
+     "value": "api"
+    },
+    {
+     "location": "path",
+     "key": null,
+     "value": "cart"
+    },
+    {
+     "location": "path",
+     "key": null,
+     "value": "items"
+    },
+    {
+     "location": "body",
+     "key": "qty",
+     "value": 1
+    }
+   ],
+   "status": 200,
+   "content_type": "application/json",
+   "response_preview": "{\"cart_id\": \"cart_f214cffd\", \"status\": \"open\", \"items\": [{\"product_id\": \"bk-1007\", \"title\": \"El nombre del viento\", \"qty\": 1, \"subtotal\": 22.9}], \"total\": 22.9}",
+   "step": 4,
+   "csrf_fields": [],
+   "browser": {
+    "start_url": "http://localhost:8001/",
+    "steps": [
+     {
+      "action": "click",
+      "selector": "button:has-text(\"Añadir al carrito\")"
+     }
+    ],
+    "extract": "main",
+    "params": []
+   },
+   "variants": 1,
+   "id": "c5",
+   "trigger": "click [67] button \"Añadir al carrito\"",
+   "url": "http://localhost:8001/api/cart/{cart_id}/items"
+  },
+  {
+   "request_ids": [
+    9
+   ],
+   "method": "GET",
+   "origin": "http://localhost:8001",
+   "path": "/api/cart/{cart_id}",
+   "query": [],
+   "body_type": null,
+   "body": null,
+   "params": [
+    {
+     "name": "cart_id",
+     "type": "string",
+     "example": "cart_f214cffd",
+     "location": "path",
+     "key": null,
+     "source": "response",
+     "from_request": 8,
+     "path": "cart_id",
+     "from_candidate": "c5"
+    }
+   ],
+   "literals": [
+    {
+     "location": "path",
+     "key": null,
+     "value": "api"
+    },
+    {
+     "location": "path",
+     "key": null,
+     "value": "cart"
+    }
+   ],
+   "status": 200,
+   "content_type": "application/json",
+   "response_preview": "{\"cart_id\": \"cart_f214cffd\", \"status\": \"open\", \"items\": [{\"product_id\": \"bk-1007\", \"title\": \"El nombre del viento\", \"qty\": 1, \"subtotal\": 22.9}], \"total\": 22.9}",
+   "step": 5,
+   "csrf_fields": [],
+   "browser": {
+    "start_url": "http://localhost:8001/",
+    "steps": [
+     {
+      "action": "click",
+      "selector": "#cart-toggle"
+     }
+    ],
+    "extract": "main",
+    "params": []
+   },
+   "variants": 1,
+   "id": "c6",
+   "trigger": "click [46] button \"Ver carrito (1)\"",
+   "url": "http://localhost:8001/api/cart/{cart_id}"
+  },
+  {
+   "request_ids": [
+    11
+   ],
+   "method": "POST",
+   "origin": "http://localhost:8001",
+   "path": "/api/cart/{cart_id}/checkout",
+   "query": [],
+   "body_type": "json",
+   "body": {
+    "name": "{name}",
+    "email": "{email}"
+   },
+   "params": [
+    {
+     "name": "cart_id",
+     "type": "string",
+     "example": "cart_f214cffd",
+     "location": "path",
+     "key": null,
+     "source": "response",
+     "from_request": 9,
+     "path": "cart_id",
+     "from_candidate": "c6"
+    },
+    {
+     "name": "name",
+     "type": "string",
+     "example": "zxq_name",
+     "location": "body",
+     "key": "name",
+     "source": "input",
+     "label": "Nombre"
+    },
+    {
+     "name": "email",
+     "type": "string",
+     "example": "zxq.user@example.com",
+     "location": "body",
+     "key": "email",
+     "source": "input",
+     "label": "Email"
+    }
+   ],
+   "literals": [
+    {
+     "location": "path",
+     "key": null,
+     "value": "api"
+    },
+    {
+     "location": "path",
+     "key": null,
+     "value": "cart"
+    },
+    {
+     "location": "path",
+     "key": null,
+     "value": "checkout"
+    }
+   ],
+   "status": 200,
+   "content_type": "application/json",
+   "response_preview": "{\"order_id\": \"ord_b81719c5\", \"cart_id\": \"cart_f214cffd\", \"total\": 22.9, \"customer\": {\"name\": \"zxq_name\", \"email\": \"zxq.user@example.com\"}, \"message\": \"Pago simulado correcto. Gracias por tu compra.\"}",
+   "step": 10,
+   "csrf_fields": [],
+   "browser": {
+    "start_url": "http://localhost:8001/",
+    "steps": [
+     {
+      "action": "fill",
+      "selector": "form#checkout-form input[name=\"name\"]",
+      "value": "{name}"
+     },
+     {
+      "action": "fill",
+      "selector": "form#checkout-form input[name=\"email\"]",
+      "value": "{email}"
+     },
+     {
+      "action": "click",
+      "selector": "form#checkout-form button[type=\"submit\"]"
+     }
+    ],
+    "extract": "main",
+    "params": [
+     {
+      "name": "name",
+      "type": "string",
+      "example": "zxq_name",
+      "location": "body",
+      "key": "name",
+      "source": "input",
+      "label": "Nombre"
+     },
+     {
+      "name": "email",
+      "type": "string",
+      "example": "zxq.user@example.com",
+      "location": "body",
+      "key": "email",
+      "source": "input",
+      "label": "Email"
+     }
+    ]
+   },
+   "variants": 1,
+   "id": "c7",
+   "trigger": "click [76] button \"Finalizar compra\"",
+   "url": "http://localhost:8001/api/cart/{cart_id}/checkout"
+  }
+ ],
+ "dependencies": [
+  {
+   "from_request": 2,
+   "path": "categories[0].id",
+   "to_request": 4,
+   "location": "query",
+   "key": "category",
+   "value": "scifi",
+   "from_candidate": "c1",
+   "to_candidate": "c2"
+  },
+  {
+   "from_request": 2,
+   "path": "categories[1].id",
+   "to_request": 5,
+   "location": "query",
+   "key": "category",
+   "value": "fantasy",
+   "from_candidate": "c1",
+   "to_candidate": "c2"
+  },
+  {
+   "from_request": 5,
+   "path": "results[0].id",
+   "to_request": 6,
+   "location": "path",
+   "key": null,
+   "value": "bk-1007",
+   "from_candidate": "c2",
+   "to_candidate": "c3"
+  },
+  {
+   "from_request": 7,
+   "path": "cart_id",
+   "to_request": 8,
+   "location": "path",
+   "key": null,
+   "value": "cart_f214cffd",
+   "from_candidate": "c4",
+   "to_candidate": "c5"
+  },
+  {
+   "from_request": 6,
+   "path": "id",
+   "to_request": 8,
+   "location": "body",
+   "key": "product_id",
+   "value": "bk-1007",
+   "from_candidate": "c3",
+   "to_candidate": "c5"
+  },
+  {
+   "from_request": 8,
+   "path": "cart_id",
+   "to_request": 9,
+   "location": "path",
+   "key": null,
+   "value": "cart_f214cffd",
+   "from_candidate": "c5",
+   "to_candidate": "c6"
+  },
+  {
+   "from_request": 9,
+   "path": "cart_id",
+   "to_request": 11,
+   "location": "path",
+   "key": null,
+   "value": "cart_f214cffd",
+   "from_candidate": "c6",
+   "to_candidate": "c7"
+  }
+ ]
+}
