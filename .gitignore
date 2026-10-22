@@ -1,0 +1,31 @@
+# Entorno y artefactos
+.venv/
+venv/
+__pycache__/
+*.py[cod]
+*.egg-info/
+.pytest_cache/
+
+# Ejecuciones y caché del core (no se versionan)
+runs/
+cache/
+
+# Portal (Next.js)
+node_modules/
+.next/
+out/
+.vercel/
+.turbo/
+*.tsbuildinfo
+
+# Configuración local y secretos
+.env
+.env.*
+!.env.example
+*.local
+
+# Sistema y editores
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/

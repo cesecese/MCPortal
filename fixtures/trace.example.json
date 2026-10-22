@@ -1,0 +1,706 @@
+{
+  "site": "localhost:8001",
+  "title": "Librería Zeta",
+  "start_url": "http://localhost:8001/",
+  "policy": "heuristic",
+  "started": 1792607347.1,
+  "finished": 1792607423.4,
+  "steps": [
+    {
+      "i": 0,
+      "action": {"type": "goto", "url": "http://localhost:8001/"},
+      "element": null,
+      "url_before": "about:blank",
+      "url_after": "http://localhost:8001/",
+      "request_ids": [1, 2, 3],
+      "error": null,
+      "note": null,
+      "has_main": true,
+      "forms": [
+        {"index": 1, "method": "GET", "action": "/", "hidden": []},
+        {"index": 2, "method": "POST", "action": "/api/cart/{cart_id}/checkout", "hidden": []}
+      ]
+    },
+    {
+      "i": 1,
+      "action": {"type": "fill", "id": 2, "value": "zxq_asimov", "submit": true},
+      "element": {
+        "id": 2, "tag": "input", "kind": "input", "label": "Buscar por título o autor",
+        "href": null, "raw_href": null, "type": "text", "name": "q", "value": "",
+        "required": false, "min": null, "max": null, "options": null,
+        "form": 1, "selector": "form:nth-of-type(1) input[name=\"q\"]", "similar": 0
+      },
+      "url_before": "http://localhost:8001/",
+      "url_after": "http://localhost:8001/",
+      "request_ids": [4],
+      "error": null,
+      "note": null,
+      "has_main": true,
+      "forms": []
+    },
+    {
+      "i": 2,
+      "action": {"type": "click", "id": 5},
+      "element": {
+        "id": 5, "tag": "a", "kind": "link", "label": "Ciencia ficción",
+        "href": "#", "raw_href": "http://localhost:8001/#", "type": null, "name": null, "value": null,
+        "required": false, "min": null, "max": null, "options": null,
+        "form": null, "selector": null, "similar": 0
+      },
+      "url_before": "http://localhost:8001/",
+      "url_after": "http://localhost:8001/",
+      "request_ids": [5],
+      "error": null,
+      "note": null,
+      "has_main": true,
+      "forms": []
+    },
+    {
+      "i": 3,
+      "action": {"type": "click", "id": 9},
+      "element": {
+        "id": 9, "tag": "button", "kind": "button", "label": "Ver detalle",
+        "href": null, "raw_href": null, "type": "button", "name": null, "value": null,
+        "required": false, "min": null, "max": null, "options": null,
+        "form": null, "selector": null, "similar": 13
+      },
+      "url_before": "http://localhost:8001/",
+      "url_after": "http://localhost:8001/",
+      "request_ids": [6],
+      "error": null,
+      "note": null,
+      "has_main": true,
+      "forms": []
+    },
+    {
+      "i": 4,
+      "action": {"type": "click", "id": 10},
+      "element": {
+        "id": 10, "tag": "button", "kind": "button", "label": "Añadir al carrito",
+        "href": null, "raw_href": null, "type": "button", "name": null, "value": null,
+        "required": false, "min": null, "max": null, "options": null,
+        "form": null, "selector": null, "similar": 13
+      },
+      "url_before": "http://localhost:8001/",
+      "url_after": "http://localhost:8001/",
+      "request_ids": [7, 8],
+      "error": null,
+      "note": null,
+      "has_main": true,
+      "forms": []
+    },
+    {
+      "i": 5,
+      "action": {"type": "click", "id": 1},
+      "element": {
+        "id": 1, "tag": "button", "kind": "button", "label": "Ver carrito (1)",
+        "href": null, "raw_href": null, "type": "button", "name": null, "value": null,
+        "required": false, "min": null, "max": null, "options": null,
+        "form": null, "selector": null, "similar": 0
+      },
+      "url_before": "http://localhost:8001/",
+      "url_after": "http://localhost:8001/",
+      "request_ids": [9],
+      "error": null,
+      "note": null,
+      "has_main": true,
+      "forms": []
+    },
+    {
+      "i": 6,
+      "action": {"type": "fill", "id": 20, "value": "zxq_nombre", "submit": false},
+      "element": {
+        "id": 20, "tag": "input", "kind": "input", "label": "Nombre",
+        "href": null, "raw_href": null, "type": "text", "name": "name", "value": "",
+        "required": true, "min": null, "max": null, "options": null,
+        "form": 2, "selector": "form:nth-of-type(2) input[name=\"name\"]", "similar": 0
+      },
+      "url_before": "http://localhost:8001/",
+      "url_after": "http://localhost:8001/",
+      "request_ids": [],
+      "error": null,
+      "note": null,
+      "has_main": true,
+      "forms": []
+    },
+    {
+      "i": 7,
+      "action": {"type": "fill", "id": 21, "value": "zxq.user@example.com", "submit": false},
+      "element": {
+        "id": 21, "tag": "input", "kind": "input", "label": "Email",
+        "href": null, "raw_href": null, "type": "email", "name": "email", "value": "",
+        "required": true, "min": null, "max": null, "options": null,
+        "form": 2, "selector": "form:nth-of-type(2) input[name=\"email\"]", "similar": 0
+      },
+      "url_before": "http://localhost:8001/",
+      "url_after": "http://localhost:8001/",
+      "request_ids": [],
+      "error": null,
+      "note": null,
+      "has_main": true,
+      "forms": []
+    },
+    {
+      "i": 8,
+      "action": {"type": "click", "id": 22},
+      "element": {
+        "id": 22, "tag": "button", "kind": "button", "label": "Finalizar compra",
+        "href": null, "raw_href": null, "type": "submit", "name": null, "value": null,
+        "required": false, "min": null, "max": null, "options": null,
+        "form": 2, "selector": "form:nth-of-type(2) button[type=\"submit\"]", "similar": 0
+      },
+      "url_before": "http://localhost:8001/",
+      "url_after": "http://localhost:8001/",
+      "request_ids": [10],
+      "error": null,
+      "note": null,
+      "has_main": true,
+      "forms": []
+    },
+    {
+      "i": 9,
+      "action": {"type": "goto", "url": "http://localhost:8002/disponibilidad"},
+      "element": null,
+      "url_before": "http://localhost:8001/",
+      "url_after": "http://localhost:8002/disponibilidad",
+      "request_ids": [11],
+      "error": null,
+      "note": null,
+      "has_main": true,
+      "forms": [
+        {"index": 1, "method": "GET", "action": "/disponibilidad", "hidden": []},
+        {"index": 2, "method": "POST", "action": "/reservar", "hidden": [{"name": "csrf_token", "value": "a7c1f0e9b2d4456c8e13"}]},
+        {"index": 3, "method": "GET", "action": "/reserva", "hidden": []}
+      ]
+    },
+    {
+      "i": 10,
+      "action": {"type": "fill", "id": 30, "value": "2026-10-24", "submit": false},
+      "element": {
+        "id": 30, "tag": "input", "kind": "input", "label": "Fecha",
+        "href": null, "raw_href": null, "type": "date", "name": "date", "value": "",
+        "required": true, "min": null, "max": null, "options": null,
+        "form": 1, "selector": "form:nth-of-type(1) input[name=\"date\"]", "similar": 0
+      },
+      "url_before": "http://localhost:8002/disponibilidad",
+      "url_after": "http://localhost:8002/disponibilidad",
+      "request_ids": [],
+      "error": null,
+      "note": null,
+      "has_main": true,
+      "forms": []
+    },
+    {
+      "i": 11,
+      "action": {"type": "fill", "id": 31, "value": "4", "submit": false},
+      "element": {
+        "id": 31, "tag": "input", "kind": "input", "label": "Comensales",
+        "href": null, "raw_href": null, "type": "number", "name": "people", "value": "",
+        "required": true, "min": "1", "max": "12", "options": null,
+        "form": 1, "selector": "form:nth-of-type(1) input[name=\"people\"]", "similar": 0
+      },
+      "url_before": "http://localhost:8002/disponibilidad",
+      "url_after": "http://localhost:8002/disponibilidad",
+      "request_ids": [],
+      "error": null,
+      "note": null,
+      "has_main": true,
+      "forms": []
+    },
+    {
+      "i": 12,
+      "action": {"type": "click", "id": 32},
+      "element": {
+        "id": 32, "tag": "button", "kind": "button", "label": "Ver disponibilidad",
+        "href": null, "raw_href": null, "type": "submit", "name": null, "value": null,
+        "required": false, "min": null, "max": null, "options": null,
+        "form": 1, "selector": "form:nth-of-type(1) button[type=\"submit\"]", "similar": 0
+      },
+      "url_before": "http://localhost:8002/disponibilidad",
+      "url_after": "http://localhost:8002/disponibilidad?date=2026-10-24&people=4",
+      "request_ids": [12],
+      "error": null,
+      "note": null,
+      "has_main": true,
+      "forms": []
+    },
+    {
+      "i": 13,
+      "action": {"type": "click", "id": 40},
+      "element": {
+        "id": 40, "tag": "a", "kind": "link", "label": "21:00",
+        "href": "/reservar?date=2026-10-24&time=21%3A00&people=4",
+        "raw_href": "http://localhost:8002/reservar?date=2026-10-24&time=21%3A00&people=4",
+        "type": null, "name": null, "value": null,
+        "required": false, "min": null, "max": null, "options": null,
+        "form": null, "selector": null, "similar": 0
+      },
+      "url_before": "http://localhost:8002/disponibilidad?date=2026-10-24&people=4",
+      "url_after": "http://localhost:8002/reservar?date=2026-10-24&time=21%3A00&people=4",
+      "request_ids": [13],
+      "error": null,
+      "note": null,
+      "has_main": true,
+      "forms": []
+    },
+    {
+      "i": 14,
+      "action": {"type": "fill", "id": 50, "value": "zxq_nombre", "submit": false},
+      "element": {
+        "id": 50, "tag": "input", "kind": "input", "label": "Nombre",
+        "href": null, "raw_href": null, "type": "text", "name": "name", "value": "",
+        "required": true, "min": null, "max": null, "options": null,
+        "form": 2, "selector": "form[action=\"/reservar\"] input[name=\"name\"]", "similar": 0
+      },
+      "url_before": "http://localhost:8002/reservar?date=2026-10-24&time=21%3A00&people=4",
+      "url_after": "http://localhost:8002/reservar?date=2026-10-24&time=21%3A00&people=4",
+      "request_ids": [],
+      "error": null,
+      "note": null,
+      "has_main": true,
+      "forms": []
+    },
+    {
+      "i": 15,
+      "action": {"type": "fill", "id": 51, "value": "600123456", "submit": false},
+      "element": {
+        "id": 51, "tag": "input", "kind": "input", "label": "Teléfono",
+        "href": null, "raw_href": null, "type": "tel", "name": "phone", "value": "",
+        "required": true, "min": null, "max": null, "options": null,
+        "form": 2, "selector": "form[action=\"/reservar\"] input[name=\"phone\"]", "similar": 0
+      },
+      "url_before": "http://localhost:8002/reservar?date=2026-10-24&time=21%3A00&people=4",
+      "url_after": "http://localhost:8002/reservar?date=2026-10-24&time=21%3A00&people=4",
+      "request_ids": [],
+      "error": null,
+      "note": null,
+      "has_main": true,
+      "forms": []
+    },
+    {
+      "i": 16,
+      "action": {"type": "select", "id": 52, "option": "21:00"},
+      "element": {
+        "id": 52, "tag": "select", "kind": "select", "label": "Hora",
+        "href": null, "raw_href": null, "type": "select-one", "name": "time", "value": "",
+        "required": true, "min": null, "max": null,
+        "options": [
+          {"value": "13:00", "label": "13:00"}, {"value": "13:30", "label": "13:30"},
+          {"value": "14:00", "label": "14:00"}, {"value": "14:30", "label": "14:30"},
+          {"value": "20:00", "label": "20:00"}, {"value": "20:30", "label": "20:30"},
+          {"value": "21:00", "label": "21:00"}, {"value": "21:30", "label": "21:30"},
+          {"value": "22:00", "label": "22:00"}
+        ],
+        "form": 2, "selector": "form[action=\"/reservar\"] select[name=\"time\"]", "similar": 0
+      },
+      "url_before": "http://localhost:8002/reservar?date=2026-10-24&time=21%3A00&people=4",
+      "url_after": "http://localhost:8002/reservar?date=2026-10-24&time=21%3A00&people=4",
+      "request_ids": [],
+      "error": null,
+      "note": null,
+      "has_main": true,
+      "forms": []
+    },
+    {
+      "i": 17,
+      "action": {"type": "click", "id": 53},
+      "element": {
+        "id": 53, "tag": "button", "kind": "button", "label": "Reservar",
+        "href": null, "raw_href": null, "type": "submit", "name": null, "value": null,
+        "required": false, "min": null, "max": null, "options": null,
+        "form": 2, "selector": "form[action=\"/reservar\"] button[type=\"submit\"]", "similar": 0
+      },
+      "url_before": "http://localhost:8002/reservar?date=2026-10-24&time=21%3A00&people=4",
+      "url_after": "http://localhost:8002/reservar",
+      "request_ids": [14],
+      "error": null,
+      "note": "403 Token CSRF inválido: el POST necesita la receta de navegador con el token de sesión",
+      "has_main": true,
+      "forms": []
+    },
+    {
+      "i": 18,
+      "action": {"type": "goto", "url": "http://localhost:8002/reserva"},
+      "element": null,
+      "url_before": "http://localhost:8002/reservar",
+      "url_after": "http://localhost:8002/reserva",
+      "request_ids": [15],
+      "error": null,
+      "note": null,
+      "has_main": true,
+      "forms": [
+        {"index": 1, "method": "GET", "action": "/reserva", "hidden": []}
+      ]
+    },
+    {
+      "i": 19,
+      "action": {"type": "fill", "id": 60, "value": "zxq_code", "submit": false},
+      "element": {
+        "id": 60, "tag": "input", "kind": "input", "label": "Código de reserva",
+        "href": null, "raw_href": null, "type": "text", "name": "code", "value": "",
+        "required": true, "min": null, "max": null, "options": null,
+        "form": 1, "selector": "form:nth-of-type(1) input[name=\"code\"]", "similar": 0
+      },
+      "url_before": "http://localhost:8002/reserva",
+      "url_after": "http://localhost:8002/reserva",
+      "request_ids": [],
+      "error": null,
+      "note": null,
+      "has_main": true,
+      "forms": []
+    },
+    {
+      "i": 20,
+      "action": {"type": "click", "id": 61},
+      "element": {
+        "id": 61, "tag": "button", "kind": "button", "label": "Consultar",
+        "href": null, "raw_href": null, "type": "submit", "name": null, "value": null,
+        "required": false, "min": null, "max": null, "options": null,
+        "form": 1, "selector": "form:nth-of-type(1) button[type=\"submit\"]", "similar": 0
+      },
+      "url_before": "http://localhost:8002/reserva",
+      "url_after": "http://localhost:8002/reserva?code=zxq_code",
+      "request_ids": [16],
+      "error": null,
+      "note": null,
+      "has_main": true,
+      "forms": []
+    }
+  ],
+  "requests": [
+    {
+      "id": 1, "step": 0, "kind": "document", "method": "GET",
+      "url": "http://localhost:8001/", "status": 200,
+      "request_content_type": null, "post_data": null,
+      "content_type": "text/html; charset=utf-8", "body": "<!doctype html><html><head><title>Librería Zeta</title></head><body>…</body></html>",
+      "json": null
+    },
+    {
+      "id": 2, "step": 0, "kind": "fetch", "method": "GET",
+      "url": "http://localhost:8001/api/categories", "status": 200,
+      "request_content_type": null, "post_data": null,
+      "content_type": "application/json", "body": "{\"categories\":[{\"id\":\"scifi\",\"name\":\"Ciencia ficción\"},{\"id\":\"fantasy\",\"name\":\"Fantasía\"},{\"id\":\"history\",\"name\":\"Historia\"},{\"id\":\"programming\",\"name\":\"Programación\"}]}",
+      "json": {"categories": [{"id": "scifi", "name": "Ciencia ficción"}, {"id": "fantasy", "name": "Fantasía"}, {"id": "history", "name": "Historia"}, {"id": "programming", "name": "Programación"}]}
+    },
+    {
+      "id": 3, "step": 0, "kind": "fetch", "method": "GET",
+      "url": "http://localhost:8001/api/search?q=", "status": 200,
+      "request_content_type": null, "post_data": null,
+      "content_type": "application/json", "body": "{\"query\":\"\",\"category\":null,\"count\":13,\"results\":[{\"id\":\"bk-1001\",\"title\":\"Fundación\",\"author\":\"Isaac Asimov\",\"category\":\"scifi\",\"price\":19.9}]}",
+      "json": {"query": "", "category": null, "count": 13, "results": [{"id": "bk-1001", "title": "Fundación", "author": "Isaac Asimov", "category": "scifi", "price": 19.9}]}
+    },
+    {
+      "id": 4, "step": 1, "kind": "fetch", "method": "GET",
+      "url": "http://localhost:8001/api/search?q=zxq_asimov", "status": 200,
+      "request_content_type": null, "post_data": null,
+      "content_type": "application/json", "body": "{\"query\":\"zxq_asimov\",\"category\":null,\"count\":0,\"results\":[]}",
+      "json": {"query": "zxq_asimov", "category": null, "count": 0, "results": []}
+    },
+    {
+      "id": 5, "step": 2, "kind": "fetch", "method": "GET",
+      "url": "http://localhost:8001/api/search?q=&category=scifi", "status": 200,
+      "request_content_type": null, "post_data": null,
+      "content_type": "application/json", "body": "{\"query\":\"\",\"category\":\"scifi\",\"count\":6,\"results\":[{\"id\":\"bk-1001\",\"title\":\"Fundación\",\"author\":\"Isaac Asimov\",\"category\":\"scifi\",\"price\":19.9},{\"id\":\"bk-1002\",\"title\":\"Yo, robot\",\"author\":\"Isaac Asimov\",\"category\":\"scifi\",\"price\":17.5}]}",
+      "json": {"query": "", "category": "scifi", "count": 6, "results": [{"id": "bk-1001", "title": "Fundación", "author": "Isaac Asimov", "category": "scifi", "price": 19.9}, {"id": "bk-1002", "title": "Yo, robot", "author": "Isaac Asimov", "category": "scifi", "price": 17.5}]}
+    },
+    {
+      "id": 6, "step": 3, "kind": "fetch", "method": "GET",
+      "url": "http://localhost:8001/api/products/bk-1001", "status": 200,
+      "request_content_type": null, "post_data": null,
+      "content_type": "application/json", "body": "{\"id\":\"bk-1001\",\"title\":\"Fundación\",\"author\":\"Isaac Asimov\",\"category\":\"scifi\",\"price\":19.9,\"stock\":7,\"description\":\"Primer volumen de la saga de la Fundación.\"}",
+      "json": {"id": "bk-1001", "title": "Fundación", "author": "Isaac Asimov", "category": "scifi", "price": 19.9, "stock": 7, "description": "Primer volumen de la saga de la Fundación."}
+    },
+    {
+      "id": 7, "step": 4, "kind": "fetch", "method": "POST",
+      "url": "http://localhost:8001/api/cart", "status": 200,
+      "request_content_type": null, "post_data": null,
+      "content_type": "application/json", "body": "{\"cart_id\":\"cart_8f2c1a3b\"}",
+      "json": {"cart_id": "cart_8f2c1a3b"}
+    },
+    {
+      "id": 8, "step": 4, "kind": "fetch", "method": "POST",
+      "url": "http://localhost:8001/api/cart/cart_8f2c1a3b/items", "status": 200,
+      "request_content_type": "application/json",
+      "post_data": "{\"product_id\":\"bk-1001\",\"qty\":1}",
+      "content_type": "application/json", "body": "{\"cart_id\":\"cart_8f2c1a3b\",\"status\":\"open\",\"items\":[{\"product_id\":\"bk-1001\",\"title\":\"Fundación\",\"qty\":1,\"subtotal\":19.9}],\"total\":19.9}",
+      "json": {"cart_id": "cart_8f2c1a3b", "status": "open", "items": [{"product_id": "bk-1001", "title": "Fundación", "qty": 1, "subtotal": 19.9}], "total": 19.9}
+    },
+    {
+      "id": 9, "step": 5, "kind": "fetch", "method": "GET",
+      "url": "http://localhost:8001/api/cart/cart_8f2c1a3b", "status": 200,
+      "request_content_type": null, "post_data": null,
+      "content_type": "application/json", "body": "{\"cart_id\":\"cart_8f2c1a3b\",\"status\":\"open\",\"items\":[{\"product_id\":\"bk-1001\",\"title\":\"Fundación\",\"qty\":1,\"subtotal\":19.9}],\"total\":19.9}",
+      "json": {"cart_id": "cart_8f2c1a3b", "status": "open", "items": [{"product_id": "bk-1001", "title": "Fundación", "qty": 1, "subtotal": 19.9}], "total": 19.9}
+    },
+    {
+      "id": 10, "step": 8, "kind": "fetch", "method": "POST",
+      "url": "http://localhost:8001/api/cart/cart_8f2c1a3b/checkout", "status": 200,
+      "request_content_type": "application/json",
+      "post_data": "{\"name\":\"zxq_nombre\",\"email\":\"zxq.user@example.com\"}",
+      "content_type": "application/json", "body": "{\"order_id\":\"ord_71d0\",\"cart_id\":\"cart_8f2c1a3b\",\"total\":19.9,\"customer\":{\"name\":\"zxq_nombre\",\"email\":\"zxq.user@example.com\"},\"message\":\"Pago simulado correcto\"}",
+      "json": {"order_id": "ord_71d0", "cart_id": "cart_8f2c1a3b", "total": 19.9, "customer": {"name": "zxq_nombre", "email": "zxq.user@example.com"}, "message": "Pago simulado correcto"}
+    },
+    {
+      "id": 11, "step": 9, "kind": "document", "method": "GET",
+      "url": "http://localhost:8002/disponibilidad", "status": 200,
+      "request_content_type": null, "post_data": null,
+      "content_type": "text/html; charset=utf-8", "body": "<!doctype html><html><head><title>Disponibilidad · Casa Zeta</title></head><body><main>…</main></body></html>",
+      "json": null
+    },
+    {
+      "id": 12, "step": 12, "kind": "document", "method": "GET",
+      "url": "http://localhost:8002/disponibilidad?date=2026-10-24&people=4", "status": 200,
+      "request_content_type": null, "post_data": null,
+      "content_type": "text/html; charset=utf-8", "body": "<!doctype html><html><head><title>Disponibilidad · Casa Zeta</title></head><body><main><table><tr><td><a href=\"/reservar?date=2026-10-24&time=21%3A00&people=4\">21:00</a></td></tr></table></main></body></html>",
+      "json": null
+    },
+    {
+      "id": 13, "step": 13, "kind": "document", "method": "GET",
+      "url": "http://localhost:8002/reservar?date=2026-10-24&time=21%3A00&people=4", "status": 200,
+      "request_content_type": null, "post_data": null,
+      "content_type": "text/html; charset=utf-8", "body": "<!doctype html><html><head><title>Reservar · Casa Zeta</title></head><body><main><form method=\"POST\" action=\"/reservar\">…</form></main></body></html>",
+      "json": null
+    },
+    {
+      "id": 14, "step": 17, "kind": "document", "method": "POST",
+      "url": "http://localhost:8002/reservar", "status": 403,
+      "request_content_type": "application/x-www-form-urlencoded",
+      "post_data": "csrf_token=a7c1f0e9b2d4456c8e13&name=zxq_nombre&phone=600123456&date=2026-10-24&time=21%3A00&people=4",
+      "content_type": "text/html; charset=utf-8", "body": "<!doctype html><html><head><title>Token CSRF inválido · Casa Zeta</title></head><body><main>Token CSRF inválido</main></body></html>",
+      "json": null
+    },
+    {
+      "id": 15, "step": 18, "kind": "document", "method": "GET",
+      "url": "http://localhost:8002/reserva", "status": 200,
+      "request_content_type": null, "post_data": null,
+      "content_type": "text/html; charset=utf-8", "body": "<!doctype html><html><head><title>Consultar reserva · Casa Zeta</title></head><body><main><form method=\"GET\" action=\"/reserva\">…</form></main></body></html>",
+      "json": null
+    },
+    {
+      "id": 16, "step": 20, "kind": "document", "method": "GET",
+      "url": "http://localhost:8002/reserva?code=zxq_code", "status": 200,
+      "request_content_type": null, "post_data": null,
+      "content_type": "text/html; charset=utf-8", "body": "<!doctype html><html><head><title>Consultar reserva · Casa Zeta</title></head><body><main>No existe ninguna reserva con ese código.</main></body></html>",
+      "json": null
+    }
+  ],
+  "candidates": [
+    {
+      "id": "c1", "request_ids": [2], "variants": 1, "step": 0,
+      "trigger": "goto http://localhost:8001/",
+      "method": "GET", "origin": "http://localhost:8001", "path": "/api/categories",
+      "query": [], "url": "http://localhost:8001/api/categories",
+      "body_type": null, "body": null,
+      "params": [], "literals": [],
+      "status": 200, "content_type": "application/json",
+      "response_preview": "{\"categories\":[{\"id\":\"scifi\",\"name\":\"Ciencia ficción\"},{\"id\":\"fantasy\",\"name\":\"Fantasía\"}, … (4 elementos)]}",
+      "csrf_fields": [],
+      "browser": null
+    },
+    {
+      "id": "c2", "request_ids": [3, 4, 5], "variants": 3, "step": 1,
+      "trigger": "fill [2] input \"Buscar por título o autor\" + submit",
+      "method": "GET", "origin": "http://localhost:8001", "path": "/api/search",
+      "query": [["q", "{q}"], ["category", "{category}"]],
+      "url": "http://localhost:8001/api/search?q={q}&category={category}",
+      "body_type": null, "body": null,
+      "params": [
+        {"name": "q", "type": "string", "example": "zxq_asimov", "location": "query", "key": "q", "source": "input", "label": "Buscar por título o autor"},
+        {"name": "category", "type": "string", "example": "scifi", "location": "query", "key": "category", "source": "input", "label": "Categoría", "enum": ["scifi", "fantasy", "history", "programming"]}
+      ],
+      "literals": [],
+      "status": 200, "content_type": "application/json",
+      "response_preview": "{\"query\":\"zxq_asimov\",\"category\":null,\"count\":0,\"results\":[]}",
+      "csrf_fields": [],
+      "browser": null
+    },
+    {
+      "id": "c3", "request_ids": [6], "variants": 1, "step": 3,
+      "trigger": "click [9] button \"Ver detalle\" (×13 similares)",
+      "method": "GET", "origin": "http://localhost:8001", "path": "/api/products/{product_id}",
+      "query": [], "url": "http://localhost:8001/api/products/{product_id}",
+      "body_type": null, "body": null,
+      "params": [
+        {"name": "product_id", "type": "string", "example": "bk-1001", "location": "path", "key": null, "source": "response", "from_request": 5, "from_candidate": "c2", "path": "results[0].id"}
+      ],
+      "literals": [],
+      "status": 200, "content_type": "application/json",
+      "response_preview": "{\"id\":\"bk-1001\",\"title\":\"Fundación\",\"author\":\"Isaac Asimov\",\"price\":19.9,\"stock\":7, …}",
+      "csrf_fields": [],
+      "browser": null
+    },
+    {
+      "id": "c4", "request_ids": [7], "variants": 1, "step": 4,
+      "trigger": "click [10] button \"Añadir al carrito\" (×13 similares)",
+      "method": "POST", "origin": "http://localhost:8001", "path": "/api/cart",
+      "query": [], "url": "http://localhost:8001/api/cart",
+      "body_type": null, "body": null,
+      "params": [], "literals": [],
+      "status": 200, "content_type": "application/json",
+      "response_preview": "{\"cart_id\":\"cart_8f2c1a3b\"}",
+      "csrf_fields": [],
+      "browser": null
+    },
+    {
+      "id": "c5", "request_ids": [8], "variants": 1, "step": 4,
+      "trigger": "click [10] button \"Añadir al carrito\" (×13 similares)",
+      "method": "POST", "origin": "http://localhost:8001", "path": "/api/cart/{cart_id}/items",
+      "query": [], "url": "http://localhost:8001/api/cart/{cart_id}/items",
+      "body_type": "json", "body": {"product_id": "{product_id}", "qty": 1},
+      "params": [
+        {"name": "cart_id", "type": "string", "example": "cart_8f2c1a3b", "location": "path", "key": null, "source": "response", "from_request": 7, "from_candidate": "c4", "path": "cart_id"},
+        {"name": "product_id", "type": "string", "example": "bk-1001", "location": "body", "key": "product_id", "source": "response", "from_request": 5, "from_candidate": "c2", "path": "results[0].id"}
+      ],
+      "literals": [{"location": "body", "key": "qty", "value": 1}],
+      "status": 200, "content_type": "application/json",
+      "response_preview": "{\"cart_id\":\"cart_8f2c1a3b\",\"status\":\"open\",\"items\":[{\"product_id\":\"bk-1001\",\"title\":\"Fundación\",\"qty\":1,\"subtotal\":19.9}],\"total\":19.9}",
+      "csrf_fields": [],
+      "browser": null
+    },
+    {
+      "id": "c6", "request_ids": [9], "variants": 1, "step": 5,
+      "trigger": "click [1] button \"Ver carrito (1)\"",
+      "method": "GET", "origin": "http://localhost:8001", "path": "/api/cart/{cart_id}",
+      "query": [], "url": "http://localhost:8001/api/cart/{cart_id}",
+      "body_type": null, "body": null,
+      "params": [
+        {"name": "cart_id", "type": "string", "example": "cart_8f2c1a3b", "location": "path", "key": null, "source": "response", "from_request": 7, "from_candidate": "c4", "path": "cart_id"}
+      ],
+      "literals": [],
+      "status": 200, "content_type": "application/json",
+      "response_preview": "{\"cart_id\":\"cart_8f2c1a3b\",\"status\":\"open\",\"items\":[…],\"total\":19.9}",
+      "csrf_fields": [],
+      "browser": null
+    },
+    {
+      "id": "c7", "request_ids": [10], "variants": 1, "step": 8,
+      "trigger": "click [22] button \"Finalizar compra\"",
+      "method": "POST", "origin": "http://localhost:8001", "path": "/api/cart/{cart_id}/checkout",
+      "query": [], "url": "http://localhost:8001/api/cart/{cart_id}/checkout",
+      "body_type": "json", "body": {"name": "{name}", "email": "{email}"},
+      "params": [
+        {"name": "cart_id", "type": "string", "example": "cart_8f2c1a3b", "location": "path", "key": null, "source": "response", "from_request": 7, "from_candidate": "c4", "path": "cart_id"},
+        {"name": "name", "type": "string", "example": "zxq_nombre", "location": "body", "key": "name", "source": "input", "label": "Nombre"},
+        {"name": "email", "type": "string", "example": "zxq.user@example.com", "location": "body", "key": "email", "source": "input", "label": "Email"}
+      ],
+      "literals": [],
+      "status": 200, "content_type": "application/json",
+      "response_preview": "{\"order_id\":\"ord_71d0\",\"cart_id\":\"cart_8f2c1a3b\",\"total\":19.9,\"message\":\"Pago simulado correcto\"}",
+      "csrf_fields": [],
+      "browser": {
+        "start_url": "http://localhost:8001/",
+        "steps": [
+          {"action": "fill", "selector": "form:nth-of-type(2) input[name=\"name\"]", "value": "{name}"},
+          {"action": "fill", "selector": "form:nth-of-type(2) input[name=\"email\"]", "value": "{email}"},
+          {"action": "click", "selector": "form:nth-of-type(2) button[type=\"submit\"]"}
+        ],
+        "extract": "main",
+        "params": [
+          {"name": "name", "type": "string"},
+          {"name": "email", "type": "string"}
+        ]
+      }
+    },
+    {
+      "id": "c8", "request_ids": [12], "variants": 1, "step": 12,
+      "trigger": "fill [30] input \"Fecha\" / fill [31] input \"Comensales\" + click [32] button \"Ver disponibilidad\"",
+      "method": "GET", "origin": "http://localhost:8002", "path": "/disponibilidad",
+      "query": [["date", "{date}"], ["people", "{people}"]],
+      "url": "http://localhost:8002/disponibilidad?date={date}&people={people}",
+      "body_type": null, "body": null,
+      "params": [
+        {"name": "date", "type": "string", "format": "date", "example": "2026-10-24", "location": "query", "key": "date", "source": "input", "label": "Fecha"},
+        {"name": "people", "type": "integer", "example": 4, "location": "query", "key": "people", "source": "input", "label": "Comensales"}
+      ],
+      "literals": [],
+      "status": 200, "content_type": "text/html; charset=utf-8",
+      "response_preview": "Disponibilidad · Casa Zeta … 13:00 13:30 14:00 14:30 20:00 21:00 21:30 22:00 …",
+      "csrf_fields": [],
+      "browser": {
+        "start_url": "http://localhost:8002/disponibilidad",
+        "steps": [
+          {"action": "fill", "selector": "form:nth-of-type(1) input[name=\"date\"]", "value": "{date}"},
+          {"action": "fill", "selector": "form:nth-of-type(1) input[name=\"people\"]", "value": "{people}"},
+          {"action": "click", "selector": "form:nth-of-type(1) button[type=\"submit\"]"}
+        ],
+        "extract": "main",
+        "params": [
+          {"name": "date", "type": "string", "format": "date"},
+          {"name": "people", "type": "integer"}
+        ]
+      }
+    },
+    {
+      "id": "c9", "request_ids": [14], "variants": 1, "step": 17,
+      "trigger": "click [53] button \"Reservar\"",
+      "method": "POST", "origin": "http://localhost:8002", "path": "/reservar",
+      "query": [], "url": "http://localhost:8002/reservar",
+      "body_type": "form",
+      "body": {
+        "csrf_token": "a7c1f0e9b2d4456c8e13", "name": "{name}", "phone": "{phone}",
+        "date": "{date}", "time": "{time}", "people": "{people}"
+      },
+      "params": [
+        {"name": "name", "type": "string", "example": "zxq_nombre", "location": "body", "key": "name", "source": "input", "label": "Nombre"},
+        {"name": "phone", "type": "string", "example": "600123456", "location": "body", "key": "phone", "source": "input", "label": "Teléfono"},
+        {"name": "date", "type": "string", "format": "date", "example": "2026-10-24", "location": "body", "key": "date", "source": "input", "label": "Fecha"},
+        {"name": "time", "type": "string", "example": "21:00", "location": "body", "key": "time", "source": "input", "label": "Hora", "enum": ["13:00", "13:30", "14:00", "14:30", "20:00", "20:30", "21:00", "21:30", "22:00"]},
+        {"name": "people", "type": "integer", "example": 4, "location": "body", "key": "people", "source": "input", "label": "Comensales"}
+      ],
+      "literals": [{"location": "body", "key": "csrf_token", "value": "a7c1f0e9b2d4456c8e13"}],
+      "status": 403, "content_type": "text/html; charset=utf-8",
+      "response_preview": "Token CSRF inválido",
+      "csrf_fields": ["csrf_token"],
+      "browser": {
+        "start_url": "http://localhost:8002/reservar",
+        "steps": [
+          {"action": "fill", "selector": "form[action=\"/reservar\"] input[name=\"name\"]", "value": "{name}"},
+          {"action": "fill", "selector": "form[action=\"/reservar\"] input[name=\"phone\"]", "value": "{phone}"},
+          {"action": "fill", "selector": "form[action=\"/reservar\"] input[name=\"date\"]", "value": "{date}"},
+          {"action": "select", "selector": "form[action=\"/reservar\"] select[name=\"time\"]", "value": "{time}"},
+          {"action": "fill", "selector": "form[action=\"/reservar\"] input[name=\"people\"]", "value": "{people}"},
+          {"action": "click", "selector": "form[action=\"/reservar\"] button[type=\"submit\"]"}
+        ],
+        "extract": "main",
+        "params": [
+          {"name": "name", "type": "string"},
+          {"name": "phone", "type": "string"},
+          {"name": "date", "type": "string", "format": "date"},
+          {"name": "time", "type": "string", "enum": ["13:00", "13:30", "14:00", "14:30", "20:00", "20:30", "21:00", "21:30", "22:00"]},
+          {"name": "people", "type": "integer"}
+        ]
+      }
+    },
+    {
+      "id": "c10", "request_ids": [16], "variants": 1, "step": 20,
+      "trigger": "fill [60] input \"Código de reserva\" + click [61] button \"Consultar\"",
+      "method": "GET", "origin": "http://localhost:8002", "path": "/reserva",
+      "query": [["code", "{code}"]],
+      "url": "http://localhost:8002/reserva?code={code}",
+      "body_type": null, "body": null,
+      "params": [
+        {"name": "code", "type": "string", "example": "zxq_code", "location": "query", "key": "code", "source": "input", "label": "Código de reserva"}
+      ],
+      "literals": [],
+      "status": 200, "content_type": "text/html; charset=utf-8",
+      "response_preview": "No existe ninguna reserva con ese código.",
+      "csrf_fields": [],
+      "browser": {
+        "start_url": "http://localhost:8002/reserva",
+        "steps": [
+          {"action": "fill", "selector": "form:nth-of-type(1) input[name=\"code\"]", "value": "{code}"},
+          {"action": "click", "selector": "form:nth-of-type(1) button[type=\"submit\"]"}
+        ],
+        "extract": "main",
+        "params": [{"name": "code", "type": "string"}]
+      }
+    }
+  ],
+  "dependencies": [
+    {"from_request": 5, "path": "results[0].id", "to_request": 6, "location": "path", "key": null, "value": "bk-1001", "from_candidate": "c2", "to_candidate": "c3"},
+    {"from_request": 5, "path": "results[0].id", "to_request": 8, "location": "body", "key": "product_id", "value": "bk-1001", "from_candidate": "c2", "to_candidate": "c5"},
+    {"from_request": 7, "path": "cart_id", "to_request": 8, "location": "path", "key": null, "value": "cart_8f2c1a3b", "from_candidate": "c4", "to_candidate": "c5"},
+    {"from_request": 7, "path": "cart_id", "to_request": 9, "location": "path", "key": null, "value": "cart_8f2c1a3b", "from_candidate": "c4", "to_candidate": "c6"},
+    {"from_request": 7, "path": "cart_id", "to_request": 10, "location": "path", "key": null, "value": "cart_8f2c1a3b", "from_candidate": "c4", "to_candidate": "c7"}
+  ]
+}
