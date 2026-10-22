@@ -6,6 +6,7 @@ import { SEED_MCPS } from '../data/mcps';
 import { CURRENT_USER_HANDLE } from '../data/people';
 import { ratingOf, versionsOf } from '../lib/catalog';
 import { toManifest } from '../lib/format';
+import { dataSource, services } from '../services';
 import { buildGeneration } from '../services/generation';
 import { emptyState, loadState, persistState, type StoredState } from '../state/storage';
 import type { Manifest } from '../types/contract';
@@ -102,6 +103,7 @@ export function StoreProvider({ children }: { children: ReactNode }) {
   const [hydrated, setHydrated] = useState(false);
   const stateRef = useRef(state);
   stateRef.current = state;
+  const [remote, setRemote] = useState<Mcp[] | null>(null);
   const [community, setCommunity] = useState<Record<string, Partial<Mcp>>>({});
   const [comments, setComments] = useState<Record<string, UserComment[]>>({});
   const [commentsHydrated, setCommentsHydrated] = useState(false);
@@ -147,14 +149,30 @@ export function StoreProvider({ children }: { children: ReactNode }) {
     }
   }, [comments, commentsHydrated]);
 
+  useEffect(() => {
+    if (dataSource() !== 'registry') return;
+    let cancelled = false;
+    services
+      .listMcps({}, 'popular', 1)
+      .then((page) => {
+        if (!cancelled) setRemote(page.items);
+      })
+      .catch(() => {
+        /* el registro no responde: se queda el catálogo de ejemplo */
+      });
+    return () => {
+      cancelled = true;
+    };
+  }, []);
+
   const mcps = useMemo(() => {
     const map = new Map<string, Mcp>();
-    for (const mcp of SEED_MCPS) map.set(mcp.id, mcp);
+    for (const mcp of remote ?? SEED_MCPS) map.set(mcp.id, mcp);
     for (const mcp of state.mine) map.set(mcp.id, mcp);
     return [...map.values()]
       .filter((mcp) => !state.removed.includes(mcp.slug))
       .map((mcp) => (community[mcp.id] ? { ...mcp, ...community[mcp.id] } : mcp));
-  }, [state.mine, state.removed, community]);
+  }, [state.mine, state.removed, community, remote]);
 
   const upsert = useCallback((mcp: Mcp) => {
     setState((s) => {

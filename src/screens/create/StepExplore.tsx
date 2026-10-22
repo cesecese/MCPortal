@@ -107,12 +107,14 @@ export function StepExplore({
   host,
   icon,
   job,
+  complete = true,
   onDone,
   onCancel,
 }: {
   host: string;
   icon?: string;
   job: GenerationJob;
+  complete?: boolean;
   onDone: () => void;
   onCancel: () => void;
 }) {
@@ -121,6 +123,7 @@ export function StepExplore({
   const [paused, setPaused] = useState(false);
   const logRef = useRef<HTMLOListElement>(null);
   const done = cursor >= events.length;
+  const finished = done && complete;
 
   useEffect(() => {
     setCursor(0);
@@ -174,10 +177,12 @@ export function StepExplore({
       <div className="step-explore__top">
         <div>
           <h1 className="step-explore__title">
-            {done ? (
+            {finished ? (
               <>
                 Listo: <span className="mono">{counts.passed}</span> de {counts.proposed} herramientas funcionan
               </>
+            ) : done ? (
+              <>Esperando al core…</>
             ) : (
               <>
                 Explorando <span className="mono">{host}</span>
@@ -204,8 +209,8 @@ export function StepExplore({
 
       <ol className="phases">
         {PHASES.map((p, i) => {
-          const prog = done ? 1 : phaseProgress(p.id);
-          const state = done || i < phaseIndex ? 'done' : i === phaseIndex ? 'active' : 'todo';
+          const prog = finished ? 1 : phaseProgress(p.id);
+          const state = finished || i < phaseIndex ? 'done' : i === phaseIndex ? 'active' : 'todo';
           return (
             <li key={p.id} className={cx('phase', `is-${state}`)}>
               <div className="phase__bar">
@@ -236,7 +241,7 @@ export function StepExplore({
               {host}
               <span className="browser__path">{frame.path}</span>
             </span>
-            <span className="browser__badge mono">{phase === 'explore' && !done ? 'agente' : 'cerrado'}</span>
+            <span className="browser__badge mono">{phase === 'explore' && !finished ? 'agente' : 'cerrado'}</span>
           </div>
           <div className="browser__body">
             <div className="eyebrow">Observación compacta</div>
@@ -331,7 +336,7 @@ export function StepExplore({
         </ul>
       </div>
 
-      {done && (
+      {finished && (
         <div className="step-footer">
           <span className="step-footer__note">
             {counts.failed > 0

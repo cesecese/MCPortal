@@ -88,3 +88,23 @@ npx next dev -p 5180
 Flujos a recorrer: buscar → detalle → copiar instalación; crear de principio a
 fin (incluida la generación y la cancelación); publicar; recargar y comprobar
 que sigue en la biblioteca.
+
+## Fase 3: generación real y publicación
+
+Con `NEXT_PUBLIC_DATA_SOURCE=registry` y `NEXT_PUBLIC_REGISTRY_URL` apuntando al
+registro FastAPI (8010), `src/services/registry.ts` añade:
+
+- `startGeneration(url, options)` → `POST /generate`; devuelve `{id, slug, status}`.
+- `getGenerationJob(id)` → estado y `draft` (`Mcp`) al terminar.
+- `subscribeToGeneration(id, onEvent, onEnd)` → `EventSource` contra
+  `/jobs/{id}/events` (eventos §6.4 y evento `end`).
+- `publishMcp(mcp, permissionConfirmed)` → `POST /mcps`.
+- `emptyDraft(url, options)` → borrador mínimo para pintar la generación antes de
+  que el core responda.
+
+La pantalla `Create` usa esta vía en modo registro: la generación real reemplaza a
+`services/generation.ts` (simulación), muestra el log en vivo y, al terminar,
+reutiliza la revisión y la publicación existentes. El comando del éxito es
+`./mcportal install <slug>`, que descarga el manifiesto y imprime el bloque
+`mcpServers`.
+

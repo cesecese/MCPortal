@@ -22,7 +22,7 @@ las 4 personas en [`MASTER_PROMPT_EQUIPO.md`](MASTER_PROMPT_EQUIPO.md).
 | Restaurante de demo «Casa Zeta» | `http://localhost:8002` |
 | Panel en vivo | `http://localhost:8000` |
 | Registro (fase 3) | `http://localhost:8010` |
-| Portal en local | `http://localhost:5180` (`next dev -p 5180`) |
+| Portal en local | `http://localhost:5179` (`npm run dev`) |
 | Ramas | `main` + una por persona: `p1-explorer`, `p2-core`, `p3-portal-ui`, `p4-portal-flows` |
 
 Los puertos 3000 y 3001 están ocupados en la máquina de desarrollo: no usarlos.
@@ -46,6 +46,32 @@ Arrancar las webs de demo y el panel (requiere las webs de la persona 1):
 
 ```bash
 bash start.sh
+```
+
+## Portal
+
+El portal Next.js está en la **raíz** del repo (no en `portal/`):
+
+```bash
+npm install
+npm run dev        # http://localhost:5179
+```
+
+Con datos simulados funciona sin backend. Para la fase 3, arranca el registro y
+usa `NEXT_PUBLIC_DATA_SOURCE=registry` y `NEXT_PUBLIC_REGISTRY_URL=http://localhost:8010`
+(ver `.env.example` y `registry/README.md`).
+
+## Registro (fase 3)
+
+```bash
+set -a; . ./.env.local; set +a
+.venv/bin/python -m uvicorn registry.server:app --host 127.0.0.1 --port 8010
+```
+
+Genera MCPs con el pipeline real, los publica y los sirve al portal. Instalar uno:
+
+```bash
+./mcportal install <slug>
 ```
 
 ## Variables de entorno

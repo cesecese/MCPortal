@@ -70,7 +70,7 @@ export function slugify(s: string): string {
 }
 
 export function installCommand(mcp: Pick<Mcp, 'slug'>): string {
-  return `npx -y mcportal add ${mcp.slug}`;
+  return `./mcportal install ${mcp.slug}`;
 }
 
 /** Origen real del sitio (las webs de demo locales van por http). */

@@ -1,14 +1,24 @@
 'use client';
 
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import Link from 'next/link';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { CommandLine } from '../components/Code';
 import { Icon } from '../components/Icon';
 import type { GenerationJob, Mcp, PublishOptions } from '../data/types';
 import { cx, installCommand } from '../lib/format';
+import { dataSource } from '../services';
+import {
+  cancelGenerationJob,
+  emptyDraft,
+  getGenerationJob,
+  publishMcp as publishToRegistry,
+  startGeneration as startRegistryGeneration,
+  subscribeToGeneration,
+} from '../services/registry';
 import { useStore } from '../store/store';
 import { useToast } from '../store/toast';
+import type { PipelineEvent } from '../types/contract';
 import { StepExplore } from './create/StepExplore';
 import { canPublish, StepPublish } from './create/StepPublish';
 import { reviewErrors, StepReview } from './create/StepReview';
@@ -29,11 +39,14 @@ export function Create() {
   const { byId, mcps, saveDraft, publishDraft, startGeneration, cancelGeneration, finalizeGeneration, discardDraft } = useStore();
   const router = useRouter();
   const notify = useToast();
+  const registry = dataSource() === 'registry';
+  const sourceRef = useRef<EventSource | null>(null);
 
   const editing = params.get('editar') ? byId(params.get('editar')!) : undefined;
   const [step, setStep] = useState<Step>(editing ? 'review' : 'url');
   const [draft, setDraft] = useState<Mcp | null>(editing ? structuredClone(editing) : null);
   const [job, setJob] = useState<GenerationJob | null>(null);
+  const [jobComplete, setJobComplete] = useState(false);
   const [excluded, setExcluded] = useState<Set<number>>(new Set());
   const [showErrors, setShowErrors] = useState(false);
   const [permission, setPermission] = useState(false);
@@ -42,6 +55,8 @@ export function Create() {
   useEffect(() => {
     window.scrollTo({ top: 0 });
   }, [step]);
+
+  useEffect(() => () => sourceRef.current?.close(), []);
 
   const included = useMemo(
     () => (draft ? draft.tools.filter((t, i) => t.validated && !excluded.has(i)) : []),
@@ -68,7 +83,7 @@ export function Create() {
     permissionConfirmed: permission,
   });
 
-  const persist = (target: 'draft' | 'publish') => {
+  const persist = async (target: 'draft' | 'publish') => {
     if (!draft) return;
     if (!reviewOk) {
       setShowErrors(true);
@@ -82,21 +97,31 @@ export function Create() {
       return;
     }
     setBusy(target === 'publish' ? 'publish' : 'draft');
-    window.setTimeout(() => {
+    try {
       if (target === 'publish') {
-        const published = publishDraft(finalMcp('published'), publishOptions());
-        setBusy(null);
-        if (published) {
+        const next = finalMcp('published');
+        if (registry) {
+          const published = await publishToRegistry(next, permission);
+          publishDraft(published, publishOptions());
           setDraft(published);
-          setStep('done');
+        } else {
+          await new Promise((resolve) => window.setTimeout(resolve, 1100));
+          const published = publishDraft(next, publishOptions());
+          if (!published) throw new Error('No se pudo publicar');
+          setDraft(published);
         }
+        setStep('done');
       } else {
         saveDraft(finalMcp('draft'));
-        setBusy(null);
+        await new Promise((resolve) => window.setTimeout(resolve, 450));
         notify('Borrador guardado en este navegador', { detail: draft.slug, icon: 'check' });
         router.push(`/mcp/${draft.slug}`);
       }
-    }, target === 'publish' ? 1100 : 450);
+    } catch (error) {
+      notify('No se pudo guardar', { detail: String(error).slice(0, 120), icon: 'alert' });
+    } finally {
+      setBusy(null);
+    }
   };
 
   const goReviewNext = () => {
@@ -191,7 +216,75 @@ export function Create() {
         {step === 'url' && (
           <StepUrl
             initialUrl={params.get('url') ?? draft?.site ?? ''}
-            onStart={({ url, hint, maxSteps, mode }) => {
+            onStart={async ({ url, hint, maxSteps, mode }) => {
+              sourceRef.current?.close();
+              setExcluded(new Set());
+              setShowErrors(false);
+              setPermission(false);
+              setJobComplete(false);
+
+              if (registry) {
+                try {
+                  const info = await startRegistryGeneration(url, { hint, maxSteps, mode });
+                  const placeholder = emptyDraft(url, { hint, maxSteps, mode });
+                  const nextJob: GenerationJob = {
+                    id: info.id,
+                    url: url.href,
+                    slug: info.slug,
+                    startedAt: Date.now(),
+                    durationMs: 0,
+                    options: { hint, maxSteps, mode },
+                    events: [],
+                    scene: [{
+                      step: 0,
+                      path: '/',
+                      observation: ['Exploración real en headless: sigue el registro de acciones.'],
+                    }],
+                    draft: placeholder,
+                  };
+                  setDraft(placeholder);
+                  setJob(nextJob);
+                  setStep('explore');
+                  sourceRef.current = subscribeToGeneration(
+                    info.id,
+                    (event: PipelineEvent) =>
+                      setJob((prev) => {
+                        if (!prev) return prev;
+                        const scene =
+                          event.type === 'step'
+                            ? [...prev.scene, {
+                                step: event.i,
+                                path: new URL(event.url).pathname,
+                                observation: prev.scene.at(-1)?.observation ?? [],
+                              }]
+                            : prev.scene;
+                        return { ...prev, events: [...prev.events, event], scene };
+                      }),
+                    async () => {
+                      try {
+                        const done = await getGenerationJob(info.id);
+                        if (done.draft) {
+                          setDraft(done.draft);
+                          setJob((prev) => (prev ? { ...prev, draft: done.draft as Mcp } : prev));
+                        } else {
+                          notify('El core no devolvió manifiesto', {
+                            detail: done.error ?? 'Revisa el log del registro',
+                            icon: 'alert',
+                          });
+                        }
+                      } catch {
+                        notify('No se pudo leer el resultado del core', { icon: 'alert' });
+                      } finally {
+                        setJobComplete(true);
+                      }
+                    },
+                  );
+                  return;
+                } catch {
+                  notify('El registro no responde; uso la generación simulada', { icon: 'alert' });
+                }
+              }
+
               const next = startGeneration(url, { hint, maxSteps, mode });
               // Al regenerar un borrador existente se conserva su identidad
               const generated = draft
@@ -199,9 +292,7 @@ export function Create() {
                 : next.draft;
               setDraft(generated);
               setJob({ ...next, draft: generated });
-              setExcluded(new Set());
-              setShowErrors(false);
-              setPermission(false);
+              setJobComplete(true);
               setStep('explore');
             }}
           />
@@ -212,11 +303,29 @@ export function Create() {
             host={draft.site}
             icon={draft.icon}
             job={job}
+            complete={!registry || jobComplete}
             onDone={() => {
+              if (registry) {
+                if (!jobComplete) {
+                  notify('La generación aún no ha terminado', { icon: 'alert' });
+                  return;
+                }
+                setStep('review');
+                return;
+              }
               finalizeGeneration(job.id);
               setStep('review');
             }}
             onCancel={() => {
+              sourceRef.current?.close();
+              if (registry) {
+                cancelGenerationJob(job.id).catch(() => {});
+                setJob(null);
+                setDraft(null);
+                setJobComplete(false);
+                setStep('url');
+                return;
+              }
               cancelGeneration(job.id);
               if (!editing && draft) discardDraft(draft.slug);
               setJob(null);
