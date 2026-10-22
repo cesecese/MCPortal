@@ -1,15 +1,16 @@
 # Clientes de ejemplo (7) — entrada para el MCP
 
 La web **no carga** estos 7 clientes. Son datos de entrada para crearlos tú desde
-el MCP con `gestoria_meridian_create_client`; la web arranca solo con sus 8 clientes base.
+el MCP con `gestoria_meridian_create_client`; la web arranca con **un único cliente base**
+(`CL-2026-0001`, Marta Rivas).
 
 - `clientes.txt`: **7 líneas, una por cliente**, sin cabecera. Campos separados por comas:
   `id, nombre, apellidos, telefono, email, cif, direccion, ciudad, cp, provincia, tipo, iban, fecha_alta, asesor, estado, notas, balance`.
 - `clientes.json`: los mismos 7, por si prefieres leerlos desde un script.
 - `balances/`: los 7 PDFs. El campo `balance` ya contiene la ruta que hay que pasar
   al parámetro `balance` del MCP (relativa a la raíz del repo).
-- Los IDs son orientativos: al crearlos en orden, la web asigna `CL-2026-0009` a
-  `CL-2026-0015`. El MCP no acepta `id`; lo genera la web.
+- Los IDs son orientativos: al crearlos en orden, la web asigna `CL-2026-0002` a
+  `CL-2026-0008`. El MCP no acepta `id`; lo genera la web.
 
 Códigos internos: `tipo` = `empresa|autonomo|particular`; `estado` = `activo|pendiente|inactivo`;
 `asesor` = `elena|marcos|lucia`.
