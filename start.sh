@@ -14,6 +14,7 @@ trap 'kill 0' EXIT
 
 "$PY" sites/shop/app.py &
 "$PY" sites/restaurant/app.py &
+"$PY" sites/gestoria/app.py &
 "$PY" core/panel/server.py &
 
 wait

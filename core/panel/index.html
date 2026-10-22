@@ -70,6 +70,7 @@
   <button id="go">Explorar</button>
   <button class="ghost" id="s8001">Tienda :8001</button>
   <button class="ghost" id="s8002">Restaurante :8002</button>
+  <button class="ghost" id="s8003">Gestoría :8003</button>
   <select id="runs"><option value="">ejecuciones…</option></select>
 </header>
 
@@ -241,6 +242,7 @@ async function explore() {
 $("go").addEventListener("click", explore);
 $("s8001").addEventListener("click", () => { $("url").value = "http://localhost:8001/"; explore(); });
 $("s8002").addEventListener("click", () => { $("url").value = "http://localhost:8002/"; explore(); });
+$("s8003").addEventListener("click", () => { $("url").value = "http://localhost:8003/"; explore(); });
 $("runs").addEventListener("change", (e) => {
   if (!e.target.value) return;
   stop(); reset();

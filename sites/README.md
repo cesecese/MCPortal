@@ -74,3 +74,34 @@ curl -s -o /dev/null -w '%{http_code}\n' -X POST localhost:8002/reservar \
   -d 'csrf_token=x&name=Ada&phone=600123456&date=2026-10-24&time=13:00&people=2'
 # 403: sin cookie de sesión no vale
 ```
+
+## Gestoría Meridian (`sites/gestoria`, puerto 8003)
+
+Software interno de demostración: dashboard, buscador de clientes, ficha, alta con
+CSRF y **subida real de un PDF** de balance de situación. Es el caso de uso
+«software interno sin API» del pitch.
+
+- `GET /` resumen; `GET /clientes` buscador (la tabla se carga por `fetch`);
+  `GET /clientes/nuevo` formulario; `GET /clientes/{id}` ficha;
+  `GET /documentos` balances.
+- `GET /api/clients?q=&estado=&tipo=` JSON para el buscador;
+  `GET /api/clients/{id}` JSON de la ficha.
+- `POST /clientes/nuevo` multipart con `csrf_token` + cookie de sesión y un PDF
+  obligatorio (`balance`); 303 a la ficha creada. CIF duplicado se muestra como
+  aviso, no bloquea (el explorador repite ejemplos).
+- `GET /clientes/{id}/balance` sirve el PDF subido o el de ejemplo.
+
+PDF de ejemplo para el explorador y el MCP:
+`sites/gestoria/samples/balance-ejemplo.pdf`.
+
+Prueba rápida:
+
+```bash
+curl -s 'http://localhost:8003/api/clients?q=rivas' | python3 -m json.tool
+curl -s -o /dev/null -w '%{http_code} %{content_type}\n' \
+  http://localhost:8003/clientes/CL-2026-0001/balance
+```
+
+El alta exige el PDF: el explorador lo sube con la acción `upload` y el runtime
+la reproduce con `set_input_files`; el PDF queda en `sites/gestoria/uploads/`
+(ignorado en git).

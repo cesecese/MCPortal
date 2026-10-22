@@ -35,3 +35,6 @@ next-env.d.ts
 # Registro (fase 3)
 registry/registry.db
 registry/data/
+sites/gestoria/uploads/
+
+manifests/archive/

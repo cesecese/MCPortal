@@ -20,6 +20,8 @@ las 4 personas en [`MASTER_PROMPT_EQUIPO.md`](MASTER_PROMPT_EQUIPO.md).
 | Prefijo de variables de entorno | `MCPORTAL_*` |
 | Tienda de demo «Librería Zeta» | `http://localhost:8001` |
 | Restaurante de demo «Casa Zeta» | `http://localhost:8002` |
+| Gestoría Meridian (software interno) | `http://localhost:8003` |
+| Gestoría Meridian (software interno) | `http://localhost:8003` |
 | Panel en vivo | `http://localhost:8000` |
 | Registro (fase 3) | `http://localhost:8010` |
 | Portal en local | `http://localhost:5179` (`npm run dev`) |

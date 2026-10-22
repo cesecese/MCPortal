@@ -51,8 +51,10 @@ MANIFESTS = ROOT / "manifests"
 RUNS = ROOT / "runs"
 PYTHON = sys.executable
 CURRENT_HANDLE = os.environ.get("MCPORTAL_USER", "davidpargaa")
-LOCAL_NAMES = {"localhost:8001": "Librería Zeta", "localhost:8002": "Casa Zeta"}
-LOCAL_CATEGORIES = {"localhost:8001": "comercio", "localhost:8002": "reservas"}
+LOCAL_NAMES = {"localhost:8001": "Librería Zeta", "localhost:8002": "Casa Zeta",
+               "localhost:8003": "Gestoría Meridian"}
+LOCAL_CATEGORIES = {"localhost:8001": "comercio", "localhost:8002": "reservas",
+                    "localhost:8003": "internas"}
 
 CORS_ORIGINS = [
     origin.strip()
@@ -290,7 +292,7 @@ def wrap_manifest(manifest: dict[str, Any], *, status: str = "published",
     slug = slugify(manifest.get("slug") or site)
     tools = [tool_from_manifest(tool) for tool in manifest.get("tools", [])]
     category = manifest.get("category") or LOCAL_CATEGORIES.get(site, "desarrollo")
-    name = manifest.get("display_name") or LOCAL_NAMES.get(site) or site
+    name = LOCAL_NAMES.get(site) or manifest.get("display_name") or site
     if name.startswith("Inicio · "):
         name = name.removeprefix("Inicio · ")
     tags = manifest.get("tags") or ["generado"]
