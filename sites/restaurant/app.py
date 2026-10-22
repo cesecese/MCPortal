@@ -356,3 +356,9 @@ def check_reservation(code: str = Query("")) -> HTMLResponse:
 @app.get("/health")
 def health() -> JSONResponse:
     return JSONResponse({"ok": True, "site": "casa-zeta"})
+
+
+if __name__ == "__main__":
+    import uvicorn
+
+    uvicorn.run(app, host="127.0.0.1", port=8002)
