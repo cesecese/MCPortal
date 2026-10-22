@@ -193,7 +193,7 @@ export function generate(url: URL, hint: string): { draft: Mcp; trace: TraceEven
     tools: t.tools.map((x) => ({ ...x, params: x.params.map((pp) => ({ ...pp })) })),
     installs: 0,
     weeklyInstalls: [],
-    version: '0.1.0',
+    version: '1.0.0',
     license: 'MIT',
     updatedAt: new Date().toISOString(),
     status: 'draft',

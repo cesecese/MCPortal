@@ -84,7 +84,7 @@ export function StyleGuide() {
         <div className="sg__type">
           <div>
             <span className="sg__label mono">h1 · 40/1</span>
-            <p className="sg__h1">Una URL. Un MCP.</p>
+            <p className="sg__h1">Convierte cualquier web en un MCP.</p>
           </div>
           <div>
             <span className="sg__label mono">h2 · 20/1.1</span>

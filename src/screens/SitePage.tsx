@@ -53,15 +53,14 @@ export function SitePage() {
           <SiteIcon mcp={lead} size={56} />
           <div className="site-head__copy">
             <p className="eyebrow">Web de origen</p>
-            <h1>{key}</h1>
+            <h1>MCPs para {key}</h1>
             <p className="site-head__sub">
-              {lead.name} · {variants.length} {variants.length === 1 ? 'implementación' : 'implementaciones'} MCP
-              publicadas por la comunidad.
+              Explora las implementaciones MCP creadas para esta web y descubre qué puedes hacer con cada una.
             </p>
           </div>
           <div className="site-head__actions">
             <a href={siteUrl(lead.site)} className="btn btn--outline" target="_blank" rel="noreferrer">
-              Visitar la web <Icon name="arrowUpRight" size={14} />
+              Visitar web original <Icon name="arrowUpRight" size={14} />
             </a>
           </div>
         </header>
@@ -79,7 +78,7 @@ export function SitePage() {
             </dd>
           </div>
           <div>
-            <dt>Última actualización web</dt>
+            <dt>Última comprobación de la web</dt>
             <dd>
               {sourceDate ? formatDate(sourceDate) : '—'}
               <span className="site-stats__sub">{sourceDate ? relativeTime(sourceDate) : 'sin registrar'}</span>
@@ -87,32 +86,32 @@ export function SitePage() {
           </div>
         </dl>
 
-        {(outdated.length > 0 || openReports > 0) && (
+        {outdated.length > 0 && (
           <div className="site-notice">
             <Icon name="alert" size={16} />
             <p>
-              {outdated.length > 0 && (
-                <span>
-                  <strong>
-                    {outdated.length} {outdated.length === 1 ? 'MCP desactualizado' : 'MCPs desactualizados'}
-                  </strong>{' '}
-                  respecto a la web original.
-                </span>
-              )}
-              {openReports > 0 && (
-                <span>
-                  {' '}
-                  Hay <strong>{openReports}</strong> {openReports === 1 ? 'incidencia abierta' : 'incidencias abiertas'}{' '}
-                  en las implementaciones.
-                </span>
-              )}
+              <strong>Implementaciones desactualizadas.</strong> Hay {outdated.length} {outdated.length === 1 ? 'MCP' : 'MCPs'} que podrían necesitar una
+              actualización para seguir funcionando con la web original.
+            </p>
+          </div>
+        )}
+
+        {openReports > 0 && (
+          <div className="site-notice">
+            <Icon name="alert" size={16} />
+            <p>
+              <strong>Incidencias abiertas.</strong> Se han comunicado {openReports} problemas relacionados con las
+              implementaciones de esta web.
             </p>
           </div>
         )}
 
         <section className="site-list-section" aria-labelledby="site-list-title">
           <div className="section-head site-list-head">
-            <h2 id="site-list-title">Implementaciones para esta web</h2>
+            <div>
+              <h2 id="site-list-title">Implementaciones disponibles</h2>
+              <p className="site-list-head__note">Distintas formas de conectar esta web con tu asistente.</p>
+            </div>
           </div>
 
           <div className="site-list">
@@ -135,7 +134,7 @@ export function SitePage() {
                     </div>
                     <span className="site-item__author">
                       por <strong>{mcp.author}</strong>
-                      {mcp.official ? ' · oficial' : ''}
+                      {mcp.official ? ' · Oficial' : ''}
                     </span>
                   </div>
                   <p className="site-item__desc">{mcp.description}</p>
@@ -144,7 +143,7 @@ export function SitePage() {
                       <Icon name="star" size={11} filled /> {ratingOf(mcp).average.toFixed(1)}
                     </span>
                     <span>v{mcp.version}</span>
-                    <span>{tools.length} herr.</span>
+                    <span>{tools.length} herramientas</span>
                     <span title={`Publicado ${formatDate(mcp.updatedAt)}`}>
                       <Icon name="clock" size={11} /> {health.ageDays === 0 ? 'hoy' : `hace ${health.ageDays} d`}
                     </span>

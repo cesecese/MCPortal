@@ -108,12 +108,23 @@
   font-weight: 600;
 }
 
+.site-notice + .site-notice {
+  margin-top: 8px;
+}
+
 .site-list-section {
   margin-top: var(--s-7);
 }
 
 .site-list-head {
   align-items: flex-start;
+}
+
+.site-list-head__note {
+  max-width: 60ch;
+  margin-top: 6px;
+  font-size: 13px;
+  color: var(--muted);
 }
 
 .site-list {

@@ -76,11 +76,11 @@ export function Specimen({ mcps }: { mcps: Mcp[] }) {
   const outShown = Math.max(0, shown - trace.length);
 
   return (
-    <figure className="specimen" aria-label="Ejemplo: de una web a herramientas MCP">
+    <figure className="specimen" aria-label="Ejemplo: de una web a un MCP">
       <div className="specimen__bar">
         <span className="specimen__label">
           <span className={cx('dot', !done && 'dot--live')} style={done ? { color: 'var(--ok)' } : undefined} />
-          {done ? 'validado' : 'explorando'}
+          {done ? 'Validado' : shown === 0 ? 'Explorando' : 'Validando'}
         </span>
         <span className="specimen__url">
           <SiteIcon mcp={mcp} size={20} />
@@ -90,7 +90,7 @@ export function Specimen({ mcps }: { mcps: Mcp[] }) {
 
       <div className="specimen__body">
         <div className="specimen__section">
-          <div className="specimen__head">traza de exploración</div>
+          <div className="specimen__head">Exploración en directo</div>
           <ol className="specimen__trace">
             {trace.map((l, i) => (
               <li key={`${mcp.slug}-${i}`} className={cx(l.kind, i < traceShown && 'is-in')}>
@@ -104,7 +104,7 @@ export function Specimen({ mcps }: { mcps: Mcp[] }) {
 
         <div className="specimen__section">
           <div className="specimen__head">
-            herramientas MCP
+            Herramientas disponibles
             <span>
               {Math.min(outShown, out.length)}/{out.length}
             </span>
@@ -123,10 +123,10 @@ export function Specimen({ mcps }: { mcps: Mcp[] }) {
 
       <figcaption className="specimen__foot">
         <span>
-          {validatedTools(mcp).length} de {mcp.exploration.proposed} validadas · {formatDuration(mcp.exploration.durationSec)}
+          {validatedTools(mcp).length} de {mcp.exploration.proposed} herramientas validadas · {formatDuration(mcp.exploration.durationSec)}
         </span>
         <Link href={`/mcp/${mcp.slug}`} className="specimen__open">
-          Ver {mcp.slug} <Icon name="arrowRight" size={13} />
+          Ver MCP <Icon name="arrowRight" size={13} />
         </Link>
       </figcaption>
     </figure>

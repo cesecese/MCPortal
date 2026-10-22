@@ -73,12 +73,12 @@ export function StepReview({
     <div className="step-review">
       <div className="step-review__form">
         <div>
-          <h1 className="step-title">Revisa el MCP</h1>
-          <p className="step-lede">Ajusta nombre, descripción y herramientas antes de publicar.</p>
+          <h1 className="step-title">Revisa tu MCP.</h1>
+          <p className="step-lede">Personaliza su información y comprueba qué herramientas estarán disponibles antes de publicarlo.</p>
         </div>
 
         <section className="form-section">
-          <h2 className="form-section__title">Identidad</h2>
+          <h2 className="form-section__title">Información del MCP</h2>
           <div className="form-grid">
             <div className="field">
               <label className="field__label" htmlFor="slug">
@@ -175,7 +175,9 @@ export function StepReview({
           <h2 className="form-section__title">
             Herramientas
             <span className="mono">
-              {includedCount} incluidas · {draft.tools.filter((t) => !t.validated).length} descartadas
+              {includedCount} {includedCount === 1 ? 'incluida' : 'incluidas'} ·{' '}
+              {draft.tools.filter((t) => !t.validated).length}{' '}
+              {draft.tools.filter((t) => !t.validated).length === 1 ? 'descartada' : 'descartadas'}
             </span>
           </h2>
           {err('tools') && (
@@ -206,11 +208,11 @@ export function StepReview({
                     <KindTag kind={t.kind} />
                     {t.validated ? (
                       <span className="tag tag--ok" title="Respondió correctamente con entradas de ejemplo">
-                        <Icon name="check" size={11} /> validada
+                        <Icon name="check" size={11} /> Validada
                       </span>
                     ) : (
                       <span className="tag tag--danger">
-                        <Icon name="x" size={11} /> falló
+                        <Icon name="x" size={11} /> No validada
                       </span>
                     )}
                   </div>

@@ -49,7 +49,7 @@ export function AppShell({ children }: { children: ReactNode }) {
             {pathname !== '/crear' && (
               <Link href="/crear" className="btn btn--primary btn--sm">
                 <Icon name="plus" size={15} />
-                Conectar
+                Crear un MCP
               </Link>
             )}
             <button
@@ -73,14 +73,14 @@ export function AppShell({ children }: { children: ReactNode }) {
             <span className="footer__sep" aria-hidden>
               /
             </span>
-            <span className="footer__muted">webs conectadas a tu asistente</span>
+            <span className="footer__muted">Webs convertidas en MCPs</span>
             <span className="footer__by">
               por <LinenMark height={9} />
             </span>
           </span>
           <div className="footer__meta mono">
             <span className="footer__status">
-              <span className="dot footer__ok" /> operativo
+              <span className="dot footer__ok" /> Operativo
             </span>
           </div>
         </div>

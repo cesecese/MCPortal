@@ -7,9 +7,9 @@ import { cx } from '../../lib/format';
 import type { Phase, TraceEvent } from '../../lib/simulate';
 
 const PHASES: { id: Phase; label: string; sub: string }[] = [
-  { id: 'explore', label: 'Explorador', sub: 'observar · decidir · actuar' },
-  { id: 'synth', label: 'Sintetizador', sub: 'traza → manifest.json' },
-  { id: 'validate', label: 'Validador', sub: 'ejecutar cada herramienta' },
+  { id: 'explore', label: 'Analizando la web', sub: 'observar · decidir · actuar' },
+  { id: 'synth', label: 'Identificando acciones', sub: 'traza → manifest.json' },
+  { id: 'validate', label: 'Comprobando herramientas', sub: 'ejecutar cada herramienta' },
 ];
 
 const DELAY: Record<TraceEvent['type'], number> = {
@@ -87,15 +87,22 @@ export function StepExplore({
         <div>
           <h1 className="step-explore__title">
             {done ? (
-              <>
-                Listo: <span className="mono">{counts.passed}</span> de {counts.proposed} herramientas funcionan
-              </>
+              counts.passed === 0 ? (
+                <>No hemos encontrado herramientas que superen la validación.</>
+              ) : (
+                <>
+                  <span className="mono">{counts.passed}</span> de {counts.proposed} herramientas validadas
+                </>
+              )
             ) : (
-              <>
-                Explorando <span className="mono">{host}</span>
-              </>
+              <>Explorando la web…</>
             )}
           </h1>
+          {!done && (
+            <p className="step-lede">
+              Estamos identificando sus acciones y comprobando cuáles funcionan. Este proceso puede tardar unos minutos.
+            </p>
+          )}
         </div>
         <div className="step-explore__controls">
           {!done && (
@@ -226,15 +233,15 @@ export function StepExplore({
                   {v ? (
                     v.type === 'pass' ? (
                       <span className="tag tag--ok">
-                        <Icon name="check" size={11} /> validada
+                        <Icon name="check" size={11} /> Validada
                       </span>
                     ) : (
                       <span className="tag tag--danger" title={v.meta}>
-                        <Icon name="x" size={11} /> falló
+                        <Icon name="x" size={11} /> No validada
                       </span>
                     )
                   ) : appeared ? (
-                    <span className="tag">pendiente</span>
+                    <span className="tag">Pendiente</span>
                   ) : null}
                 </span>
               </li>
@@ -246,13 +253,21 @@ export function StepExplore({
       {done && (
         <div className="step-footer">
           <span className="step-footer__note">
-            {counts.failed > 0
-              ? `${counts.failed} ${counts.failed === 1 ? 'herramienta no pasó' : 'herramientas no pasaron'} la validación y no se publicarán.`
-              : 'Todas las herramientas pasaron la validación.'}
+            {counts.passed === 0
+              ? 'No hemos encontrado herramientas que superen la validación.'
+              : counts.failed > 0
+                ? `${counts.failed} ${counts.failed === 1 ? 'herramienta no superó' : 'herramientas no superaron'} la validación y no se publicarán.`
+                : 'Todas las herramientas han superado la validación.'}
           </span>
-          <button className="btn btn--primary btn--lg" onClick={onDone} autoFocus>
-            Revisar el MCP <Icon name="arrowRight" size={16} />
-          </button>
+          {counts.passed === 0 ? (
+            <button className="btn btn--primary btn--lg" onClick={onCancel} autoFocus>
+              Volver a intentarlo <Icon name="arrowLeft" size={16} />
+            </button>
+          ) : (
+            <button className="btn btn--primary btn--lg" onClick={onDone} autoFocus>
+              Revisar el MCP <Icon name="arrowRight" size={16} />
+            </button>
+          )}
         </div>
       )}
     </div>

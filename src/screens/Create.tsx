@@ -16,7 +16,7 @@ import { reviewErrors, StepReview } from './create/StepReview';
 import { StepUrl } from './create/StepUrl';
 import '../styles/create.css';
 
-type Step = 'url' | 'explore' | 'review' | 'publish' | 'done';
+type Step = 'url' | 'explore' | 'review' | 'publish' | 'done' | 'saved';
 
 const STEPS: { id: Exclude<Step, 'done'>; label: string }[] = [
   { id: 'url', label: 'URL' },
@@ -38,6 +38,7 @@ export function Create() {
   const [excluded, setExcluded] = useState<Set<number>>(new Set());
   const [showErrors, setShowErrors] = useState(false);
   const [busy, setBusy] = useState<'draft' | 'publish' | null>(null);
+  const [publishConfirmed, setPublishConfirmed] = useState(false);
 
   useEffect(() => {
     window.scrollTo({ top: 0 });
@@ -62,6 +63,7 @@ export function Create() {
 
   const persist = (status: Mcp['status']) => {
     if (!draft) return;
+    if (status === 'published' && !publishConfirmed) return;
     if (!reviewOk) {
       setShowErrors(true);
       setStep('review');
@@ -75,8 +77,7 @@ export function Create() {
       if (status === 'published') {
         setStep('done');
       } else {
-        notify('Borrador guardado en este navegador', { detail: draft.slug, icon: 'check' });
-        router.push(`/mcp/${draft.slug}`);
+        setStep('saved');
       }
     }, status === 'published' ? 1100 : 500);
   };
@@ -97,6 +98,30 @@ export function Create() {
     return true;
   };
 
+  if (step === 'saved' && draft) {
+    return (
+      <div className="container create">
+        <div className="done">
+          <span className="done__mark">
+            <Icon name="check" size={26} />
+          </span>
+          <h1>Borrador guardado.</h1>
+          <p className="step-lede">
+            Puedes volver a editar {draft.name || draft.slug} antes de publicarlo.
+          </p>
+          <div className="done__actions">
+            <Link href={`/crear?editar=${draft.id}`} className="btn btn--primary btn--lg">
+              Continuar edición
+            </Link>
+            <Link href="/" className="btn btn--outline btn--lg">
+              Volver al catálogo
+            </Link>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
   if (step === 'done' && draft) {
     return (
       <div className="container create">
@@ -104,19 +129,19 @@ export function Create() {
           <span className="done__mark">
             <Icon name="check" size={26} />
           </span>
-          <h1>MCP publicado</h1>
+          <h1>Tu MCP ya está publicado.</h1>
           <p className="step-lede">
-            <span className="mono">{draft.slug}</span> · {included.length} herramientas para {draft.site}.
+            {draft.name || draft.slug} ya está disponible con {included.length} herramientas para {draft.site}.
           </p>
           <div className="done__cmd">
             <CommandLine command={installCommand(draft)} />
           </div>
           <div className="done__actions">
             <Link href={`/mcp/${draft.slug}`} className="btn btn--primary btn--lg">
-              Ver la página del MCP <Icon name="arrowRight" size={16} />
+              Ver mi MCP <Icon name="arrowRight" size={16} />
             </Link>
             <Link href="/" className="btn btn--outline btn--lg">
-              Volver al catálogo
+              Explorar catálogo
             </Link>
             <button
               className="btn btn--ghost btn--lg"
@@ -129,7 +154,7 @@ export function Create() {
                 setStep('url');
               }}
             >
-              Crear otro
+              Crear otro MCP
             </button>
           </div>
         </div>
@@ -211,7 +236,15 @@ export function Create() {
           />
         )}
 
-        {step === 'publish' && draft && <StepPublish draft={draft} onChange={patch} includedCount={included.length} />}
+        {step === 'publish' && draft && (
+          <StepPublish
+            draft={draft}
+            onChange={patch}
+            includedCount={included.length}
+            confirmed={publishConfirmed}
+            onConfirm={setPublishConfirmed}
+          />
+        )}
       </div>
 
       {(step === 'review' || step === 'publish') && draft && (
@@ -234,10 +267,10 @@ export function Create() {
                 <button
                   className={cx('btn btn--primary', busy === 'publish' && 'is-loading')}
                   onClick={() => persist('published')}
-                  disabled={!canPublish(draft) || busy !== null}
+                  disabled={!canPublish(draft) || !publishConfirmed || busy !== null}
                 >
                   {busy === 'publish' ? <span className="spinner" /> : <Icon name="upload" size={16} />}
-                  {busy === 'publish' ? 'Publicando…' : 'Publicar en MCPortal'}
+                  {busy === 'publish' ? 'Publicando…' : 'Publicar MCP'}
                 </button>
               )}
             </div>

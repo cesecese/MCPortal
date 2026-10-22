@@ -38,12 +38,12 @@ export function StepUrl({ initialUrl, onStart }: { initialUrl: string; onStart: 
     <form className="step-url" onSubmit={submit} noValidate>
       <div className="step-url__intro">
         <h1>¿Qué web quieres convertir?</h1>
-        <p>El agente la explora y registra las acciones que funcionan.</p>
+        <p>Introduce su URL y el agente explorará las acciones disponibles para crear tu MCP.</p>
       </div>
 
       <div className="field">
-        <label className="sr-only" htmlFor="url">
-          URL
+        <label className="field__label" htmlFor="url">
+          URL de la web
         </label>
         <div className={cx('url-input', error && 'is-invalid')}>
           <span className="url-input__scheme mono">https://</span>
@@ -55,7 +55,7 @@ export function StepUrl({ initialUrl, onStart }: { initialUrl: string; onStart: 
               setValue(e.target.value);
               if (error) setError(null);
             }}
-            placeholder="openlibrary.org"
+            placeholder="ejemplo.com"
             autoFocus
             autoComplete="off"
             spellCheck={false}
@@ -63,7 +63,7 @@ export function StepUrl({ initialUrl, onStart }: { initialUrl: string; onStart: 
             aria-describedby={error ? 'url-error' : undefined}
           />
           <button type="submit" className="btn btn--primary url-input__go">
-            Explorar <Icon name="arrowRight" size={15} />
+            Explorar web <Icon name="arrowRight" size={15} />
           </button>
         </div>
         {error && (
@@ -72,7 +72,7 @@ export function StepUrl({ initialUrl, onStart }: { initialUrl: string; onStart: 
           </p>
         )}
         <div className="step-url__examples">
-          <span className="field__hint">Ejemplos</span>
+          <span className="field__hint">Probar con un ejemplo</span>
           {EXAMPLES.map((ex) => (
             <button
               type="button"
@@ -91,7 +91,7 @@ export function StepUrl({ initialUrl, onStart }: { initialUrl: string; onStart: 
 
       <div className="field">
         <label className="field__label" htmlFor="hint">
-          Pista <span className="field__hint">opcional</span>
+          ¿Qué quieres hacer en esta web? <span className="field__hint">opcional</span>
         </label>
         <textarea
           id="hint"
@@ -99,14 +99,15 @@ export function StepUrl({ initialUrl, onStart }: { initialUrl: string; onStart: 
           rows={2}
           value={hint}
           onChange={(e) => setHint(e.target.value)}
-          placeholder="Ej.: reservas online; consultar disponibilidad y reservar."
+          placeholder="Ej.: Consultar disponibilidad y gestionar reservas."
         />
+        <span className="field__hint">Una pista ayuda al agente a centrarse en las acciones que te interesan.</span>
       </div>
 
       <label className={cx('check step-url__consent', touched && !consent && 'is-invalid')}>
         <input type="checkbox" checked={consent} onChange={(e) => setConsent(e.target.checked)} />
         <span>
-          Confirmo que puedo automatizar esta web: es pública, sin login, captchas ni pagos reales.
+          Confirmo que tengo autorización para automatizar esta web y que no utilizaré el sistema para eludir controles de acceso, captchas o pagos.
           {touched && !consent && <span className="field__error">Necesitamos esta confirmación.</span>}
         </span>
       </label>

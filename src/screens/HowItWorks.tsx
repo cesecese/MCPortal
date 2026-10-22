@@ -11,31 +11,31 @@ export function HowItWorks() {
   const slides = [
     {
       id: 'intro',
-      kicker: 'Onboarding',
+      kicker: 'De web a MCP',
       title: (
         <>
-          Cualquier web,
+          Tu web,
           <br />
-          <span>ahora un MCP.</span>
+          <span>al alcance de tu asistente.</span>
         </>
       ),
-      body: 'MCPortal convierte una web que ya usas en herramientas que tu asistente entiende: buscar, reservar o consultar. Sin API, sin desarrollo y sin cambiar de web.',
-      note: 'En tres pasos.',
+      body: 'MCPortal transforma webs en herramientas que tu asistente puede utilizar. Un agente explora la página, identifica sus acciones y comprueba cuáles funcionan. Sin necesidad de una API propia.',
+      note: 'Tres pasos. Sin código.',
       visual: (
         <div className="flow" aria-label="Una web se convierte en un MCP">
           <div className="flow__node">
             <span className="flow__label mono">Web</span>
             <strong>openlibrary.org</strong>
-            <span className="flow__meta">sin API</span>
+            <span className="flow__meta">Sin API propia</span>
           </div>
           <div className="flow__arrow" aria-hidden>
             <Icon name="arrowRight" size={18} />
           </div>
           <div className="flow__node flow__node--mcp">
             <span className="flow__label mono">MCP</span>
-            <strong>Open Library</strong>
+            <strong>Open Library MCP</strong>
             <span className="tag tag--ok">
-              <Icon name="check" size={11} /> 6 herramientas
+              <Icon name="check" size={11} /> 6 herramientas validadas
             </span>
           </div>
         </div>
@@ -43,71 +43,63 @@ export function HowItWorks() {
     },
     {
       id: 'url',
-      kicker: 'Paso 1 · Sube tu web',
-      title: (
-        <>
-          Pega la URL.
-          <br />
-          <span>Nosotros hacemos el resto.</span>
-        </>
-      ),
-      body: 'Elige la web que ya usas: tu biblioteca, tu tienda, el BOE o la reserva de tu restaurante favorito. No hace falta que tenga API.',
-      note: 'Funciona con webs públicas, sin login.',
+      kicker: 'Paso 1 · Elige una web',
+      title: <>Empieza con una URL.</>,
+      body: 'Puede ser tu biblioteca, una tienda, el BOE o la web de tu restaurante favorito. Introduce la dirección y MCPortal se encarga de explorarla.',
+      note: 'Compatible con webs públicas accesibles sin iniciar sesión.',
       visual: (
         <div className="upload" aria-label="Formulario para pegar una URL">
           <span className="upload__label mono">URL de la web</span>
           <div className="upload__input">
             <Icon name="globe" size={16} />
             <span className="mono">https://openlibrary.org</span>
-            <span className="upload__btn">Explorar</span>
+            <span className="upload__btn">Explorar web</span>
           </div>
           <div className="upload__examples">
-            <span className="upload__label mono">Ejemplos</span>
-            <span className="chip">shop.mcportal.dev</span>
-            <span className="chip">reservas.latascalavapies.es</span>
+            <span className="upload__label mono">Probar con un ejemplo</span>
+            <span className="chip">openlibrary.org</span>
             <span className="chip">boe.es</span>
+            <span className="chip">shop.mcportal.dev</span>
           </div>
         </div>
       ),
     },
     {
       id: 'explore',
-      kicker: 'Paso 2 · La IA explora tu web',
+      kicker: 'Paso 2 · Explora y valida',
       title: (
         <>
-          La IA navega
+          La IA descubre
           <br />
-          <span>como lo harías tú.</span>
+          <span>lo que puedes hacer.</span>
         </>
       ),
-      body: 'Un agente recorre la web, prueba las acciones y descubre qué se puede hacer. Después valida cada herramienta contra la web real.',
-      note: 'Solo se publican las herramientas que responden.',
+      body: 'Un agente navega por la web, prueba sus acciones y las convierte en herramientas para tu asistente. Cada herramienta se comprueba contra la web real antes de poder publicarse.',
+      note: 'Solo las herramientas que superan la validación pueden publicarse como validadas.',
       visual: (
         <div className="trace" aria-label="Traza de exploración de la web">
           <div className="trace__head">
             <span>
-              <span className="dot dot--live" /> explorando
+              <span className="dot dot--live" /> Explorando
             </span>
             <span className="mono">openlibrary.org</span>
           </div>
           <ol className="trace__list">
             <li>
               <span className="trace__glyph">›</span>
-              <span>fill [3] &quot;Search&quot; ← &quot;asimov&quot;</span>
+              <span>fill [3] · Campo «Search» · Valor: «asimov»</span>
             </li>
             <li>
               <span className="trace__glyph trace__glyph--req">⇄</span>
-              <span>GET /search.json?q=asimov</span>
-              <span className="trace__status">200</span>
+              <span>GET /search.json?q=asimov · 200 OK</span>
             </li>
             <li>
               <span className="trace__glyph">›</span>
-              <span>click [9] link &quot;Foundation&quot;</span>
+              <span>click [9] · Enlace «Foundation»</span>
             </li>
             <li>
               <span className="trace__glyph trace__glyph--req">⇄</span>
-              <span>GET /works/OL46125W.json</span>
-              <span className="trace__status">200</span>
+              <span>GET /works/OL46125W.json · 200 OK</span>
             </li>
           </ol>
           <div className="trace__foot">
@@ -118,19 +110,19 @@ export function HowItWorks() {
     },
     {
       id: 'install',
-      kicker: 'Paso 3 · Descárgalo y úsalo',
+      kicker: 'Paso 3 · Instala y utiliza',
       title: (
         <>
-          Tu MCP,
+          De la web
           <br />
-          <span>listo para usar.</span>
+          <span>a tu asistente.</span>
         </>
       ),
-      body: 'Descarga el manifest o instálalo con un comando. Tu asistente ya puede buscar, reservar o consultar por ti.',
-      note: 'Compatible con cualquier cliente MCP.',
+      body: 'Publica tu MCP, descarga su manifiesto o configúralo mediante la CLI. Después, utiliza las herramientas disponibles desde un cliente compatible con MCP.',
+      note: 'Para clientes compatibles con el protocolo MCP.',
       visual: (
         <div className="install" aria-label="Instalación del MCP">
-          <span className="install__label mono">Instalar</span>
+          <span className="install__label mono">Instalar MCP</span>
           <CommandLine command="npx -y mcportal add openlibrary" />
           <div className="install__file">
             <Icon name="download" size={16} />
@@ -215,14 +207,14 @@ export function HowItWorks() {
                 Explorar MCPs <Icon name="arrowRight" size={15} />
               </Link>
               <Link href="/crear" className="btn btn--outline">
-                Conectar una web
+                Convertir una web
               </Link>
             </div>
           )}
         </div>
 
         <p className="onboarding__keys mono" aria-hidden>
-          Usa ← → para moverte
+          Usa ← → para navegar
         </p>
       </div>
     </div>

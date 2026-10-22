@@ -84,7 +84,7 @@ export function McpDetail() {
         <div className="detail__banner">
           <div className="container detail__banner-inner">
             <span>
-              <Icon name="eyeOff" size={15} /> Borrador · solo tú puedes ver esta página
+              <Icon name="eyeOff" size={15} /> Borrador · Solo tú puedes ver esta página
             </span>
             <Link href={`/crear?editar=${mcp.id}`} className="btn btn--primary btn--sm">
               <Icon name="edit" size={14} /> Continuar edición
@@ -109,14 +109,15 @@ export function McpDetail() {
               <h1>{mcp.name}</h1>
               {mcp.official && (
                 <span className="tag tag--ink">
-                  <Icon name="shield" size={11} /> oficial
+                  <Icon name="shield" size={11} /> Oficial
                 </span>
               )}
               {mcp.visibility === 'unlisted' && (
                 <span className="tag">
-                  <Icon name="link" size={11} /> no listado
+                  <Icon name="link" size={11} /> No listado
                 </span>
               )}
+              {mcp.status === 'draft' && <span className="tag tag--warn">Borrador</span>}
             </div>
             <p className="detail__desc">{mcp.description}</p>
             <div className="detail__meta">
@@ -130,13 +131,13 @@ export function McpDetail() {
                 </span>
               )}
               <span>
-                <Icon name="clock" size={14} /> v{mcp.version} · actualizado {relativeTime(mcp.updatedAt)}
+                <Icon name="clock" size={14} /> v{mcp.version} · Actualizado {relativeTime(mcp.updatedAt)}
               </span>
             </div>
           </div>
           <div className="detail__actions">
             <a href="#instalar" className="btn btn--primary">
-              <Icon name="download" size={16} /> Instalar
+              <Icon name="download" size={16} /> Instalar MCP
             </a>
             <Menu
               label="Más acciones"
@@ -168,7 +169,7 @@ export function McpDetail() {
             </dd>
           </div>
           <div>
-            <dt>Valoración</dt>
+            <dt>Valoraciones</dt>
             <dd>
               {rating.average.toFixed(1)}
               <span className="detail__stat-sub">
@@ -210,9 +211,9 @@ export function McpDetail() {
             {detailTab === 'tools' && (
               <section className="detail__tab-panel" aria-labelledby="tools-title">
                 <div className="section-head">
-                  <h2 id="tools-title">Acciones disponibles</h2>
+                  <h2 id="tools-title">Herramientas disponibles</h2>
                   <span className="section-head__meta">
-                    {httpCount} HTTP · {tools.length - httpCount} navegador
+                    {httpCount} herramientas HTTP · {tools.length - httpCount} herramientas de navegador
                   </span>
                 </div>
                 <div>
@@ -223,8 +224,7 @@ export function McpDetail() {
                 {failed.length > 0 && isDraft && (
                   <details className="detail__failed">
                     <summary>
-                      {failed.length} {failed.length === 1 ? 'herramienta descartada' : 'herramientas descartadas'}{' '}
-                      por el validador
+                      {failed.length} {failed.length === 1 ? 'herramienta no superó' : 'herramientas no superaron'} la validación · Ver motivo
                     </summary>
                     {failed.map((t) => (
                       <ToolItem key={t.name} tool={t} />
@@ -241,7 +241,7 @@ export function McpDetail() {
                 <div className="section-head">
                   <h2 id="versions-title">Historial de versiones</h2>
                   <span className="section-head__meta">
-                    {versions.length} {versions.length === 1 ? 'publicación' : 'publicaciones'}
+                    {versions.length} {versions.length === 1 ? 'versión publicada' : 'versiones publicadas'}
                   </span>
                 </div>
                 <VersionHistory mcp={mcp} />
@@ -252,7 +252,7 @@ export function McpDetail() {
           <aside className="detail__side">
             <section className="panel" id="instalar" aria-labelledby="install-title">
               <h2 id="install-title" className="panel__title">
-                Instalar
+                Instala este MCP
               </h2>
               <div className="segmented panel__tabs" role="tablist">
                 {(
@@ -276,7 +276,7 @@ export function McpDetail() {
                 <div className="panel__body">
                   <CommandLine command={installCommand(mcp)} />
                   <p className="panel__hint">
-                    Registra el servidor en tu cliente MCP. En su panel de herramientas verás{' '}
+                    Añade este MCP a tu cliente compatible mediante la CLI. Una vez configurado, podrás acceder a sus herramientas desde el cliente. Ejemplo:{' '}
                     <code>
                       mcp__{mcp.slug}__{tools[0]?.name}
                     </code>{' '}
@@ -286,6 +286,9 @@ export function McpDetail() {
               )}
               {tab === 'manifest' && (
                 <div className="panel__body">
+                  <p className="panel__hint">
+                    Descarga el manifiesto para configurar el MCP con tu propio entorno de ejecución.
+                  </p>
                   <button
                     className={cx('btn btn--primary btn--lg panel__download', downloading && 'is-loading')}
                     onClick={download}
@@ -294,7 +297,7 @@ export function McpDetail() {
                     Descargar manifest.json
                   </button>
                   <p className="panel__hint">
-                    {manifestKb} kB. Ejecútalo con tu propio runtime: <code>mcportal serve manifest.json</code>
+                    {manifestKb} kB · Requiere un runtime compatible. Comando de ejemplo: <code>mcportal serve manifest.json</code>
                   </p>
                 </div>
               )}
@@ -317,14 +320,14 @@ export function McpDetail() {
                 </div>
                 <div>
                   <dt>Transporte</dt>
-                  <dd className="mono">stdio</dd>
+                  <dd className="mono">STDIO</dd>
                 </div>
                 <div>
-                  <dt>Runtime</dt>
+                  <dt>Runtime requerido</dt>
                   <dd className="mono">mcportal-runtime 0.4</dd>
                 </div>
                 <div>
-                  <dt>Implementación</dt>
+                  <dt>Tipo de implementación</dt>
                   <dd>
                     {httpCount > 0 && <KindTag kind="http" count={httpCount} />}
                     {tools.length - httpCount > 0 && <KindTag kind="browser" count={tools.length - httpCount} />}
@@ -332,10 +335,10 @@ export function McpDetail() {
                 </div>
                 <div>
                   <dt>Autenticación</dt>
-                  <dd>Ninguna</dd>
+                  <dd>No requerida</dd>
                 </div>
                 <div>
-                  <dt>Modo</dt>
+                  <dt>Permisos</dt>
                   <dd>{modeOf(mcp) === 'read_only' ? 'Solo lectura' : 'Lectura y escritura'}</dd>
                 </div>
                 <div>
@@ -350,9 +353,9 @@ export function McpDetail() {
         {related.length > 0 && (
           <section className="detail__section" aria-labelledby="related-title">
             <div className="section-head">
-              <h2 id="related-title">Relacionados</h2>
+              <h2 id="related-title">MCPs relacionados</h2>
               <Link href="/" className="section-head__meta detail__more">
-                Todo el catálogo <Icon name="arrowRight" size={13} />
+                Explorar todos los MCPs <Icon name="arrowRight" size={13} />
               </Link>
             </div>
             <div className="mcp-index">

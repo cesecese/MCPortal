@@ -38,8 +38,12 @@ export function VersionHistory({ mcp }: { mcp: Mcp }) {
           <li key={`${entry.version}-${entry.publishedAt}`} className={cx('version-item', current && 'is-current')}>
             <div className="version-item__version">
               <span className="mono">v{entry.version}</span>
-              {current && <span className="tag tag--ok">Actual</span>}
-              {author === 'Tú' && <span className="tag tag--ink">Tu parche</span>}
+              {current ? (
+                <span className="tag tag--ok">Versión actual</span>
+              ) : (
+                <span className="tag">Versión anterior</span>
+              )}
+              {author === 'Tú' && <span className="tag tag--ink">Modificación propia</span>}
             </div>
             <div className="version-item__body">
               <p className="version-item__meta">
@@ -79,7 +83,7 @@ export function VersionHistory({ mcp }: { mcp: Mcp }) {
               aria-label={`Descargar manifest de la versión ${entry.version}`}
             >
               {downloading === entry.version ? <span className="spinner" /> : <Icon name="download" size={14} />}
-              <span>Manifest</span>
+              <span>Descargar manifest.json</span>
             </button>
           </li>
         );

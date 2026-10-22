@@ -7,14 +7,18 @@ import { KindTag, ValidationMeter } from './primitives';
 /** Pestaña Validación: qué se ejecutó contra la web y qué pasó. */
 export function ValidationPanel({ mcp }: { mcp: Mcp }) {
   const report = validationOf(mcp);
-  const failed = report.results.filter((result) => !result.ok).length;
-  const executed = report.results.length;
-  const pending = Math.max(0, report.proposed - executed);
+  const allValidated = report.validated >= report.proposed;
+  const noneValidated = report.validated === 0;
+  const resultText = allValidated
+    ? 'Todas las herramientas publicadas han superado las comprobaciones realizadas contra la web.'
+    : noneValidated
+      ? 'Ninguna herramienta ha superado la validación necesaria para publicarse.'
+      : 'Algunas herramientas no han superado las comprobaciones. Consulta los resultados para conocer los detalles.';
 
   return (
     <section className="detail__tab-panel" aria-labelledby="validation-title">
       <div className="section-head">
-        <h2 id="validation-title">Informe del validador</h2>
+        <h2 id="validation-title">Resultados de la validación</h2>
         <span className="section-head__meta">
           {formatDate(report.validatedAt)} · {relativeTime(report.validatedAt)}
         </span>
@@ -28,13 +32,7 @@ export function ValidationPanel({ mcp }: { mcp: Mcp }) {
         </div>
         <div className="validation-overview__detail">
           <ValidationMeter validated={report.validated} proposed={report.proposed} />
-          <p>
-            El validador ejecutó {executed} {executed === 1 ? 'herramienta' : 'herramientas'} contra la web.
-            {failed > 0 ? ` ${failed} no superaron la comprobación.` : ' Todas respondieron correctamente.'}
-            {pending > 0
-              ? ` ${pending} ${pending === 1 ? 'propuesta se descartó' : 'propuestas se descartaron'} antes de ejecutarse.`
-              : ''}
-          </p>
+          <p>{resultText}</p>
         </div>
       </div>
 
@@ -49,7 +47,7 @@ export function ValidationPanel({ mcp }: { mcp: Mcp }) {
                 <div className="validation-item__head">
                   <code>{result.name}</code>
                   <KindTag kind={result.kind} />
-                  {result.swapped && <span className="tag tag--warn">receta alternativa</span>}
+                  {result.swapped && <span className="tag tag--warn">Alternativa disponible</span>}
                 </div>
                 <p>
                   {result.ok
@@ -59,7 +57,7 @@ export function ValidationPanel({ mcp }: { mcp: Mcp }) {
               </div>
               <div className="validation-item__end">
                 <span className={cx('tag', result.ok ? 'tag--ok' : 'tag--danger')}>
-                  {result.ok ? 'validada' : 'descartada'}
+                  {result.ok ? 'Validada' : 'No validada'}
                 </span>
                 <span className="mono">{result.seconds.toFixed(1)} s</span>
               </div>

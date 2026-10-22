@@ -10,7 +10,7 @@ import '../styles/components.css';
 
 export const metadata: Metadata = {
   title: { default: 'MCPortal', template: '%s · MCPortal' },
-  description: 'El registro de servidores MCP generados a partir de webs sin API.',
+  description: 'Convierte cualquier web en un MCP. Un agente la explora y publica herramientas validadas para tu asistente.',
 };
 
 export const viewport: Viewport = {

@@ -29,13 +29,13 @@ export function ToolItem({ tool, defaultOpen }: { tool: Tool; defaultOpen?: bool
             )
           </span>
         </code>
-        {!tool.validated && <span className="tag tag--danger">no validada</span>}
+        {!tool.validated && <span className="tag tag--danger">No validada</span>}
         <Icon name="chevronDown" size={16} className="tool__chev" />
       </button>
       <p className="tool__desc">{tool.description}</p>
       {tool.dependsOn && (
         <p className="tool__dep">
-          <Icon name="link" size={13} /> Usa un valor devuelto por{' '}
+          <Icon name="link" size={13} /> Dependencia de otra herramienta: Utiliza el resultado de{' '}
           <a href={`#tool-${tool.dependsOn}`} className="mono">
             {tool.dependsOn}
           </a>
@@ -44,7 +44,7 @@ export function ToolItem({ tool, defaultOpen }: { tool: Tool; defaultOpen?: bool
       {open && (
         <div className="tool__body" id={`${id}-body`}>
           <div className="tool__block">
-            <div className="eyebrow">Parámetros</div>
+            <div className="eyebrow">Parámetros de entrada</div>
             {tool.params.length ? (
               <table className="tool__table">
                 <tbody>
@@ -52,13 +52,13 @@ export function ToolItem({ tool, defaultOpen }: { tool: Tool; defaultOpen?: bool
                     <tr key={p.name}>
                       <td className="mono">{p.name}</td>
                       <td className="mono tool__muted">{p.type === 'date' ? 'string (date)' : p.type}</td>
-                      <td>{p.required ? <span className="tag">obligatorio</span> : <span className="tool__muted">opcional</span>}</td>
+                      <td>{p.required ? <span className="tag">Obligatorio</span> : <span className="tool__muted">Opcional</span>}</td>
                     </tr>
                   ))}
                 </tbody>
               </table>
             ) : (
-              <p className="tool__muted">Sin parámetros.</p>
+              <p className="tool__muted">Sin parámetros de entrada.</p>
             )}
           </div>
           <div className="tool__block">

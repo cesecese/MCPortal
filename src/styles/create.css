@@ -976,6 +976,10 @@
   margin-top: 2px;
 }
 
+.step-publish__confirm {
+  margin-top: var(--s-3);
+}
+
 .checklist {
   display: grid;
   gap: 14px;

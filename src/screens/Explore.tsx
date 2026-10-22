@@ -74,15 +74,14 @@ export function Explore() {
       <section className="hero">
         <div className="container hero__grid">
           <div className="hero__copy">
-            <p className="eyebrow">Registro de servidores MCP</p>
+            <p className="eyebrow">De cualquier web a tu asistente</p>
             <h1>
-              Cualquier web,
-              <br />
-              <span className="hero__accent">ahora un MCP.</span>
+              Convierte cualquier web
+              <span className="hero__accent">en un MCP.</span>
             </h1>
             <p className="hero__lede">
-              Busca la web que ya usas o pega su dirección. Si no existe, un agente la explora y publica un MCP con
-              herramientas validadas para tu asistente.
+              Introduce la URL de una web y deja que un agente la explore. MCPortal descubre y valida sus acciones para
+              que puedas utilizarlas desde tu asistente.
             </p>
 
             <form
@@ -100,8 +99,8 @@ export function Explore() {
                 type="search"
                 value={term}
                 onChange={(e) => setQuery(e.target.value)}
-                placeholder="Busca una web o una tarea"
-                aria-label="Buscar webs"
+                placeholder="Busca una web o describe qué quieres hacer…"
+                aria-label="Buscar MCPs"
               />
               {term ? (
                 <button type="button" className="search__clear" onClick={() => setQuery('')} aria-label="Borrar búsqueda">
@@ -115,13 +114,14 @@ export function Explore() {
             <div className="hero__cta">
               <Link href="/crear" className="btn btn--primary">
                 <Icon name="plus" size={15} />
-                Conectar una web
+                Convertir web en MCP
               </Link>
-              <a href="#catalog" className="hero__link">
-                Ver catálogo
+              <Link href="/como-funciona" className="hero__link">
+                Cómo funciona
                 <Icon name="arrowRight" size={14} />
-              </a>
+              </Link>
             </div>
+            <p className="hero__note">Sin código · Sin configurar una API · En minutos</p>
           </div>
 
           <div className="hero__specimen">
@@ -132,11 +132,11 @@ export function Explore() {
 
       <section className="container catalog" id="catalog" aria-labelledby="catalog-title">
         <div className="section-head">
-          <h2 id="catalog-title">{term ? 'Resultados' : 'Catálogo'}</h2>
+          <h2 id="catalog-title">{term ? 'Resultados de búsqueda' : 'Explora los MCPs'}</h2>
           <span className="section-head__meta" aria-live="polite">
             {term
-              ? `${results.length} de ${catalog.length} para «${term}»`
-              : `${formatNumber(catalog.length)} MCPs · ${formatNumber(toolCount)} herramientas validadas`}
+              ? `${results.length} de ${catalog.length} MCPs para «${term}»`
+              : `${formatNumber(catalog.length)} MCPs · ${formatNumber(toolCount)} herramientas`}
           </span>
         </div>
 
@@ -149,23 +149,46 @@ export function Explore() {
         ) : (
           <EmptyState
             icon="search"
-            title={term ? `No encontramos «${term}»` : 'Todavía no hay MCPs publicados'}
+            title={
+              !catalog.length
+                ? 'El catálogo está esperando sus primeros MCPs'
+                : looksLikeUrl
+                  ? 'Esta web todavía no tiene un MCP'
+                  : `No encontramos «${term}»`
+            }
             actions={
-              <>
-                {term && (
-                  <button className="btn btn--outline" onClick={() => setQuery('')}>
-                    Ver todo
-                  </button>
-                )}
-                <Link href={looksLikeUrl ? `/crear?url=${encodeURIComponent(term)}` : '/crear'} className="btn btn--primary">
-                  <Icon name="plus" size={15} /> {looksLikeUrl ? 'Conectar esta web' : 'Conectar una web'}
+              !catalog.length ? (
+                <Link href="/crear" className="btn btn--primary">
+                  <Icon name="plus" size={15} /> Crear el primer MCP
                 </Link>
-              </>
+              ) : looksLikeUrl ? (
+                <>
+                  <Link href={`/crear?url=${encodeURIComponent(term)}`} className="btn btn--primary">
+                    <Icon name="plus" size={15} /> Crear un MCP para esta web
+                  </Link>
+                  <button className="btn btn--outline" onClick={() => setQuery('')}>
+                    Explorar catálogo
+                  </button>
+                </>
+              ) : (
+                <>
+                  {term && (
+                    <button className="btn btn--outline" onClick={() => setQuery('')}>
+                      Ver todo
+                    </button>
+                  )}
+                  <Link href="/crear" className="btn btn--primary">
+                    <Icon name="plus" size={15} /> Crear un MCP
+                  </Link>
+                </>
+              )
             }
           >
-            {looksLikeUrl
-              ? 'Todavía no está conectada. Puedes crear su MCP en unos minutos.'
-              : 'Prueba con otra búsqueda o conecta la web que necesitas.'}
+            {!catalog.length
+              ? 'Cuando se publiquen los primeros MCPs, aparecerán aquí.'
+              : looksLikeUrl
+                ? 'Convierte esta web y crea herramientas para utilizarla desde tu asistente.'
+                : 'Todavía no hay ningún MCP que coincida con tu búsqueda. Prueba con otros términos o crea uno para la web que necesitas.'}
           </EmptyState>
         )}
       </section>

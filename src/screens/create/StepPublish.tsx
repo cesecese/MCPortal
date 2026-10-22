@@ -10,26 +10,30 @@ export function StepPublish({
   draft,
   onChange,
   includedCount,
+  confirmed,
+  onConfirm,
 }: {
   draft: Mcp;
   onChange: (patch: Partial<Mcp>) => void;
   includedCount: number;
+  confirmed: boolean;
+  onConfirm: (value: boolean) => void;
 }) {
   const versionOk = /^\d+\.\d+\.\d+$/.test(draft.version);
   const hasBrowser = draft.tools.some((t) => t.validated && t.kind === 'browser');
 
   const checks = [
     { ok: true, text: `Nombre: ${draft.slug}` },
-    { ok: true, text: `${includedCount} ${includedCount === 1 ? 'herramienta validada' : 'herramientas validadas'}` },
-    { ok: true, text: 'Sin login, captchas ni pagos reales' },
-    { ok: versionOk, text: versionOk ? `Versión ${draft.version}` : 'Versión con formato x.y.z' },
+    { ok: true, text: `Herramientas validadas: ${includedCount}` },
+    { ok: true, text: `Web de origen: ${draft.site}` },
+    { ok: versionOk, text: versionOk ? `Versión: ${draft.version}` : 'Versión con formato x.y.z' },
   ];
 
   return (
     <div className="step-publish">
       <div>
-        <h1 className="step-title">Publica el MCP</h1>
-        <p className="step-lede">Puedes guardarlo como borrador y retomarlo después.</p>
+        <h1 className="step-title">Decide cómo publicar tu MCP.</h1>
+        <p className="step-lede">Elige quién podrá encontrarlo y compartirlo. Puedes guardarlo como borrador y publicarlo más adelante.</p>
       </div>
 
       <div className="step-publish__grid">
@@ -39,8 +43,8 @@ export function StepPublish({
             <div className="radio-cards">
               {(
                 [
-                  ['public', 'globe', 'Público', 'Aparece en el catálogo y en las búsquedas de MCPortal.'],
-                  ['unlisted', 'link', 'No listado', 'Solo quien tenga el enlace puede verlo e instalarlo.'],
+                  ['public', 'globe', 'Público', 'Aparece en el catálogo y en los resultados de búsqueda de MCPortal.'],
+                  ['unlisted', 'link', 'No listado', 'Solo podrán acceder quienes tengan el enlace directo.'],
                 ] as [Visibility, 'globe' | 'link', string, string][]
               ).map(([id, icon, title, body]) => (
                 <label key={id} className={cx('radio-card', draft.visibility === id && 'is-active')}>
@@ -62,10 +66,10 @@ export function StepPublish({
           </fieldset>
 
           <div className="form-section">
-            <h2 className="form-section__title">Firma</h2>
+            <h2 className="form-section__title">Autor</h2>
             <div className="field">
               <label className="field__label" htmlFor="author">
-                Autor <span className="field__hint">opcional</span>
+                Autor o equipo <span className="field__hint">opcional</span>
               </label>
               <input
                 id="author"
@@ -75,7 +79,7 @@ export function StepPublish({
                 onChange={(e) => onChange({ author: e.target.value })}
                 placeholder="Tu nombre o el de tu equipo"
               />
-              <span className="field__hint">Sin cuenta; se muestra tal cual.</span>
+              <span className="field__hint">No necesitas una cuenta. El nombre se mostrará tal como lo escribas.</span>
             </div>
           </div>
 
@@ -84,7 +88,7 @@ export function StepPublish({
             <div className="form-grid">
               <div className="field">
                 <label className="field__label" htmlFor="version">
-                  Versión
+                  Versión inicial
                 </label>
                 <input
                   id="version"
@@ -96,7 +100,7 @@ export function StepPublish({
               </div>
               <div className="field">
                 <label className="field__label" htmlFor="license">
-                  Licencia del manifiesto
+                  Licencia
                 </label>
                 <select id="license" className="select" value={draft.license} onChange={(e) => onChange({ license: e.target.value })}>
                   {LICENSES.map((l) => (
@@ -115,6 +119,7 @@ export function StepPublish({
               </p>
             </div>
           )}
+
         </div>
 
         <aside className="checklist">
@@ -127,6 +132,10 @@ export function StepPublish({
               </li>
             ))}
           </ul>
+          <label className="check step-publish__confirm">
+            <input type="checkbox" checked={confirmed} onChange={(event) => onConfirm(event.target.checked)} />
+            <span>He revisado las herramientas y sus permisos antes de publicar.</span>
+          </label>
         </aside>
       </div>
     </div>
