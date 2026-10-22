@@ -79,11 +79,13 @@ async def main(include_real: bool) -> int:
 
             search = find_tool(names, "search")
             cart = find_tool(names, "create_cart") or find_tool(names, "post_cart")
-            add = find_tool(names, "items")
+            add = find_tool(names, "add") or find_tool(names, "items")
             checkout = find_tool(names, "checkout")
-            availability = find_tool(names, "disponibilidad")
-            booking = find_tool(names, "reservar")
-            reservation = find_tool(names, "get_reserva") or find_tool(names, "consulta")
+            availability = find_tool(names, "availability") or find_tool(names, "disponibilidad")
+            booking = (find_tool(names, "create_reservation") or find_tool(names, "book_table")
+                       or find_tool(names, "reservar"))
+            reservation = (find_tool(names, "get_reservation") or find_tool(names, "get_reserva")
+                           or find_tool(names, "consulta"))
 
             print("\nCarrito: buscar → crear → 2 artículos → checkout")
             ok, text = await call(search, {"query": "asimov"})

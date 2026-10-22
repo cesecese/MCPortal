@@ -340,7 +340,6 @@ def structured(
         effort=effort,
         model_name=model_name,
         max_tokens=MAX_OUTPUT_TOKENS_STRUCTURED,
-        tool_choice={"type": "tool", "name": "responder"},
     )
     if conversation.provider in ("openai", "openai_compatible"):
         client = conversation._openai_client()  # noqa: SLF001 - mismo módulo
@@ -370,16 +369,21 @@ def structured(
         return data
 
     if conversation.provider == "anthropic":
-        # salida estructurada forzando una única herramienta con el esquema pedido
+        # Algunos modelos (Sonnet 5.5 entre ellos) rechazan forzar tool_choice:
+        # se pide la herramienta en el prompt y se reintenta si contesta en texto.
         conversation.tools = [{
             "name": "responder",
             "description": "Devuelve la respuesta estructurada solicitada.",
             "input_schema": schema,
         }]
-        turn = conversation.send(user)
-        if not turn.calls:
-            raise LLMError("el modelo no devolvió la respuesta estructurada")
-        _validate(turn.calls[0].arguments, schema)
-        return turn.calls[0].arguments
+        prompt = f"{user}\n\nDevuelve el resultado llamando a la herramienta `responder`."
+        turn = conversation.send(prompt)
+        for attempt in range(2):
+            if turn.calls:
+                _validate(turn.calls[0].arguments, schema)
+                return turn.calls[0].arguments
+            turn = conversation.send(
+                "No has llamado a la herramienta. Devuelve ahora el resultado llamando a `responder`.")
+        raise LLMError("el modelo no devolvió la respuesta estructurada")
 
     raise LLMUnavailable(f"proveedor no soportado: {conversation.provider}")

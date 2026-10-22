@@ -23,6 +23,7 @@ DEFAULT_PATHS = [REPO_ROOT / "manifests"]
 EXAMPLE = REPO_ROOT / "manifest.example.json"
 
 sessions: set[Any] = set()
+PATHS: list[str] | None = None
 
 try:  # la consola de Windows usa cp1252; los avisos llevan acentos
     sys.stderr.reconfigure(encoding="utf-8", errors="replace")
@@ -71,7 +72,7 @@ def load_tools(paths: list[str] | None = None) -> dict[str, dict[str, Any]]:
 
 
 def _signature() -> tuple[tuple[str, float], ...]:
-    return tuple(sorted((str(p), p.stat().st_mtime) for p in _json_files(_manifest_paths(None)) if p.exists()))
+    return tuple(sorted((str(p), p.stat().st_mtime) for p in _json_files(_manifest_paths(PATHS)) if p.exists()))
 
 
 async def list_tools(ctx: Any, params: Any) -> types.ListToolsResult:
@@ -83,14 +84,14 @@ async def list_tools(ctx: Any, params: Any) -> types.ListToolsResult:
                 description=tool.get("description", ""),
                 input_schema=tool.get("input_schema") or {"type": "object", "properties": {}},
             )
-            for tool in load_tools().values()
+            for tool in load_tools(PATHS).values()
         ]
     )
 
 
 async def call_tool(ctx: Any, params: types.CallToolRequestParams) -> types.CallToolResult:
     sessions.add(ctx.session)
-    tool = load_tools().get(params.name)
+    tool = load_tools(PATHS).get(params.name)
     if tool is None:
         return types.CallToolResult(
             content=[types.TextContent(text=f"Herramienta desconocida: {params.name}")],
@@ -134,6 +135,8 @@ async def watch_manifests(interval: float = 2.0) -> None:
 
 
 async def main(paths: list[str] | None = None) -> None:
+    global PATHS
+    PATHS = paths or None
     watcher = asyncio.create_task(watch_manifests())
     try:
         async with mcp.server.stdio.stdio_server() as (read_stream, write_stream):
