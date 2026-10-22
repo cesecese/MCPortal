@@ -1,0 +1,298 @@
+{
+  "site": "localhost:8020",
+  "start_url": "http://localhost:8020/",
+  "synthesis": "llm",
+  "slug": "hostal-zeta",
+  "display_name": "Hostal Zeta · Recepción",
+  "version": "0.1.0",
+  "category": "reservas",
+  "tags": ["hotel", "restaurante", "recepción", "reservas", "pedidos"],
+  "license": "MIT",
+  "author": "davidpargaa",
+  "mode": "read_write",
+  "generated_with": "mcportal-core 0.1",
+  "tools": [
+    {
+      "name": "hostal_zeta_daily_summary",
+      "description": "Resumen del día en recepción: habitaciones libres, llegadas, reservas de mesa y pedidos abiertos.",
+      "input_schema": { "type": "object", "properties": {} },
+      "impl": { "kind": "http", "method": "GET", "url": "http://localhost:8020/api/resumen" }
+    },
+    {
+      "name": "hostal_zeta_check_room_availability",
+      "description": "Consulta habitaciones libres para una fecha de entrada, un número de noches y de huéspedes. Devuelve el room_type_id y el precio total.",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "desde": { "type": "string", "format": "date", "description": "Fecha de entrada (YYYY-MM-DD)." },
+          "noches": { "type": "integer", "description": "Noches de estancia.", "default": 2 },
+          "personas": { "type": "integer", "description": "Número de huéspedes.", "default": 2 }
+        },
+        "required": ["desde"]
+      },
+      "impl": {
+        "kind": "http",
+        "method": "GET",
+        "url": "http://localhost:8020/api/hotel/disponibilidad?desde={desde}&noches={noches}&personas={personas}"
+      },
+      "examples": { "desde": "2027-03-15", "noches": 2, "personas": 2 }
+    },
+    {
+      "name": "hostal_zeta_list_room_types",
+      "description": "Lista los tipos de habitación con capacidad, precio por noche y los ids de sus habitaciones.",
+      "input_schema": { "type": "object", "properties": {} },
+      "impl": { "kind": "http", "method": "GET", "url": "http://localhost:8020/api/hotel/tipos" }
+    },
+    {
+      "name": "hostal_zeta_create_booking",
+      "description": "Crea una reserva de habitación y devuelve booking_id y el total. Requiere un room_type_id obtenido con hostal_zeta_check_room_availability o hostal_zeta_list_room_types.",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "room_type_id": { "type": "string", "description": "Tipo de habitación disponible." },
+          "checkin": { "type": "string", "format": "date", "description": "Fecha de entrada (YYYY-MM-DD)." },
+          "nights": { "type": "integer", "description": "Noches.", "default": 2 },
+          "guest_name": { "type": "string", "description": "Nombre y apellidos del huésped." },
+          "email": { "type": "string", "description": "Email de contacto." },
+          "phone": { "type": "string", "description": "Teléfono de contacto." },
+          "guests": { "type": "integer", "description": "Huéspedes.", "default": 2 }
+        },
+        "required": ["room_type_id", "checkin", "guest_name"]
+      },
+      "impl": {
+        "kind": "http",
+        "method": "POST",
+        "url": "http://localhost:8020/api/hotel/reservas",
+        "body_type": "json",
+        "body": {
+          "room_type_id": "{room_type_id}",
+          "checkin": "{checkin}",
+          "nights": "{nights}",
+          "guest_name": "{guest_name}",
+          "email": "{email}",
+          "phone": "{phone}",
+          "guests": "{guests}"
+        }
+      },
+      "examples": {
+        "checkin": "2027-03-15",
+        "nights": 2,
+        "guest_name": "Ada Lovelace",
+        "email": "ada@example.com",
+        "phone": "600123456",
+        "guests": 2
+      },
+      "depends_on": [
+        { "param": "room_type_id", "tool": "hostal_zeta_check_room_availability", "path": "results[0].room_type_id" }
+      ]
+    },
+    {
+      "name": "hostal_zeta_list_bookings",
+      "description": "Lista las reservas activas (confirmadas o con check-in hecho) con habitación, fechas, estado y total.",
+      "input_schema": { "type": "object", "properties": {} },
+      "impl": {
+        "kind": "http",
+        "method": "GET",
+        "url": "http://localhost:8020/api/hotel/reservas?estado=activas"
+      }
+    },
+    {
+      "name": "hostal_zeta_get_booking",
+      "description": "Devuelve una reserva concreta por su booking_id.",
+      "input_schema": {
+        "type": "object",
+        "properties": { "booking_id": { "type": "string", "description": "Identificador de la reserva." } },
+        "required": ["booking_id"]
+      },
+      "impl": {
+        "kind": "http",
+        "method": "GET",
+        "url": "http://localhost:8020/api/hotel/reservas/{booking_id}"
+      },
+      "depends_on": [
+        { "param": "booking_id", "tool": "hostal_zeta_create_booking", "path": "booking_id" }
+      ]
+    },
+    {
+      "name": "hostal_zeta_check_in",
+      "description": "Hace el check-in de una reserva confirmada. Requiere el booking_id de hostal_zeta_create_booking.",
+      "input_schema": {
+        "type": "object",
+        "properties": { "booking_id": { "type": "string", "description": "Reserva a la que hacer check-in." } },
+        "required": ["booking_id"]
+      },
+      "impl": {
+        "kind": "http",
+        "method": "POST",
+        "url": "http://localhost:8020/api/hotel/reservas/{booking_id}/checkin"
+      },
+      "depends_on": [
+        { "param": "booking_id", "tool": "hostal_zeta_create_booking", "path": "booking_id" }
+      ]
+    },
+    {
+      "name": "hostal_zeta_check_out",
+      "description": "Hace el check-out de una reserva que ya tiene check-in. Requiere el booking_id de hostal_zeta_check_in.",
+      "input_schema": {
+        "type": "object",
+        "properties": { "booking_id": { "type": "string", "description": "Reserva en curso." } },
+        "required": ["booking_id"]
+      },
+      "impl": {
+        "kind": "http",
+        "method": "POST",
+        "url": "http://localhost:8020/api/hotel/reservas/{booking_id}/checkout"
+      },
+      "depends_on": [
+        { "param": "booking_id", "tool": "hostal_zeta_check_in", "path": "booking_id" }
+      ]
+    },
+    {
+      "name": "hostal_zeta_check_table_availability",
+      "description": "Consulta mesas libres del restaurante para una fecha, hora y número de comensales. Devuelve table_id.",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "fecha": { "type": "string", "format": "date", "description": "Fecha de la reserva (YYYY-MM-DD)." },
+          "hora": {
+            "type": "string",
+            "description": "Hora de la reserva.",
+            "enum": ["13:00", "13:30", "14:00", "14:30", "20:00", "20:30", "21:00", "21:30", "22:00"],
+            "default": "21:00"
+          },
+          "personas": { "type": "integer", "description": "Comensales.", "default": 2 }
+        },
+        "required": ["fecha"]
+      },
+      "impl": {
+        "kind": "http",
+        "method": "GET",
+        "url": "http://localhost:8020/api/restaurante/mesas?fecha={fecha}&hora={hora}&personas={personas}"
+      },
+      "examples": { "fecha": "2027-03-15", "hora": "21:00", "personas": 2 }
+    },
+    {
+      "name": "hostal_zeta_book_table",
+      "description": "Reserva una mesa del restaurante y devuelve reservation_id. Requiere un table_id de hostal_zeta_check_table_availability.",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "table_id": { "type": "string", "description": "Mesa libre." },
+          "fecha": { "type": "string", "format": "date", "description": "Fecha (YYYY-MM-DD)." },
+          "hora": { "type": "string", "description": "Hora de la reserva." },
+          "personas": { "type": "integer", "description": "Comensales.", "default": 2 },
+          "name": { "type": "string", "description": "Nombre de la reserva." },
+          "phone": { "type": "string", "description": "Teléfono de contacto." }
+        },
+        "required": ["table_id", "fecha", "hora", "name"]
+      },
+      "impl": {
+        "kind": "http",
+        "method": "POST",
+        "url": "http://localhost:8020/api/restaurante/reservas",
+        "body_type": "json",
+        "body": {
+          "table_id": "{table_id}",
+          "fecha": "{fecha}",
+          "hora": "{hora}",
+          "personas": "{personas}",
+          "name": "{name}",
+          "phone": "{phone}"
+        }
+      },
+      "examples": {
+        "fecha": "2027-03-15",
+        "hora": "21:00",
+        "personas": 4,
+        "name": "Ada Lovelace",
+        "phone": "600123456"
+      },
+      "depends_on": [
+        { "param": "table_id", "tool": "hostal_zeta_check_table_availability", "path": "tables[0].table_id" }
+      ]
+    },
+    {
+      "name": "hostal_zeta_list_table_reservations",
+      "description": "Lista las reservas de mesa del restaurante con hora, mesa, comensales y estado.",
+      "input_schema": { "type": "object", "properties": {} },
+      "impl": { "kind": "http", "method": "GET", "url": "http://localhost:8020/api/restaurante/reservas" }
+    },
+    {
+      "name": "hostal_zeta_get_menu",
+      "description": "Devuelve la carta con item_id, categoría y precio de cada plato o bebida.",
+      "input_schema": { "type": "object", "properties": {} },
+      "impl": { "kind": "http", "method": "GET", "url": "http://localhost:8020/api/restaurante/carta" }
+    },
+    {
+      "name": "hostal_zeta_create_food_order",
+      "description": "Envía un pedido a cocina para una reserva de habitación o de mesa. Requiere un item_id de hostal_zeta_get_menu y, si es a la habitación, el booking_id de hostal_zeta_create_booking.",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "booking_id": { "type": "string", "description": "Reserva de habitación (opcional si se usa una mesa)." },
+          "table_reservation_id": { "type": "string", "description": "Reserva de mesa (opcional si se usa una habitación)." },
+          "item_id": { "type": "string", "description": "Plato o bebida." },
+          "qty": { "type": "integer", "description": "Cantidad.", "default": 1 },
+          "notes": { "type": "string", "description": "Notas para cocina (alergias, sin cebolla…)." }
+        },
+        "required": ["item_id"]
+      },
+      "impl": {
+        "kind": "http",
+        "method": "POST",
+        "url": "http://localhost:8020/api/restaurante/pedidos",
+        "body_type": "json",
+        "body": {
+          "booking_id": "{booking_id}",
+          "table_reservation_id": "{table_reservation_id}",
+          "item_id": "{item_id}",
+          "qty": "{qty}",
+          "notes": "{notes}"
+        }
+      },
+      "examples": { "qty": 2, "notes": "Sin cebolla." },
+      "depends_on": [
+        { "param": "item_id", "tool": "hostal_zeta_get_menu", "path": "items[0].item_id" },
+        { "param": "booking_id", "tool": "hostal_zeta_create_booking", "path": "booking_id" }
+      ]
+    },
+    {
+      "name": "hostal_zeta_list_orders",
+      "description": "Lista los pedidos de cocina con su destino, contenido, estado y total.",
+      "input_schema": { "type": "object", "properties": {} },
+      "impl": {
+        "kind": "http",
+        "method": "GET",
+        "url": "http://localhost:8020/api/restaurante/pedidos?estado=todos"
+      }
+    },
+    {
+      "name": "hostal_zeta_update_order_status",
+      "description": "Cambia el estado de un pedido (pending, preparing, served, cancelled). Requiere el order_id de hostal_zeta_create_food_order.",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "order_id": { "type": "string", "description": "Pedido a actualizar." },
+          "status": {
+            "type": "string",
+            "description": "Nuevo estado.",
+            "enum": ["pending", "preparing", "served", "cancelled"],
+            "default": "preparing"
+          }
+        },
+        "required": ["order_id"]
+      },
+      "impl": {
+        "kind": "http",
+        "method": "PATCH",
+        "url": "http://localhost:8020/api/restaurante/pedidos/{order_id}",
+        "body_type": "json",
+        "body": { "status": "{status}" }
+      },
+      "examples": { "status": "preparing" },
+      "depends_on": [
+        { "param": "order_id", "tool": "hostal_zeta_create_food_order", "path": "order_id" }
+      ]
+    }
+  ]
+}

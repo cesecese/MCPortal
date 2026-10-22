@@ -1,0 +1,8 @@
+# Web de recepción + runtime MCP + explorador (Python 3.12)
+fastapi>=0.110
+uvicorn>=0.29
+python-multipart>=0.0.9
+httpx>=0.27
+mcp>=2.3
+playwright>=1.47
+beautifulsoup4>=4.12
