@@ -9,7 +9,6 @@ Arranque:  uvicorn sites.gestoria.app:app --port 8003
 from __future__ import annotations
 
 import html
-import json
 import secrets
 import unicodedata
 from datetime import date
@@ -86,10 +85,6 @@ CLIENTS: list[dict[str, Any]] = [
      "asesor": "marcos", "estado": "activo", "notas": "Transporte. Modelo 349 intracomunitario.",
      "balance": "balance-2025-ejemplo.pdf", "created_at": "2020-05-06"},
 ]
-SAMPLE_CLIENTS = BASE / "sample-data" / "clientes.json"
-if SAMPLE_CLIENTS.exists():
-    CLIENTS.extend(json.loads(SAMPLE_CLIENTS.read_text(encoding="utf-8")))
-
 NEXT_NUMBER = len(CLIENTS) + 1
 TOKENS: set[str] = set()
 

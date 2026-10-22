@@ -16,7 +16,7 @@
   "asesor": "lucia",
   "estado": "activo",
   "notas": "Diseño gráfico y comunicación. IVA trimestral.",
-  "balance": "Alba_Serrano_Gil.pdf",
+  "balance": "sites/gestoria/sample-data/balances/Alba_Serrano_Gil.pdf",
   "created_at": "2025-03-12",
   "cif_duplicado": false
  },
@@ -37,7 +37,7 @@
   "asesor": "marcos",
   "estado": "activo",
   "notas": "Consultoría informática. Nóminas mensuales.",
-  "balance": "Carlos_Mendoza_Ruiz.pdf",
+  "balance": "sites/gestoria/sample-data/balances/Carlos_Mendoza_Ruiz.pdf",
   "created_at": "2024-11-04",
   "cif_duplicado": false
  },
@@ -58,7 +58,7 @@
   "asesor": "elena",
   "estado": "pendiente",
   "notas": "Falta el balance firmado de 2025.",
-  "balance": "Nerea_López_Campos.pdf",
+  "balance": "sites/gestoria/sample-data/balances/Nerea_López_Campos.pdf",
   "created_at": "2023-06-18",
   "cif_duplicado": false
  },
@@ -79,7 +79,7 @@
   "asesor": "marcos",
   "estado": "activo",
   "notas": "Distribución de materiales. Modelo 349.",
-  "balance": "Ignacio_Ferreira_Costa.pdf",
+  "balance": "sites/gestoria/sample-data/balances/Ignacio_Ferreira_Costa.pdf",
   "created_at": "2022-02-21",
   "cif_duplicado": false
  },
@@ -100,7 +100,7 @@
   "asesor": "lucia",
   "estado": "activo",
   "notas": "Fisioterapia. IVA mensual.",
-  "balance": "Paula_Ortiz_Navarro.pdf",
+  "balance": "sites/gestoria/sample-data/balances/Paula_Ortiz_Navarro.pdf",
   "created_at": "2025-01-09",
   "cif_duplicado": false
  },
@@ -121,7 +121,7 @@
   "asesor": "elena",
   "estado": "inactivo",
   "notas": "Sin actividad desde 2025; pendiente de baja.",
-  "balance": "Sergio_Hernández_Bravo.pdf",
+  "balance": "sites/gestoria/sample-data/balances/Sergio_Hernández_Bravo.pdf",
   "created_at": "2021-09-30",
   "cif_duplicado": false
  },
@@ -142,7 +142,7 @@
   "asesor": "lucia",
   "estado": "activo",
   "notas": "Alquiler de vivienda. IRPF.",
-  "balance": "Marta_Vidal_Serrano.pdf",
+  "balance": "sites/gestoria/sample-data/balances/Marta_Vidal_Serrano.pdf",
   "created_at": "2024-05-14",
   "cif_duplicado": false
  }
