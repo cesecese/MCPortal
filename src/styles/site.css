@@ -42,7 +42,7 @@
 
 .site-stats {
   display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
+  grid-template-columns: repeat(3, minmax(0, 1fr));
   margin: 0;
   border-block: 1px solid var(--line);
 }
@@ -114,17 +114,6 @@
 
 .site-list-head {
   align-items: flex-start;
-}
-
-.site-list-head__note {
-  max-width: 60ch;
-  margin-top: 6px;
-  font-size: 13px;
-  color: var(--muted);
-}
-
-.site-list-head .segmented {
-  flex-shrink: 0;
 }
 
 .site-list {
@@ -243,49 +232,6 @@
   transform: translateX(2px);
 }
 
-.site-legend {
-  display: grid;
-  grid-template-columns: minmax(0, 0.85fr) minmax(0, 1.15fr);
-  gap: 64px;
-  margin-top: var(--s-8);
-  padding-top: var(--s-6);
-  border-top: 1px solid var(--line);
-}
-
-.site-legend h2 {
-  font-size: 18px;
-}
-
-.site-legend p {
-  max-width: 48ch;
-  margin-top: 10px;
-  font-size: 13.5px;
-  color: var(--muted);
-  line-height: 1.6;
-}
-
-.site-legend__list {
-  list-style: none;
-  margin: 0;
-  padding: 0;
-  border-top: 1px solid var(--line);
-}
-
-.site-legend__list li {
-  display: grid;
-  grid-template-columns: 118px minmax(0, 1fr);
-  gap: var(--s-4);
-  align-items: baseline;
-  padding: 10px 0;
-  border-bottom: 1px solid var(--line);
-  font-size: 13px;
-  color: var(--ink-2);
-}
-
-.site-legend__list .tag {
-  justify-self: start;
-}
-
 @media (max-width: 1080px) {
   .site-head {
     grid-template-columns: 56px minmax(0, 1fr);
@@ -303,10 +249,6 @@
   .site-stats > div:nth-child(3) {
     padding-left: 0;
     border-left: 0;
-    border-top: 1px solid var(--line);
-  }
-
-  .site-stats > div:nth-child(4) {
     border-top: 1px solid var(--line);
   }
 
@@ -341,12 +283,12 @@
   }
 
   .site-head__actions {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
     width: 100%;
   }
 
   .site-head__actions .btn {
+    width: 100%;
+    justify-content: center;
     padding-inline: 10px;
   }
 
@@ -361,17 +303,6 @@
   .site-list-head {
     flex-direction: column;
     gap: var(--s-4);
-  }
-
-  .site-list-head .segmented {
-    width: 100%;
-  }
-
-  .site-list-head .segmented button {
-    flex: 1;
-    justify-content: center;
-    padding-inline: 6px;
-    font-size: 12px;
   }
 
   .site-item {
@@ -396,15 +327,5 @@
 
   .site-item__title h3 {
     font-size: 14px;
-  }
-
-  .site-legend {
-    grid-template-columns: minmax(0, 1fr);
-    gap: var(--s-5);
-    margin-top: var(--s-7);
-  }
-
-  .site-legend__list li {
-    grid-template-columns: 108px minmax(0, 1fr);
   }
 }

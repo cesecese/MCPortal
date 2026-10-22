@@ -1,4 +1,4 @@
-import type { Mcp, McpReport, McpVersion, RatingSummary } from '../data/types';
+import type { Mcp, McpReport, McpVersion, RatingSummary, ValidationReport } from '../data/types';
 import { NOW } from './format';
 
 const DAY = 86_400_000;
@@ -114,6 +114,29 @@ export function reportsOf(mcp: Mcp): McpReport[] {
   return mcp.reports ?? [];
 }
 
+/**
+ * Informe de validación. El registro lo entrega ya calculado; para los datos
+ * antiguos se deriva de las herramientas y de la exploración.
+ */
+export function validationOf(mcp: Mcp): ValidationReport {
+  if (mcp.validation) return mcp.validation;
+  const results = mcp.tools.map((tool, index) => ({
+    name: tool.name,
+    kind: tool.kind,
+    ok: tool.validated,
+    reason: tool.failure ?? null,
+    swapped: false,
+    status: tool.validated ? 200 : null,
+    seconds: Number((1.2 + index * 0.7).toFixed(1)),
+  }));
+  return {
+    validatedAt: mcp.updatedAt,
+    proposed: Math.max(mcp.exploration.proposed, results.length),
+    validated: results.filter((result) => result.ok).length,
+    results,
+  };
+}
+
 export function openReportsOf(mcp: Mcp): McpReport[] {
   return reportsOf(mcp).filter((report) => report.status === 'open');
 }
@@ -162,6 +185,21 @@ export function groupBySite(catalog: Mcp[]): Map<string, Mcp[]> {
     groups.set(key, [...(groups.get(key) ?? []), mcp]);
   }
   return groups;
+}
+
+export type McpMode = 'read_only' | 'read_write';
+
+/** Modo derivado del contrato: una herramienta con efecto implica escritura. */
+export function modeOf(mcp: Mcp): McpMode {
+  const writes = mcp.tools.some(
+    (tool) => tool.validated && (tool.kind === 'browser' || ['POST', 'PUT', 'DELETE'].includes(tool.method ?? '')),
+  );
+  return writes ? 'read_write' : 'read_only';
+}
+
+export function validationRatio(mcp: Mcp): number {
+  const validated = mcp.tools.filter((tool) => tool.validated).length;
+  return validated / Math.max(1, mcp.exploration.proposed);
 }
 
 export function recommendationScore(mcp: Mcp): number {
@@ -229,7 +267,7 @@ export function badgesFor(mcp: Mcp, variants: Mcp[]): McpBadge[] {
   return badges;
 }
 
-export type SortMode = 'recommended' | 'recent' | 'rating' | 'installs';
+export type SortMode = 'recommended' | 'recent' | 'rating' | 'installs' | 'validation';
 
 export function sortMcps(mcps: Mcp[], mode: SortMode): Mcp[] {
   return [...mcps].sort((a, b) => {
@@ -240,6 +278,11 @@ export function sortMcps(mcps: Mcp[], mode: SortMode): Mcp[] {
       return ratingB.average - ratingA.average || ratingB.count - ratingA.count;
     }
     if (mode === 'installs') return b.installs - a.installs;
+    if (mode === 'validation') {
+      const ratioA = validationRatio(a);
+      const ratioB = validationRatio(b);
+      return ratioB - ratioA || b.tools.length - a.tools.length || recommendationScore(b) - recommendationScore(a);
+    }
     return recommendationScore(b) - recommendationScore(a);
   });
 }
