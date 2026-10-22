@@ -4,7 +4,9 @@ from __future__ import annotations
 
 import asyncio
 import datetime as dt
+import os
 import re
+from pathlib import Path
 from urllib.parse import urlsplit
 
 from mcportal_core.explorer.browser import Session, render_observation, same_site
@@ -16,6 +18,13 @@ except Exception:
         from mcportal_core.explorer import llm_provisional as llm
     except Exception:
         llm = None
+
+SAMPLE_PDF = "sites/gestoria/samples/balance-ejemplo.pdf"
+
+
+def sample_pdf() -> str:
+    return os.environ.get("MCPORTAL_SAMPLE_PDF", SAMPLE_PDF)
+
 
 DESTRUCTIVE = re.compile(
     r"borrar|eliminar|delete|remove|logout|log out|cerrar sesi|salir|sign out|iniciar sesi|log ?in"
@@ -45,7 +54,9 @@ def _value_for(el: dict, today: dt.date) -> str | None:
     kind, value = el.get("type") or "", el.get("value") or ""
     if el["tag"] == "select":
         return value or next((option["value"] for option in el.get("options") or [] if option["value"]), None)
-    if kind in ("checkbox", "radio", "password", "file", "submit", "button", "reset", "image"):
+    if kind == "file":
+        return sample_pdf()
+    if kind in ("checkbox", "radio", "password", "submit", "button", "reset", "image"):
         return None
     if value:
         return value  # valor precargado (p. ej. hora elegida en el paso anterior)
@@ -99,9 +110,12 @@ async def heuristic(session: Session, max_steps: int, hint: str = "") -> None:
                 tried.add(key)
                 for el in fields:
                     if el["tag"] in ("input", "textarea", "select") and (value := _value_for(el, today)) is not None:
-                        plan.append({"type": "select", "id": el["id"], "option": value}
-                                    if el["tag"] == "select"
-                                    else {"type": "fill", "id": el["id"], "value": value})
+                        if el.get("type") == "file":
+                            plan.append({"type": "upload", "id": el["id"], "value": value})
+                        elif el["tag"] == "select":
+                            plan.append({"type": "select", "id": el["id"], "option": value})
+                        else:
+                            plan.append({"type": "fill", "id": el["id"], "value": value})
                 submit = next((el for el in fields if el["tag"] == "button" or el.get("type") == "submit"), None)
                 if submit:
                     plan.append({"type": "click", "id": submit["id"]})
@@ -145,6 +159,7 @@ y no pulses enlaces de redes sociales, idioma, cookies o textos legales.
 con la interfaz, porque así sabe qué campo produce cada parámetro. Si un buscador o formulario no está visible, pulsa \
 el botón o icono que lo abre.
 - Si una página te lleva a una verificación humana o a un captcha, no insistas: es un límite de la web.
+- Si un formulario pide un archivo (input de tipo file), usa la herramienta upload con una ruta local. En la demo hay un PDF en sites/gestoria/samples/balance-ejemplo.pdf. No uses fill en un input de archivo.
 - Llama a finish cuando hayas probado todas las acciones distintas o cuando tus últimas acciones ya no descubran \
 peticiones nuevas.
 
@@ -161,6 +176,9 @@ TOOLS = [
     {"name": "select", "description": "Elige una opción (valor o texto visible) en un desplegable.",
      "input_schema": {"type": "object", "properties": {"id": {"type": "integer"}, "option": {"type": "string"}},
                       "required": ["id", "option"]}},
+    {"name": "upload", "description": "Adjunta un archivo local a un campo de tipo file. La ruta puede ser absoluta o relativa al repo.",
+     "input_schema": {"type": "object", "properties": {"id": {"type": "integer"}, "value": {"type": "string"}},
+                      "required": ["id", "value"]}},
     {"name": "goto", "description": "Navega a una sección o enlace del mismo dominio (sin construir parámetros).",
      "input_schema": {"type": "object", "properties": {"url": {"type": "string"}}, "required": ["url"]}},
     {"name": "back", "description": "Vuelve a la página anterior.",
@@ -225,7 +243,11 @@ async def _prefill_form(session: Session, click_id: int, touched: set[int], max_
         if field["id"] in touched:
             continue
         kind = field.get("type") or ""
-        if kind in ("hidden", "submit", "button", "reset", "checkbox", "radio", "file", "password"):
+        if kind == "file":
+            if field["id"] not in touched and (path := sample_pdf()):
+                await session.act({"type": "upload", "id": field["id"], "value": path})
+            continue
+        if kind in ("hidden", "submit", "button", "reset", "checkbox", "radio", "password"):
             continue
         value = field.get("value")
         if field["tag"] == "select":
@@ -301,7 +323,7 @@ async def llm_agent(session: Session, max_steps: int, hint: str = "", effort: st
                     session.events.emit("finish", summary=arguments.get("summary", ""))
                 results.append({"type": "tool_result", "tool_use_id": call.get("id", ""), "content": "Hecho."})
                 continue
-            if name in ("fill", "select") and arguments.get("id") is not None:
+            if name in ("fill", "select", "upload") and arguments.get("id") is not None:
                 touched.add(int(arguments["id"]))
             if name == "click":
                 el = session.element(arguments.get("id", 0))
@@ -371,7 +393,7 @@ async def llm_conversation_agent(session: Session, max_steps: int, hint: str = "
                     session.events.emit("finish", summary=arguments.get("summary", ""))
                 results.append((call["id"], "Hecho."))
                 continue
-            if name in ("fill", "select") and arguments.get("id") is not None:
+            if name in ("fill", "select", "upload") and arguments.get("id") is not None:
                 touched.add(int(arguments["id"]))
             if name == "click":
                 el = session.element(arguments.get("id", 0))

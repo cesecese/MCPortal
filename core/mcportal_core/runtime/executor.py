@@ -9,6 +9,7 @@ import asyncio
 import json
 import os
 import re
+from pathlib import Path
 from dataclasses import dataclass
 from typing import Any
 from urllib.parse import quote, urlsplit
@@ -351,6 +352,11 @@ async def run_browser(tool: dict[str, Any], args: dict[str, Any]) -> Result:
                 await locator.check()
             elif action == "wait":
                 await page.wait_for_timeout(int(step.get("value") or 500))
+            elif action == "upload":
+                path = Path(value)
+                if not path.is_absolute():
+                    path = (Path(__file__).resolve().parents[3] / path).resolve()
+                await locator.set_input_files(str(path))
             else:
                 raise ValueError(f"acción de navegador desconocida: {action!r}")
         try:

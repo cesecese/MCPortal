@@ -166,6 +166,8 @@ function renderStep(step: BrowserStep): string {
       return `check ${step.selector ?? ''}`.trim();
     case 'wait':
       return `wait ${step.value ?? ''}`.trim();
+    case 'upload':
+      return `upload ${step.selector ?? ''} ← ${step.value ?? ''}`.trim();
   }
 }
 

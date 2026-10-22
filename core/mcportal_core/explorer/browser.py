@@ -18,7 +18,7 @@ from playwright.async_api import async_playwright
 
 OBSERVE_JS = (Path(__file__).parent / "observe.js").read_text(encoding="utf-8")
 STATIC_EXT = (".js", ".css", ".png", ".jpg", ".jpeg", ".gif", ".svg", ".webp", ".ico",
-              ".woff", ".woff2", ".ttf", ".map")
+              ".woff", ".woff2", ".ttf", ".map", ".pdf")
 MAX_BODY = 200_000
 
 # Webs donde el explorador puede enviar cambios (POST…): las propias y demos hechas
@@ -243,6 +243,11 @@ class Session:
                 await loc.select_option(value=str(action["option"]), timeout=5000)
             except Exception:
                 await loc.select_option(label=str(action["option"]), timeout=5000)
+        elif kind == "upload":
+            path = Path(str(action["value"]))
+            if not path.is_absolute():
+                path = (Path(__file__).resolve().parents[3] / path).resolve()
+            await loc.set_input_files(str(path), timeout=5000)
         else:
             raise ValueError(f"acción desconocida: {kind}")
 
@@ -257,6 +262,8 @@ def describe_action(action: dict, el: dict | None = None) -> str:
         return f"fill {target} = {action['value']!r}" + (" + Enter" if action.get("submit") else "")
     if kind == "select":
         return f"select {target} = {action['option']!r}"
+    if kind == "upload":
+        return f"upload {target} = {action['value']!r}"
     if kind == "click":
         return f"click {target}"
     return kind

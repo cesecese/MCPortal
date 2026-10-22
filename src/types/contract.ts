@@ -33,7 +33,7 @@ export interface InputSchema {
 
 export type HttpMethod = 'GET' | 'POST' | 'PUT' | 'PATCH' | 'DELETE' | 'QUERY' | 'HEAD' | 'OPTIONS';
 
-export type BrowserAction = 'fill' | 'select' | 'click' | 'press' | 'check' | 'wait';
+export type BrowserAction = 'fill' | 'select' | 'click' | 'press' | 'check' | 'wait' | 'upload';
 
 export interface BrowserStep {
   action: BrowserAction;

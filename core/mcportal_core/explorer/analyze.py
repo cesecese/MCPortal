@@ -102,7 +102,7 @@ def fills_of(steps: list[dict]) -> list[dict]:
     out = []
     for step in steps:
         action = step["action"]
-        if action["type"] in ("fill", "select") and not step.get("error"):
+        if action["type"] in ("fill", "select", "upload") and not step.get("error"):
             el = step["element"] or {}
             out.append({
                 "step": step["i"],
@@ -243,11 +243,14 @@ def analyze_request(req: dict, earlier: list[dict], fills: list[dict], step: dic
     has_input = any(param["source"] == "input" for param in params)
     if not is_candidate(req, step, has_input, bool(params)):
         return None
-    hidden = {hidden_input["value"] for form in (step or {}).get("forms", [])
-              for hidden_input in form.get("hidden", [])}
+    forms = (step or {}).get("forms", [])
+    hidden = {hidden_input["value"] for form in forms for hidden_input in form.get("hidden", [])}
+    hidden_names = {hidden_input["name"] for form in forms for hidden_input in form.get("hidden", [])}
     csrf = [literal["key"] for literal in literals
             if literal["location"] in ("body", "query") and len(str(literal["value"])) >= 16
             and (TOKEN_KEY.search(str(literal["key"])) or str(literal["value"]) in hidden)]
+    # Un POST multipart no se parsea como formulario; el token viaja como campo oculto.
+    csrf += [name for name in hidden_names if TOKEN_KEY.search(str(name))]
     return {
         "request_ids": [req["id"]], "method": req["method"],
         "origin": f"{url.scheme}://{url.netloc}", "path": path_t, "query": query_t,
@@ -277,7 +280,7 @@ def browser_recipe(candidate: dict, steps: list[dict]) -> dict | None:
     fields = {}  # selector -> (acción, parámetro); el último relleno de cada campo gana
     for step in block:
         step_action, selector_el = step["action"], step.get("element") or {}
-        if (step_action["type"] not in ("fill", "select") or step.get("error")
+        if (step_action["type"] not in ("fill", "select", "upload") or step.get("error")
                 or not selector_el.get("selector") or selector_el.get("form") != el.get("form")):
             continue
         value = str(step_action.get("value", step_action.get("option", "")))

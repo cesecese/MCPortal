@@ -73,7 +73,7 @@
     return out;
   };
   for (const el of deepQuery(document, SEL)) {
-    if (el.type === 'hidden' || el.disabled || !visible(el)) continue;
+    if (el.type === 'hidden' || el.disabled || el.closest('[data-agent-skip]') || !visible(el)) continue;
     let id = el.getAttribute('data-agent-id');
     if (!id) { id = String(next++); el.setAttribute('data-agent-id', id); }
     const tag = el.tagName.toLowerCase();
