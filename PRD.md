@@ -5,7 +5,7 @@
 
 ## 1. Qué es
 
-MCPortal es el registro de servidores MCP generados a partir de webs sin API. Pegas una URL, un agente explora la web, descubre sus acciones y publica un MCP con herramientas tipadas que Claude Code puede instalar y usar.
+MCPortal es el registro de servidores MCP generados a partir de webs sin API. Pegas una URL, un agente explora la web, descubre sus acciones y publica un MCP con herramientas tipadas que cualquier cliente MCP puede instalar y usar.
 
 ## 2. Usuarios y objetivo
 
@@ -13,7 +13,7 @@ MCPortal es el registro de servidores MCP generados a partir de webs sin API. Pe
 
 ## 3. Alcance para la demo
 
-- En el pitch, la web es un **extra**: lo central es Claude Code y el panel en vivo. MCPortal se enseña un momento como el sitio donde acaban los MCPs.
+- En el pitch, la web es un **extra**: lo central es el cliente MCP y el panel en vivo. MCPortal se enseña un momento como el sitio donde acaban los MCPs.
 - Es una **maqueta con datos falsos**: todo sale de `src/data/`, sin conexión con el explorador, el validador ni el runtime.
 
 ## 4. Pantallas
@@ -33,7 +33,7 @@ _Pendiente_
 
 _Pendiente_
 
-## 7. Instalación y uso desde Claude Code
+## 7. Instalación y uso desde un cliente MCP
 
 _Pendiente_
 
@@ -49,7 +49,7 @@ _Pendiente el resto._
 
 ## 10. Backend y datos
 
-Ya decidido en el código: React 18 + Vite + TypeScript + React Router, datos de prueba en `src/data/`.
+Ya decidido en el código: Next.js 15 + React 19 + TypeScript, datos de prueba en `src/data/`.
 
 _Pendiente_
 

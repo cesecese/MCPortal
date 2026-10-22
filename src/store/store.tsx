@@ -1,19 +1,20 @@
+'use client';
+
 import { createContext, useCallback, useContext, useEffect, useMemo, useState, type ReactNode } from 'react';
 import { SEED_MCPS } from '../data/mcps';
 import type { Mcp } from '../data/types';
 import { NOW } from '../lib/format';
 
-const STORAGE_KEY = 'mcportal:mcps:v2';
+const STORAGE_KEY = 'mcportal:mcps:v3';
 
 /** Los MCPs creados en la maqueta viven solo en este navegador. */
-function load(): Mcp[] {
+function loadStored(): Mcp[] | null {
   try {
     const raw = localStorage.getItem(STORAGE_KEY);
-    if (raw) return JSON.parse(raw) as Mcp[];
+    return raw ? (JSON.parse(raw) as Mcp[]) : null;
   } catch {
-    /* almacenamiento no disponible: se usan los datos de ejemplo */
+    return null;
   }
-  return SEED_MCPS;
 }
 
 interface Store {
@@ -26,15 +27,24 @@ interface Store {
 const StoreContext = createContext<Store | null>(null);
 
 export function StoreProvider({ children }: { children: ReactNode }) {
-  const [mcps, setMcps] = useState<Mcp[]>(load);
+  // El servidor pinta los datos de ejemplo; lo guardado se aplica tras hidratar
+  const [mcps, setMcps] = useState<Mcp[]>(SEED_MCPS);
+  const [hydrated, setHydrated] = useState(false);
 
   useEffect(() => {
+    const stored = loadStored();
+    if (stored) setMcps(stored);
+    setHydrated(true);
+  }, []);
+
+  useEffect(() => {
+    if (!hydrated) return;
     try {
       localStorage.setItem(STORAGE_KEY, JSON.stringify(mcps));
     } catch {
       /* ignorado */
     }
-  }, [mcps]);
+  }, [mcps, hydrated]);
 
   const save = useCallback((mcp: Mcp) => {
     const next = { ...mcp, updatedAt: new Date(NOW).toISOString() };

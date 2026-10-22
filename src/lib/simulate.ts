@@ -127,6 +127,18 @@ function pickTemplate(host: string): keyof typeof TEMPLATES {
   return 'generic';
 }
 
+const FAVICON_COLORS = ['#B5462B', '#1E8C5A', '#2D63C8', '#7A1730', '#0E5AA7', '#C27C0E', '#5A45D4', '#12705A', '#D7192D'];
+
+/** Favicon "capturado" por el explorador: inicial sobre un color estable para cada dominio. */
+export function faviconFor(host: string): string {
+  const hash = [...host].reduce((h, c) => (h * 31 + c.charCodeAt(0)) >>> 0, 7);
+  const color = FAVICON_COLORS[hash % FAVICON_COLORS.length];
+  const parts = host.split('.');
+  const letter = (parts.length > 2 ? parts[parts.length - 2] : parts[0]).charAt(0).toUpperCase();
+  const svg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"><rect width="64" height="64" rx="14" fill="${color}"/><text x="32" y="44" text-anchor="middle" font-family="Helvetica,Arial,sans-serif" font-size="34" font-weight="700" fill="#fff">${letter}</text></svg>`;
+  return `data:image/svg+xml,${encodeURIComponent(svg)}`;
+}
+
 export function normalizeUrl(raw: string): { ok: true; url: URL } | { ok: false; error: string } {
   const value = raw.trim();
   if (!value) return { ok: false, error: 'Escribe la dirección de la web.' };
@@ -173,6 +185,7 @@ export function generate(url: URL, hint: string): { draft: Mcp; trace: TraceEven
     slug,
     name: slug.charAt(0).toUpperCase() + slug.slice(1).replace(/-/g, ' '),
     site: host,
+    icon: faviconFor(host),
     description: t.description(host),
     category: t.category,
     tags: [...t.tags],

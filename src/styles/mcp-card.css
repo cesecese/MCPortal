@@ -1,61 +1,67 @@
 .mcp-grid {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 16px;
+  gap: var(--s-5);
 }
 
+/* Radio de la tarjeta = radio del icono (12) + margen visual: superficies separadas */
 .mcp-card {
   display: flex;
   flex-direction: column;
-  gap: 14px;
+  gap: var(--s-5);
   min-width: 0;
-  padding: 20px;
-  border: 1px solid var(--line);
-  border-radius: var(--r-l);
+  padding: var(--s-6) var(--s-6) var(--s-5);
+  border-radius: var(--r-xl);
   background: var(--surface);
+  box-shadow: var(--lift-1);
   transition:
-    border-color 0.18s var(--ease),
-    transform 0.18s var(--ease);
+    box-shadow 0.2s var(--ease),
+    transform 0.2s var(--ease);
 }
 
 a.mcp-card:hover {
-  border-color: var(--ink);
+  box-shadow: var(--lift-2);
+  transform: translateY(-2px);
 }
 
-/* Al pasar por encima, el portal se llena */
+a.mcp-card:active {
+  transform: scale(0.99);
+}
+
+a.mcp-card:focus-visible {
+  box-shadow: var(--lift-2), var(--focus);
+}
+
 a.mcp-card:hover .monogram {
   background: var(--ink);
   color: var(--on-ink);
 }
 
-a.mcp-card:active {
-  transform: translateY(1px);
-}
-
 .mcp-card__head {
   display: flex;
   align-items: center;
-  gap: 12px;
+  gap: var(--s-4);
   min-width: 0;
 }
 
 .mcp-card__id {
   display: grid;
+  gap: 2px;
   min-width: 0;
 }
 
 .mcp-card__name {
-  font-size: 16px;
+  font-size: 17px;
   font-weight: 600;
   letter-spacing: -0.02em;
-  line-height: 1.3;
+  line-height: 1.25;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
 }
 
 .mcp-card__site {
-  font-size: 12px;
+  font-size: 12.5px;
   color: var(--muted);
   overflow: hidden;
   text-overflow: ellipsis;
@@ -64,8 +70,8 @@ a.mcp-card:active {
 
 .mcp-card__desc {
   flex: 1;
-  font-size: 14px;
-  line-height: 1.5;
+  font-size: 14.5px;
+  line-height: 1.6;
   color: var(--ink-2);
   display: -webkit-box;
   -webkit-line-clamp: 3;
@@ -75,10 +81,11 @@ a.mcp-card:active {
 
 .mcp-card__stats {
   display: flex;
-  gap: 24px;
+  gap: var(--s-5);
   margin: 0;
-  padding-top: 14px;
-  border-top: 1px dashed var(--line-strong);
+  padding-top: var(--s-4);
+  border-top: 1px solid var(--line);
+  font-variant-numeric: tabular-nums;
 }
 
 .mcp-card__stats > div {
@@ -108,10 +115,11 @@ a.mcp-card:active {
 @media (max-width: 640px) {
   .mcp-grid {
     grid-template-columns: 1fr;
-    gap: 12px;
+    gap: var(--s-4);
   }
 
   .mcp-card {
-    padding: 16px;
+    padding: var(--s-5) var(--s-5) var(--s-4);
+    gap: var(--s-4);
   }
 }

@@ -1,13 +1,16 @@
-import { useEffect } from 'react';
-import { Link, Outlet, useLocation } from 'react-router-dom';
+'use client';
+
+import { useEffect, type ReactNode } from 'react';
+import Link from 'next/link';
+import { usePathname } from 'next/navigation';
 import { useTheme } from '../lib/theme';
 import { Icon } from './Icon';
 import { LinenMark, Logo, PortalDot } from './Logo';
 import '../styles/shell.css';
 
-export function AppShell() {
+export function AppShell({ children }: { children: ReactNode }) {
   const { theme, toggle } = useTheme();
-  const { pathname } = useLocation();
+  const pathname = usePathname();
 
   useEffect(() => {
     window.scrollTo({ top: 0 });
@@ -17,12 +20,12 @@ export function AppShell() {
     <div className="shell">
       <header className="nav">
         <div className="container nav__inner">
-          <Link to="/" className="nav__brand" aria-label="MCPortal, inicio">
+          <Link href="/" className="nav__brand" aria-label="MCPortal, inicio">
             <Logo />
           </Link>
           <div className="nav__actions">
             {pathname !== '/crear' && (
-              <Link to="/crear" className="btn btn--primary btn--sm">
+              <Link href="/crear" className="btn btn--primary btn--sm">
                 <Icon name="plus" size={16} />
                 Crear MCP
               </Link>
@@ -40,7 +43,7 @@ export function AppShell() {
       </header>
 
       <main className="shell__main">
-        <Outlet />
+        {children}
       </main>
 
       <footer className="footer">

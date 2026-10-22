@@ -1,6 +1,8 @@
+'use client';
+
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { Icon } from '../../components/Icon';
-import { KindTag } from '../../components/primitives';
+import { KindTag, SiteIcon } from '../../components/primitives';
 import { cx } from '../../lib/format';
 import type { Phase, TraceEvent } from '../../lib/simulate';
 
@@ -22,11 +24,13 @@ const DELAY: Record<TraceEvent['type'], number> = {
 
 export function StepExplore({
   host,
+  icon,
   trace,
   onDone,
   onCancel,
 }: {
   host: string;
+  icon?: string;
   trace: TraceEvent[];
   onDone: () => void;
   onCancel: () => void;
@@ -143,7 +147,7 @@ export function StepExplore({
               <i />
             </span>
             <span className="browser__url mono">
-              <Icon name="globe" size={12} />
+              <SiteIcon mcp={{ name: host, icon }} size={14} />
               {host}
               <span className="browser__path">{lastPath}</span>
             </span>

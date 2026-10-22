@@ -1,5 +1,8 @@
+'use client';
+
 import { useMemo, useState } from 'react';
-import { Link, useNavigate, useSearchParams } from 'react-router-dom';
+import Link from 'next/link';
+import { useRouter, useSearchParams } from 'next/navigation';
 import { CommandLine } from '../components/Code';
 import { Icon } from '../components/Icon';
 import type { Mcp } from '../data/types';
@@ -23,9 +26,9 @@ const STEPS: { id: Exclude<Step, 'done'>; label: string }[] = [
 ];
 
 export function Create() {
-  const [params] = useSearchParams();
+  const params = useSearchParams();
   const { byId, mcps, save } = useStore();
-  const navigate = useNavigate();
+  const router = useRouter();
   const notify = useToast();
 
   const editing = params.get('editar') ? byId(params.get('editar')!) : undefined;
@@ -69,7 +72,7 @@ export function Create() {
         setStep('done');
       } else {
         notify('Borrador guardado en este navegador', { detail: draft.slug, icon: 'check' });
-        navigate(`/mcp/${draft.slug}`);
+        router.push(`/mcp/${draft.slug}`);
       }
     }, status === 'published' ? 1100 : 500);
   };
@@ -109,10 +112,10 @@ export function Create() {
             <CommandLine command={installCommand(draft)} />
           </div>
           <div className="done__actions">
-            <Link to={`/mcp/${draft.slug}`} className="btn btn--primary btn--lg">
+            <Link href={`/mcp/${draft.slug}`} className="btn btn--primary btn--lg">
               Ver la página del MCP <Icon name="arrowRight" size={16} />
             </Link>
-            <Link to="/" className="btn btn--outline btn--lg">
+            <Link href="/" className="btn btn--outline btn--lg">
               Volver al catálogo
             </Link>
             <button
@@ -122,7 +125,7 @@ export function Create() {
                 setTrace([]);
                 setExcluded(new Set());
                 setShowErrors(false);
-                navigate('/crear', { replace: true });
+                router.replace('/crear');
                 setStep('url');
               }}
             >
@@ -180,6 +183,7 @@ export function Create() {
         {step === 'explore' && draft && (
           <StepExplore
             host={draft.site}
+            icon={draft.icon}
             trace={trace}
             onDone={() => setStep('review')}
             onCancel={() => {

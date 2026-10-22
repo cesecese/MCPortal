@@ -1,9 +1,11 @@
+'use client';
+
 import { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
+import Link from 'next/link';
 import type { Mcp } from '../data/types';
 import { cx, formatDuration, signature, validatedTools } from '../lib/format';
 import { Icon } from './Icon';
-import { KindTag } from './primitives';
+import { KindTag, SiteIcon } from './primitives';
 import '../styles/specimen.css';
 
 interface Line {
@@ -81,7 +83,7 @@ export function Specimen({ mcps }: { mcps: Mcp[] }) {
           {done ? 'validado' : 'explorando'}
         </span>
         <span className="specimen__url">
-          <Icon name="globe" size={13} />
+          <SiteIcon mcp={mcp} size={20} />
           {mcp.site}
         </span>
       </div>
@@ -123,7 +125,7 @@ export function Specimen({ mcps }: { mcps: Mcp[] }) {
         <span>
           {validatedTools(mcp).length} de {mcp.exploration.proposed} validadas · {formatDuration(mcp.exploration.durationSec)}
         </span>
-        <Link to={`/mcp/${mcp.slug}`} className="specimen__open">
+        <Link href={`/mcp/${mcp.slug}`} className="specimen__open">
           Ver {mcp.slug} <Icon name="arrowRight" size={13} />
         </Link>
       </figcaption>

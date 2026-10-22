@@ -1,4 +1,4 @@
-import { Link } from 'react-router-dom';
+import Link from 'next/link';
 import { Icon } from '../components/Icon';
 import { EmptyState } from '../components/primitives';
 
@@ -10,10 +10,10 @@ export function NotFound({ what = 'página' }: { what?: string }) {
         title={what === 'MCP' ? 'Este MCP no existe o ya no está publicado' : 'Aquí no hay nada'}
         actions={
           <>
-            <Link to="/" className="btn btn--outline">
+            <Link href="/" className="btn btn--outline">
               Ir al catálogo
             </Link>
-            <Link to="/crear" className="btn btn--primary">
+            <Link href="/crear" className="btn btn--primary">
               <Icon name="plus" size={16} /> Crear un MCP
             </Link>
           </>

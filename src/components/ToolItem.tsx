@@ -1,3 +1,5 @@
+'use client';
+
 import { useState } from 'react';
 import type { Tool } from '../data/types';
 import { cx } from '../lib/format';

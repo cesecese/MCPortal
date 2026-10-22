@@ -69,7 +69,7 @@ export function slugify(s: string): string {
 }
 
 export function installCommand(mcp: Pick<Mcp, 'slug'>): string {
-  return `claude mcp add ${mcp.slug} -- npx -y mcportal run ${mcp.slug}`;
+  return `npx -y mcportal add ${mcp.slug}`;
 }
 
 /** Manifiesto con el contrato de contexto.txt (§4.1), solo con herramientas validadas. */

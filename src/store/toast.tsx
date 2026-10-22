@@ -1,3 +1,5 @@
+'use client';
+
 import { createContext, useCallback, useContext, useRef, useState, type ReactNode } from 'react';
 import { Icon, type IconName } from '../components/Icon';
 import '../styles/toast.css';

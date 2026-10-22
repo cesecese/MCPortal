@@ -1,5 +1,8 @@
+'use client';
+
 import { useEffect, useMemo, useRef } from 'react';
-import { Link, useSearchParams } from 'react-router-dom';
+import Link from 'next/link';
+import { useRouter, useSearchParams } from 'next/navigation';
 import { Icon } from '../components/Icon';
 import { McpCard } from '../components/McpCard';
 import { EmptyState } from '../components/primitives';
@@ -14,7 +17,7 @@ const STEPS = [
   { n: '01', title: 'Explora', body: 'Un agente navega la web como un usuario y registra cada petición.' },
   { n: '02', title: 'Sintetiza', body: 'Las acciones descubiertas se convierten en herramientas tipadas.' },
   { n: '03', title: 'Valida', body: 'Cada herramienta se ejecuta de verdad. Solo pasan las que funcionan.' },
-  { n: '04', title: 'Sirve', body: 'Un comando y Claude ya puede usar la web como si tuviera API.' },
+  { n: '04', title: 'Sirve', body: 'Un comando y tu cliente MCP ya puede usar la web como si tuviera API.' },
 ];
 
 const fold = (s: string) =>
@@ -35,12 +38,14 @@ function matches(m: Mcp, q: string): boolean {
 
 export function Explore() {
   const catalog = usePublicCatalog();
-  const [params, setParams] = useSearchParams();
+  const params = useSearchParams();
+  const router = useRouter();
   const searchRef = useRef<HTMLInputElement>(null);
   const catalogRef = useRef<HTMLElement>(null);
   const q = params.get('q') ?? '';
 
-  const setQuery = (value: string) => setParams(value ? { q: value } : {}, { replace: true });
+  const setQuery = (value: string) =>
+    router.replace(value ? `/?q=${encodeURIComponent(value)}` : '/', { scroll: false });
 
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
@@ -75,7 +80,7 @@ export function Explore() {
             </h1>
             <p className="hero__lede">
               Pega la URL de una web sin API. Un agente la explora, descubre qué acciones permite y publica un servidor
-              MCP con herramientas tipadas y validadas. Claude lo instala con un comando.
+              MCP con herramientas tipadas y validadas. Se instala con un comando.
             </p>
 
             <form
@@ -106,7 +111,7 @@ export function Explore() {
             </form>
 
             <div className="hero__cta">
-              <Link to="/crear" className="btn btn--primary btn--lg">
+              <Link href="/crear" className="btn btn--primary btn--lg">
                 <Icon name="plus" size={17} />
                 Crear un MCP desde una URL
               </Link>
@@ -159,7 +164,7 @@ export function Explore() {
                 <button className="btn btn--outline" onClick={() => setQuery('')}>
                   Ver todo el catálogo
                 </button>
-                <Link to={looksLikeUrl ? `/crear?url=${encodeURIComponent(q)}` : '/crear'} className="btn btn--primary">
+                <Link href={looksLikeUrl ? `/crear?url=${encodeURIComponent(q)}` : '/crear'} className="btn btn--primary">
                   <Icon name="plus" size={16} /> {looksLikeUrl ? `Crear MCP para ${q}` : 'Crear el primero'}
                 </Link>
               </>

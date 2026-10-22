@@ -1,3 +1,5 @@
+'use client';
+
 import { useState, type ReactNode } from 'react';
 import { useToast } from '../store/toast';
 import { Icon } from './Icon';

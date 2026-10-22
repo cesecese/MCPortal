@@ -1,3 +1,5 @@
+'use client';
+
 import { useEffect, useRef, useState, type ReactNode } from 'react';
 import type { ImplKind, Mcp } from '../data/types';
 import { cx } from '../lib/format';
@@ -8,6 +10,17 @@ export function Monogram({ mcp, size = 40 }: { mcp: Pick<Mcp, 'name'>; size?: nu
   return (
     <span className="monogram" style={{ width: size, height: size, fontSize: size * 0.42 }} aria-hidden>
       {mcp.name.trim().charAt(0).toUpperCase()}
+    </span>
+  );
+}
+
+/** Favicon de la web en una baldosa, como el icono de una app. Sin favicon, el monograma. */
+export function SiteIcon({ mcp, size = 44 }: { mcp: Pick<Mcp, 'name' | 'icon'>; size?: number }) {
+  if (!mcp.icon) return <Monogram mcp={mcp} size={size} />;
+  return (
+    <span className="site-icon" style={{ width: size, height: size, borderRadius: Math.round(size * 0.27) }} aria-hidden>
+      {/* eslint-disable-next-line @next/next/no-img-element */}
+      <img src={mcp.icon} alt="" width={size} height={size} decoding="async" />
     </span>
   );
 }

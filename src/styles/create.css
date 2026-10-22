@@ -98,8 +98,8 @@
 }
 
 .create__body {
-  padding-top: 48px;
-  padding-bottom: 120px;
+  padding-top: var(--s-8);
+  padding-bottom: var(--s-10);
 }
 
 .step-title {
@@ -254,7 +254,7 @@
 /* ── Paso 2 · Generación ──────────────────────────────── */
 .step-explore {
   display: grid;
-  gap: 28px;
+  gap: var(--s-6);
 }
 
 .step-explore__top {
@@ -349,16 +349,16 @@
 .step-explore__grid {
   display: grid;
   grid-template-columns: minmax(0, 1fr) minmax(0, 1.1fr);
-  gap: 20px;
+  gap: var(--s-5);
 }
 
 .browser {
   display: flex;
   flex-direction: column;
   min-height: 380px;
-  border: 1px solid var(--line-strong);
-  border-radius: var(--r-l);
+  border-radius: var(--r-xl);
   background: var(--surface);
+  box-shadow: var(--lift-1);
   overflow: hidden;
 }
 
@@ -466,7 +466,7 @@
 .log {
   display: flex;
   flex-direction: column;
-  border-radius: var(--r-l);
+  border-radius: var(--r-xl);
   background: #141416;
   color: #d9d7d0;
   overflow: hidden;
@@ -621,8 +621,9 @@
 
 .step-explore__tools li.is-in {
   opacity: 1;
-  border-style: solid;
+  border-color: transparent;
   background: var(--surface);
+  box-shadow: var(--lift-1);
 }
 
 .step-explore__tools li.is-failed code {

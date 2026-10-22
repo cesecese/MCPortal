@@ -1,3 +1,5 @@
+'use client';
+
 import { useState } from 'react';
 import { CodeBlock } from '../../components/Code';
 import { Icon } from '../../components/Icon';
@@ -76,8 +78,8 @@ export function StepReview({
           </p>
           <h1 className="step-title">Revisa lo que ha encontrado el agente</h1>
           <p className="step-lede">
-            Los nombres y descripciones son lo que leerá Claude para decidir qué herramienta usar. Ajústalos si hace
-            falta.
+            Los nombres y descripciones son lo que leerá el cliente MCP para decidir qué herramienta usar. Ajústalos si
+            hace falta.
           </p>
         </div>
 

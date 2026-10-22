@@ -53,6 +53,8 @@ export interface Mcp {
   /** Nombre legible del sitio */
   name: string;
   site: string;
+  /** Favicon de la web (en public/favicons) */
+  icon?: string;
   description: string;
   category: CategoryId;
   tags: string[];

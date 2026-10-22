@@ -1,39 +1,33 @@
+'use client';
+
 import { useCallback, useEffect, useState } from 'react';
 
 type Theme = 'light' | 'dark';
-const KEY = 'mcportal:theme';
+export const THEME_KEY = 'mcportal:theme';
 
-function systemTheme(): Theme {
-  return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
-}
-
-function stored(): Theme | null {
-  try {
-    const v = localStorage.getItem(KEY);
-    return v === 'light' || v === 'dark' ? v : null;
-  } catch {
-    return null;
-  }
-}
-
-export function applyStoredTheme() {
-  const t = stored();
-  if (t) document.documentElement.dataset.theme = t;
-}
+/** Se ejecuta en <head> antes de pintar para no parpadear al cargar. */
+export const themeBootScript = `try{var t=localStorage.getItem('${THEME_KEY}');if(t==='light'||t==='dark')document.documentElement.dataset.theme=t}catch(e){}`;
 
 export function useTheme() {
-  const [theme, setTheme] = useState<Theme>(() => stored() ?? systemTheme());
+  const [theme, setTheme] = useState<Theme>('light');
 
   useEffect(() => {
-    document.documentElement.dataset.theme = theme;
-    document.querySelector('meta[name=theme-color]')?.setAttribute('content', theme === 'dark' ? '#0f0f11' : '#f4f3ee');
-  }, [theme]);
+    const forced = document.documentElement.dataset.theme;
+    setTheme(
+      forced === 'dark' || forced === 'light'
+        ? forced
+        : window.matchMedia('(prefers-color-scheme: dark)').matches
+          ? 'dark'
+          : 'light',
+    );
+  }, []);
 
   const toggle = useCallback(() => {
     setTheme((t) => {
       const next = t === 'dark' ? 'light' : 'dark';
+      document.documentElement.dataset.theme = next;
       try {
-        localStorage.setItem(KEY, next);
+        localStorage.setItem(THEME_KEY, next);
       } catch {
         /* ignorado */
       }

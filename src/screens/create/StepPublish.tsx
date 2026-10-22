@@ -1,3 +1,5 @@
+'use client';
+
 import { Icon } from '../../components/Icon';
 import type { Mcp, Visibility } from '../../data/types';
 import { cx } from '../../lib/format';

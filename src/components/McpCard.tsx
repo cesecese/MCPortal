@@ -1,7 +1,7 @@
-import { Link } from 'react-router-dom';
+import Link from 'next/link';
 import type { Mcp } from '../data/types';
 import { formatCompact, validatedTools } from '../lib/format';
-import { Monogram } from './primitives';
+import { SiteIcon } from './primitives';
 import '../styles/mcp-card.css';
 
 /** Tarjeta del catálogo: inicial, nombre del sitio, descripción, herramientas e instalaciones. */
@@ -10,7 +10,7 @@ export function McpCard({ mcp, static: isStatic }: { mcp: Mcp; static?: boolean 
   const body = (
     <>
       <div className="mcp-card__head">
-        <Monogram mcp={mcp} size={40} />
+        <SiteIcon mcp={mcp} size={48} />
         <div className="mcp-card__id">
           <h3 className="mcp-card__name">{mcp.name}</h3>
           <span className="mcp-card__site mono">{mcp.site}</span>
@@ -32,7 +32,7 @@ export function McpCard({ mcp, static: isStatic }: { mcp: Mcp; static?: boolean 
 
   if (isStatic) return <div className="mcp-card">{body}</div>;
   return (
-    <Link to={`/mcp/${mcp.slug}`} className="mcp-card">
+    <Link href={`/mcp/${mcp.slug}`} className="mcp-card">
       {body}
     </Link>
   );

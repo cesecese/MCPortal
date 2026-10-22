@@ -1,9 +1,12 @@
+'use client';
+
 import { useMemo, useState } from 'react';
-import { Link, useNavigate, useParams } from 'react-router-dom';
+import Link from 'next/link';
+import { useParams, useRouter } from 'next/navigation';
 import { CodeBlock, CommandLine, useCopy } from '../components/Code';
 import { Icon } from '../components/Icon';
 import { McpCard } from '../components/McpCard';
-import { KindTag, Menu, Monogram, Sparkline, ValidationMeter } from '../components/primitives';
+import { KindTag, Menu, SiteIcon, Sparkline, ValidationMeter } from '../components/primitives';
 import { ToolItem } from '../components/ToolItem';
 import { categoryOf } from '../data/categories';
 import {
@@ -22,16 +25,16 @@ import { useToast } from '../store/toast';
 import { NotFound } from './NotFound';
 import '../styles/detail.css';
 
-type InstallTab = 'claude' | 'json' | 'manifest';
+type InstallTab = 'cli' | 'json' | 'manifest';
 
 export function McpDetail() {
-  const { slug = '' } = useParams();
+  const { slug = '' } = useParams<{ slug: string }>();
   const { bySlug } = useStore();
   const catalog = usePublicCatalog();
-  const navigate = useNavigate();
+  const router = useRouter();
   const notify = useToast();
   const { copy } = useCopy();
-  const [tab, setTab] = useState<InstallTab>('claude');
+  const [tab, setTab] = useState<InstallTab>('cli');
   const [toolQuery, setToolQuery] = useState('');
   const [downloading, setDownloading] = useState(false);
 
@@ -77,7 +80,7 @@ export function McpDetail() {
             <span>
               <Icon name="eyeOff" size={15} /> Borrador · solo tú puedes ver esta página
             </span>
-            <Link to={`/crear?editar=${mcp.id}`} className="btn btn--primary btn--sm">
+            <Link href={`/crear?editar=${mcp.id}`} className="btn btn--primary btn--sm">
               <Icon name="edit" size={14} /> Continuar edición
             </Link>
           </div>
@@ -86,7 +89,7 @@ export function McpDetail() {
 
       <div className="container">
         <nav className="crumbs mono" aria-label="Ruta">
-          <Link to="/">Explorar</Link>
+          <Link href="/">Explorar</Link>
           <span aria-hidden>/</span>
           <span>{category.label}</span>
           <span aria-hidden>/</span>
@@ -94,7 +97,7 @@ export function McpDetail() {
         </nav>
 
         <header className="detail__head">
-          <Monogram mcp={mcp} size={64} />
+          <SiteIcon mcp={mcp} size={72} />
           <div className="detail__title">
             <div className="detail__name-row">
               <h1>{mcp.name}</h1>
@@ -144,7 +147,7 @@ export function McpDetail() {
                 {
                   label: 'Regenerar desde la web',
                   icon: 'git',
-                  onSelect: () => navigate(`/crear?url=${encodeURIComponent(mcp.site)}`),
+                  onSelect: () => router.push(`/crear?url=${encodeURIComponent(mcp.site)}`),
                 },
                 {
                   label: 'Informar de un problema',
@@ -285,7 +288,7 @@ export function McpDetail() {
               <div className="segmented panel__tabs" role="tablist">
                 {(
                   [
-                    ['claude', 'Claude Code'],
+                    ['cli', 'CLI'],
                     ['json', 'Config JSON'],
                     ['manifest', 'Manifiesto'],
                   ] as [InstallTab, string][]
@@ -295,11 +298,11 @@ export function McpDetail() {
                   </button>
                 ))}
               </div>
-              {tab === 'claude' && (
+              {tab === 'cli' && (
                 <div className="panel__body">
                   <CommandLine command={installCommand(mcp)} />
                   <p className="panel__hint">
-                    Luego abre <code>/mcp</code> en Claude Code: verás{' '}
+                    Registra el servidor en tu cliente MCP. En su panel de herramientas verás{' '}
                     <code>
                       mcp__{mcp.slug}__{tools[0]?.name}
                     </code>{' '}
@@ -310,7 +313,7 @@ export function McpDetail() {
               {tab === 'json' && (
                 <div className="panel__body">
                   <CodeBlock code={jsonConfig} title=".mcp.json" />
-                  <p className="panel__hint">Válido para Claude Desktop, Cursor y cualquier cliente MCP por stdio.</p>
+                  <p className="panel__hint">Formato estándar <code>mcpServers</code>, válido para cualquier cliente MCP por stdio.</p>
                 </div>
               )}
               {tab === 'manifest' && (
@@ -370,7 +373,7 @@ export function McpDetail() {
                 <h2 className="panel__title">Etiquetas</h2>
                 <div className="detail__tags">
                   {mcp.tags.map((t) => (
-                    <Link key={t} to={`/?q=${encodeURIComponent(t)}`} className="chip">
+                    <Link key={t} href={`/?q=${encodeURIComponent(t)}`} className="chip">
                       {t}
                     </Link>
                   ))}
@@ -384,7 +387,7 @@ export function McpDetail() {
           <section className="detail__section" aria-labelledby="related-title">
             <div className="section-head">
               <h2 id="related-title">También te puede servir</h2>
-              <Link to="/" className="section-head__meta detail__more">
+              <Link href="/" className="section-head__meta detail__more">
                 Todo el catálogo <Icon name="arrowRight" size={13} />
               </Link>
             </div>

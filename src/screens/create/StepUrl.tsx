@@ -1,3 +1,5 @@
+'use client';
+
 import { useState } from 'react';
 import { Icon } from '../../components/Icon';
 import { normalizeUrl } from '../../lib/simulate';

@@ -28,7 +28,7 @@ Estas funcionalidades deben estar representadas mediante interfaces y datos de e
 
 3. Branding y dirección visual
 
-El branding es una prioridad. No quiero una interfaz genérica de dashboard generada por IA, sino un producto con identidad visual propia, reconocible y cuidado hasta el último detalle.
+El branding es una prioridad. No quiero una interfaz genérica de dashboard, sino un producto con identidad visual propia, reconocible y cuidado hasta el último detalle.
 
 Diseña MCPortal como una herramienta moderna para desarrolladores, con una estética profesional, tecnológica y minimalista.
 

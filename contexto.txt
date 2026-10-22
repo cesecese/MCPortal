@@ -1,16 +1,16 @@
 # Auto-MCP: brief del proyecto (hackathon de 5 h, equipo de 4)
 
-    Documento de contexto para Claude Code. Resume la idea, las decisiones ya tomadas y el plan. Trabajemos de forma incremental: primero el contrato (manifiesto), después cada pieza por separado con datos de prueba y al final la integración. Ante la duda, prioriza que la demo funcione de extremo a extremo antes que añadir funcionalidades.
+    Documento de contexto del proyecto. Resume la idea, las decisiones ya tomadas y el plan. Trabajemos de forma incremental: primero el contrato (manifiesto), después cada pieza por separado con datos de prueba y al final la integración. Ante la duda, prioriza que la demo funcione de extremo a extremo antes que añadir funcionalidades.
 
 ---
 
 ## 1. La idea
 
-Le das una URL de una web *sin API pública. Un agente la explora solo, descubre qué **acciones* permite (buscar, filtrar, crear, reservar, comprar…) y genera un *servidor MCP* con herramientas tipadas para esa web. Después, un agente consumidor (Claude Code) se conecta a ese servidor y hace tareas reales en la web.
+Le das una URL de una web *sin API pública. Un agente la explora solo, descubre qué **acciones* permite (buscar, filtrar, crear, reservar, comprar…) y genera un *servidor MCP* con herramientas tipadas para esa web. Después, un agente consumidor (cualquier cliente MCP) se conecta a ese servidor y hace tareas reales en la web.
 
 Importante para el pitch: el agente *no scrapea contenido, descubre capacidades*. El resultado no son datos, son herramientas.
 
-*Frase de la demo:* «Esta web no tiene API. Dentro de tres minutos, Claude podrá usarla como si la tuviera. Cero clics humanos: de URL a herramientas funcionando.»
+*Frase de la demo:* «Esta web no tiene API. Dentro de tres minutos, cualquier cliente MCP podrá usarla como si la tuviera. Cero clics humanos: de URL a herramientas funcionando.»
 
 ## 2. Referencias y en qué nos diferenciamos
 
@@ -55,7 +55,7 @@ URL ──► [1] Explorador ──► traza + emparejamientos
         [3] Validador ──► manifest.json (solo herramientas que funcionan)
                            │
                            ▼
-        [4] Runtime MCP genérico ◄──► [5] Claude Code (consumidor)
+        [4] Runtime MCP genérico ◄──► [5] Cliente MCP (consumidor)
 
 
 ### 4.1 El contrato:  manifest.json
@@ -162,18 +162,18 @@ Ejecuta cada herramienta propuesta con entradas de ejemplo (las de la exploraci�
 •  Tamaño estimado: unas 60 u 80 líneas.
 •  Extra opcional: vigilar el manifiesto y emitir  notifications/tools/list_changed  para que las herramientas nuevas aparezcan sin reconectar.
 
-*El encadenamiento lo resuelve el consumidor.* El servidor no tiene que orquestar el flujo del carrito. Expone  create_cart() ,  add_to_cart(cart_id, product_id, qty)  y  checkout(cart_id)  con buenas descripciones, y Claude encadena solo.
+*El encadenamiento lo resuelve el consumidor.* El servidor no tiene que orquestar el flujo del carrito. Expone  create_cart() ,  add_to_cart(cart_id, product_id, qty)  y  checkout(cart_id)  con buenas descripciones, y el cliente encadena solo.
 
-### 4.6 Uso desde Claude Code
+### 4.6 Uso desde un cliente MCP
 
  bash
-claude mcp add auto-mcp -- python server.py
+mcportal add auto-mcp -- python server.py
 # o, para compartirlo en el repo:
-claude mcp add --scope project auto-mcp -- python server.py
+mcportal add --scope project auto-mcp -- python server.py
 
 
-•   /mcp  dentro de Claude Code muestra el estado y las herramientas ( mcp__auto-mcp__search_books , etc.).
-•  Las herramientas se cargan al arrancar: tras regenerar el manifiesto, reconectar desde  /mcp .
+•  El panel de servidores del cliente muestra el estado y las herramientas ( mcp__auto-mcp__search_books , etc.).
+•  Las herramientas se cargan al arrancar: tras regenerar el manifiesto, reconectar desde el panel de servidores.
 •  Aprobar los permisos de antemano para que la demo no se corte.
 
 ## 5. Guion de la demo
@@ -181,7 +181,7 @@ claude mcp add --scope project auto-mcp -- python server.py
 1. Mostrar una web y decir que no tiene API.
 2. Lanzar la exploración *en directo* sobre la web más fiable, con el panel en vivo: el navegador moviéndose, las peticiones capturadas y las herramientas apareciendo.
 3. Validador: «N propuestas, M validadas».
-4. Reconectar en Claude Code y enseñar que las herramientas nuevas están ahí.
+4. Reconectar el cliente MCP y enseñar que las herramientas nuevas están ahí.
 5. Pedir una tarea que cruce webs, por ejemplo: «Busca libros de Asimov en Open Library, añade dos libros de ciencia ficción a un carrito en la tienda, haz el checkout y resérvame mesa para cuatro el viernes.»
 6. Cierre: diferencial (autónomo de extremo a extremo) y respuesta preparada sobre la parte legal.
 
@@ -194,7 +194,7 @@ claude mcp add --scope project auto-mcp -- python server.py
 | 1 | Explorador: Playwright, observación compacta, captura de red, atribución, centinelas |
 | 2 | Sintetizador: prompts de traza a manifiesto, deduplicación, nombres y descripciones |
 | 3 | Runtime MCP genérico y validador |
-| 4 | Webs propias (con Claude Code, rápido), panel en vivo, integración con Claude Code y pitch |
+| 4 | Webs propias (con el agente, rápido), panel en vivo, integración con el cliente MCP y pitch |
 
 | Tiempo | Qué |
 |---|---|
@@ -211,11 +211,11 @@ claude mcp add --scope project auto-mcp -- python server.py
 •  Si algo se atasca más de 20 minutos, simplificar o escribir a mano esa parte del manifiesto y seguir.
 •  La autorreparación y  list_changed  son extras: solo si sobra tiempo.
 
-## 8. Primeros pasos sugeridos para Claude Code
+## 8. Primeros pasos sugeridos
 
 1. Crear la estructura del repo:  sites/shop ,  sites/restaurant ,  explorer/ ,  synthesizer/ ,  runtime/ ,  validator/ ,  ui/ .
 2. Escribir  manifest.example.json  con 3 o 4 herramientas a mano (una  http  de Open Library, las del carrito y una  browser  del restaurante).
-3. Implementar el runtime MCP genérico contra ese manifiesto y probarlo con  claude mcp add .
+3. Implementar el runtime MCP genérico contra ese manifiesto y probarlo con un cliente MCP.
 4. Construir las dos webs propias.
 5. Explorador: primero la observación compacta y la captura de red, después el bucle con el LLM, después la atribución y los centinelas.
 6. Sintetizador y validador.
