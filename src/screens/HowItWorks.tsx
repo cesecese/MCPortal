@@ -2,7 +2,6 @@
 
 import { useEffect, useState, type ReactNode } from 'react';
 import { useRouter } from 'next/navigation';
-import { CommandLine } from '../components/Code';
 import { Icon } from '../components/Icon';
 import { Logo } from '../components/Logo';
 import { Avatar } from '../components/primitives';
@@ -37,9 +36,23 @@ export function HowItWorks() {
       variant: 'logo',
     },
     {
+      id: 'forecast',
+      kicker: 'La predicción',
+      title: 'Cloudflare ya lo había avisado.',
+      body: 'Matthew Prince, CEO de Cloudflare, proyectaba que los bots superarían a los humanos en 2027.',
+      visual: (
+        <div className="forecast" aria-label="Predicción de Cloudflare para 2027">
+          <strong className="forecast__year">2027</strong>
+          <span className="forecast__line" aria-hidden />
+          <p className="forecast__quote">Los bots superarán a los humanos.</p>
+          <span className="forecast__author">Matthew Prince · CEO de Cloudflare</span>
+        </div>
+      ),
+    },
+    {
       id: 'data',
       kicker: 'El dato',
-      title: 'El 57% de las solicitudes de HTML son de bots',
+      title: 'Esto ya ha pasado: el 57% de las solicitudes de junio fueron de bots',
       body: 'Informe Cloudflare',
       variant: 'highlight',
       visual: (
@@ -64,13 +77,18 @@ export function HowItWorks() {
             <div>
               <span className="mono">27 abr 2026</span>
               <strong className="mono">50%</strong>
-              <span>los bots superan a los humanos</span>
+              <span>primer cruce: los bots superan a los humanos</span>
             </div>
             <div>
               <span className="mono">jun 2026</span>
               <strong className="mono">57,5%</strong>
               <span>de las solicitudes HTML son de bots</span>
             </div>
+          </div>
+          <div className="stat__geo">
+            <span className="mono">EE. UU.</span>
+            <strong className="mono">71,5%</strong>
+            <span>de las solicitudes web eran de bots</span>
           </div>
           <p className="stat__source mono">Cloudflare Radar · solicitudes HTML en su red</p>
         </div>
@@ -266,135 +284,6 @@ export function HowItWorks() {
               <span className="tag">buscar</span>
               <span className="tag">reservar</span>
               <span className="tag">comprar</span>
-            </div>
-          </div>
-        </div>
-      ),
-    },
-    {
-      id: 'how',
-      kicker: 'El producto',
-      title: 'Cómo funciona MCPortal',
-      variant: 'process-intro',
-      visual: (
-        <div className="process-map" aria-label="Los tres pasos de MCPortal">
-          <div className="process-map__step">
-            <span className="process-map__n mono">01</span>
-            <span className="process-map__icon">
-              <Icon name="globe" size={18} />
-            </span>
-            <strong>URL</strong>
-            <span className="mono">una web</span>
-          </div>
-          <Icon name="arrowRight" size={16} className="process-map__arrow" />
-          <div className="process-map__step">
-            <span className="process-map__n mono">02</span>
-            <span className="process-map__icon">
-              <Icon name="search" size={18} />
-            </span>
-            <strong>Exploración</strong>
-            <span className="mono">interacciones</span>
-          </div>
-          <Icon name="arrowRight" size={16} className="process-map__arrow" />
-          <div className="process-map__step">
-            <span className="process-map__n mono">03</span>
-            <span className="process-map__icon">
-              <Icon name="layers" size={18} />
-            </span>
-            <strong>MCP</strong>
-            <span className="mono">herramientas</span>
-          </div>
-        </div>
-      ),
-    },
-    {
-      id: 'step-url',
-      kicker: 'Paso 1',
-      title: '1. Introduce la URL de una web.',
-      body: 'Indica qué página quieres conectar con tu agente de IA.',
-      visual: (
-        <div className="upload" aria-label="Formulario para pegar una URL">
-          <span className="upload__label mono">URL de la web</span>
-          <div className="upload__input">
-            <Icon name="globe" size={16} />
-            <span className="mono">https://openlibrary.org</span>
-            <span className="upload__btn">Explorar</span>
-          </div>
-          <div className="upload__examples">
-            <span className="upload__label mono">Ejemplos</span>
-            <span className="chip">shop.mcportal.dev</span>
-            <span className="chip">reservas.latascalavapies.es</span>
-            <span className="chip">boe.es</span>
-          </div>
-        </div>
-      ),
-    },
-    {
-      id: 'step-explore',
-      kicker: 'Paso 2',
-      title: '2. Nuestra IA explora la web.',
-      body: 'Analiza la página e identifica las interacciones y funcionalidades que pueden convertirse en herramientas para un agente.',
-      visual: (
-        <div className="trace" aria-label="Exploración de la web e interacciones identificadas">
-          <div className="trace__head">
-            <span>
-              <span className="dot dot--live" /> explorando
-            </span>
-            <span className="mono">openlibrary.org</span>
-          </div>
-          <ol className="trace__list">
-            <li>
-              <span className="trace__glyph">›</span>
-              <span>fill [3] &quot;Search&quot; ← &quot;asimov&quot;</span>
-            </li>
-            <li>
-              <span className="trace__glyph trace__glyph--req">⇄</span>
-              <span>GET /search.json?q=asimov</span>
-              <span className="trace__status">200</span>
-            </li>
-            <li>
-              <span className="trace__glyph">›</span>
-              <span>click [9] link &quot;Foundation&quot;</span>
-            </li>
-            <li>
-              <span className="trace__glyph trace__glyph--req">⇄</span>
-              <span>GET /works/OL46125W.json</span>
-              <span className="trace__status">200</span>
-            </li>
-          </ol>
-          <div className="trace__capabilities">
-            <span className="trace__cap-label mono">Interacciones</span>
-            <span className="tag">Buscar</span>
-            <span className="tag">Ver ficha</span>
-            <span className="tag">Consultar autor</span>
-          </div>
-          <div className="trace__foot">
-            <Icon name="check" size={13} /> Interacciones identificadas
-          </div>
-        </div>
-      ),
-    },
-    {
-      id: 'step-mcp',
-      kicker: 'Paso 3',
-      title: 'De la web a un servidor MCP',
-      body: 'MCPortal transforma lo que ha descubierto en un servidor MCP que permite a los agentes utilizar las funcionalidades identificadas.',
-      visual: (
-        <div className="deliver" aria-label="La web se convierte en un servidor MCP">
-          <div className="deliver__flow">
-            <span className="deliver__node mono">openlibrary.org</span>
-            <Icon name="arrowRight" size={14} />
-            <span className="deliver__node deliver__node--mcp">
-              <Icon name="layers" size={12} /> MCP
-            </span>
-          </div>
-          <div className="install" aria-label="Instalación del MCP generado">
-            <span className="install__label mono">Instalar</span>
-            <CommandLine command="npx -y mcportal add openlibrary" />
-            <div className="install__file">
-              <Icon name="download" size={16} />
-              <strong>manifest.json</strong>
-              <span className="mono">4,2 kB</span>
             </div>
           </div>
         </div>

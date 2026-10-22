@@ -2359,3 +2359,78 @@
 .onboarding__slide--highlight h1 {
   color: var(--signal);
 }
+
+/* ── Predicción de Cloudflare ─────────────────────────── */
+.forecast {
+  display: grid;
+  align-content: center;
+  gap: var(--s-3);
+  padding: var(--s-5);
+  border: 1px solid var(--line-strong);
+  border-radius: var(--r-l);
+  background: var(--surface);
+}
+
+.forecast__label {
+  font-size: 9.5px;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.forecast__year {
+  font-size: clamp(58px, 6.5vw, 78px);
+  font-weight: 600;
+  line-height: 0.9;
+  letter-spacing: -0.06em;
+  color: var(--ink);
+}
+
+.forecast__line {
+  height: 1px;
+  background: var(--line-strong);
+}
+
+.forecast__quote {
+  max-width: 22ch;
+  font-size: 18px;
+  font-weight: 600;
+  line-height: 1.25;
+  letter-spacing: -0.02em;
+  color: var(--ink);
+}
+
+.forecast__author {
+  font-size: 10px;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+/* ── Dato: Estados Unidos ─────────────────────────────── */
+.stat__geo {
+  display: grid;
+  grid-template-columns: auto auto minmax(0, 1fr);
+  align-items: baseline;
+  gap: 8px;
+  padding-top: var(--s-3);
+  border-top: 1px solid var(--line);
+}
+
+.stat__geo .mono:first-child {
+  font-size: 9px;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.stat__geo strong {
+  font-size: 15px;
+  color: var(--ink);
+}
+
+.stat__geo span:last-child {
+  font-size: 10.5px;
+  line-height: 1.4;
+  color: var(--muted);
+}
